@@ -77,4 +77,11 @@
     <name>Khaled</name>
     <url>https://khaled.is-a.dev</url>
   </developer>
+
+  <releases>
+    <release version="0.1.4" date="2024-11-17">
+      <description>Read the full changelog at Github</description>
+      <url>https://github.com/khaled-0/TubeSync/releases</url>
+    </release>
+  </releases>
 </component>
