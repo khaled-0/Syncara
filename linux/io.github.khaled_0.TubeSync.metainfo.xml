@@ -77,11 +77,4 @@
     <name>Khaled</name>
     <url>https://khaled.is-a.dev</url>
   </developer>
-
-
-  <releases>
-    <release version="1.3.0" date="2024-11-12">
-      <description>Initial flatpak release</description>
-    </release>
-  </releases>
 </component>

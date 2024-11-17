@@ -16,6 +16,7 @@ jobs:
         with:
           channel: "stable"
           cache: true
+          flutter-version-file: pubspec.yaml
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -70,6 +71,7 @@ jobs:
         with:
           channel: "stable"
           cache: true
+          flutter-version-file: pubspec.yaml
 
       - run: flutter --version
 
