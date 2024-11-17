@@ -25,7 +25,7 @@ class LibraryTab extends StatelessWidget {
           return RefreshIndicator(
             onRefresh: library.refresh,
             child: ListView.builder(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 top: 8,
                 bottom: kBottomNavigationBarHeight * 2,
               ),
@@ -40,7 +40,7 @@ class LibraryTab extends StatelessWidget {
                         return SlideTransition(
                           position: animation.drive(
                             Tween(
-                              begin: Offset(0.0, 1.0),
+                              begin: const Offset(0.0, 1.0),
                               end: Offset.zero,
                             ).chain(CurveTween(curve: Curves.ease)),
                           ),
@@ -49,7 +49,7 @@ class LibraryTab extends StatelessWidget {
                       },
                       pageBuilder: (context, _, __) {
                         return ChangeNotifierProvider<PlaylistProvider>(
-                          child: PlaylistTab(),
+                          child: const PlaylistTab(),
                           create: (_) => PlaylistProvider(
                             context.read<Isar>(),
                             playlist,
@@ -86,7 +86,7 @@ class LibraryTab extends StatelessWidget {
           }
 
           return Padding(
-            padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight * 1.25),
+            padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight * 1.25),
             child: importFab(context, mini: true),
           );
         },
@@ -160,7 +160,7 @@ class LibraryTab extends StatelessWidget {
             MediaService().playbackState.value.copyWith(),
           );
       ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-        SnackBar(content: Text("Media does not exist")),
+        const SnackBar(content: Text("Media does not exist")),
       );
     }
   }

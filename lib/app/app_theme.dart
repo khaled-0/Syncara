@@ -37,7 +37,7 @@ class AppTheme {
         margin: EdgeInsets.all(8),
         clipBehavior: Clip.antiAlias,
       ),
-      sliderTheme: SliderThemeData(
+      sliderTheme: const SliderThemeData(
         thumbShape: LineThumbShape(),
       ),
       appBarTheme: AppBarTheme(
@@ -46,7 +46,7 @@ class AppTheme {
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {
           for (final platform in TargetPlatform.values)
-            platform: CupertinoPageTransitionsBuilder(),
+            platform: const CupertinoPageTransitionsBuilder(),
         },
       ),
       fontFamily: 'WantedSansStd',

@@ -56,7 +56,7 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
                   hintText: "https://youtu.be/playlist?list=...",
                 ),
               ),
-              Card(
+              const Card(
                 margin: EdgeInsets.only(top: 12),
                 elevation: 0,
                 child: ListTile(

@@ -16,7 +16,7 @@ class Avatar extends StatelessWidget {
       child: CircleAvatar(
         radius: radius,
         child: Consumer<InternetStatus>(
-          child: Icon(Icons.person_rounded),
+          child: const Icon(Icons.person_rounded),
           builder: (context, internet, avatar) {
             final crossFadeState = switch (internet) {
               InternetStatus.connected => CrossFadeState.showFirst,
@@ -24,7 +24,7 @@ class Avatar extends StatelessWidget {
             };
             return AnimatedCrossFade(
               firstChild: avatar!,
-              secondChild: Icon(Icons.cloud_off_rounded),
+              secondChild: const Icon(Icons.cloud_off_rounded),
               crossFadeState: crossFadeState,
               duration: Durations.medium4,
             );

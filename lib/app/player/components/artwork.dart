@@ -19,6 +19,7 @@ class Artwork extends StatelessWidget {
           initialData: context.read<PlayerProvider>().player.position,
           builder: (context, position) {
             // Modulo by 360 degree / 6.28 rad so the angle doesn't get too large
+            // todo not smooth also shuffle jumps from 1 to target
             final angle = (position.requireData.inMilliseconds / 20000) % 6.28;
             return Transform.rotate(
               angle: angle.toPrecision(3),

@@ -59,7 +59,7 @@ class PlaylistTab extends StatelessWidget {
     Widget? header,
   }) {
     return ListView.builder(
-      padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight * 2),
+      padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight * 2),
       itemCount: playlist.medias.length + (header != null ? 1 : 0),
       itemBuilder: (context, index) {
         if (header != null && index == 0) return header;
@@ -95,7 +95,7 @@ class PlaylistTab extends StatelessWidget {
           start: initialMedia,
         ),
         dispose: (_, provider) => provider.dispose(),
-        child: MiniPlayerSheet(),
+        child: const MiniPlayerSheet(),
       ),
       enableDrag: true,
       shape: InputBorder.none,

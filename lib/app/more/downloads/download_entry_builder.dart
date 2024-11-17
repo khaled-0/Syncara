@@ -30,7 +30,7 @@ class DownloadEntryBuilder extends StatelessWidget {
           ),
           IconButton(
             onPressed: () => cancel(entry),
-            icon: Icon(Icons.clear_rounded),
+            icon: const Icon(Icons.clear_rounded),
           ),
         ],
       ),
@@ -42,12 +42,12 @@ class DownloadEntryBuilder extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(entry.status.name.normalizeCamelCase().toCapitalCase()),
-              Spacer(),
+              const Spacer(),
               Text("${(entry.progress * 100).toInt()}%"),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
             ],
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           LinearProgressIndicator(value: entry.progress)
         ],
       ),

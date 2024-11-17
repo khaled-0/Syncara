@@ -32,7 +32,7 @@ class MoreTab extends StatelessWidget {
     return ListView(
       children: [
         // BigAss Branding
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Hero(
           tag: "branding",
           child: Image.asset(
@@ -41,8 +41,8 @@ class MoreTab extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
           ),
         ),
-        SizedBox(height: 16),
-        Divider(),
+        const SizedBox(height: 16),
+        const Divider(),
         ValueListenableBuilder(
           valueListenable: AppTheme.dynamicColors,
           builder: (_, value, __) => SwitchListTile(
@@ -54,29 +54,30 @@ class MoreTab extends StatelessWidget {
                     value,
                   );
             },
-            secondary: Icon(Icons.palette_rounded),
-            title: Text("Material You"),
-            subtitle: Text("Use dynamic colors"),
+            secondary: const Icon(Icons.palette_rounded),
+            title: const Text("Material You"),
+            subtitle: const Text("Use dynamic colors"),
           ),
         ),
-        Divider(),
+        const Divider(),
         ListTile(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ActiveDownloadsScreen()),
+            MaterialPageRoute(
+                builder: (context) => const ActiveDownloadsScreen()),
           ),
-          leading: Icon(Icons.download_rounded),
-          title: Text("Download Queue"),
-          subtitle: Text("Manage running downloads"),
+          leading: const Icon(Icons.download_rounded),
+          title: const Text("Download Queue"),
+          subtitle: const Text("Manage running downloads"),
         ),
-        Divider(),
+        const Divider(),
         ListTile(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AboutScreen()),
+            MaterialPageRoute(builder: (context) => const AboutScreen()),
           ),
-          leading: Icon(Icons.info_rounded),
-          title: Text("About"),
+          leading: const Icon(Icons.info_rounded),
+          title: const Text("About"),
         ),
       ],
     );

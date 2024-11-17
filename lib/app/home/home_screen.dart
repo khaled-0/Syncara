@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
           if (AppTheme.isDesktop) {
             return Row(
               children: [
-                HomeNavigationBar.rail(),
+                const HomeNavigationBar.rail(),
                 const VerticalDivider(thickness: 1, width: 1),
                 Expanded(
                   child: Scaffold(
@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
         },
         child: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
-          children: [HomeTab(), MoreTab()],
+          children: [const HomeTab(), MoreTab()],
         ),
       ),
     );
@@ -82,7 +82,7 @@ class _HomeTabState extends State<HomeTab> {
           key: homeNavigator,
           onGenerateRoute: (settings) => MaterialPageRoute(
             settings: settings,
-            builder: (_) => LibraryTab(),
+            builder: (_) => const LibraryTab(),
           ),
         ),
       ),

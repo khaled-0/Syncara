@@ -21,20 +21,20 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: const Text("TubeSync"),
         actions: [
           if (!AppTheme.isDesktop) ...{
-            Avatar(),
-            SizedBox(width: 12),
+            const Avatar(),
+            const SizedBox(width: 12),
           } else ...{
             IconButton(
               tooltip: "Minimize",
               onPressed: WindowManager.instance.minimize,
-              icon: Icon(Icons.horizontal_rule_rounded),
+              icon: const Icon(Icons.horizontal_rule_rounded),
             ),
             IconButton(
               tooltip: "Close",
               onPressed: WindowManager.instance.close,
-              icon: Icon(Icons.close_rounded),
+              icon: const Icon(Icons.close_rounded),
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
           }
         ],
       ),

@@ -18,7 +18,7 @@ class AboutScreen extends StatelessWidget {
             if (snapshot.hasError) {
               return Text("Error: ${snapshot.error}");
             }
-            if (!snapshot.hasData) return CircularProgressIndicator();
+            if (!snapshot.hasData) return const CircularProgressIndicator();
 
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -39,17 +39,17 @@ class AboutScreen extends StatelessWidget {
                   "v${snapshot.requireData.version}",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                SizedBox(height: 24),
-                Text(
+                const SizedBox(height: 24),
+                const Text(
                   "Licenced under the GNU General Public Licence v3.0",
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 TextButton.icon(
                   onPressed: () => showLicensePage(context: context),
-                  icon: Icon(Icons.chrome_reader_mode_rounded),
-                  label: Text("Open Source Licences"),
+                  icon: const Icon(Icons.chrome_reader_mode_rounded),
+                  label: const Text("Open Source Licences"),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -57,15 +57,15 @@ class AboutScreen extends StatelessWidget {
                       onPressed: () => launchUrlString(
                         "https://github.com/khaled-0/TubeSync",
                       ),
-                      icon: Icon(Icons.code_rounded),
-                      label: Text("GitHub"),
+                      icon: const Icon(Icons.code_rounded),
+                      label: const Text("GitHub"),
                     ),
                     TextButton.icon(
                       onPressed: () => launchUrlString(
                         "https://khaled.is-a.dev",
                       ),
-                      icon: Icon(Icons.copyright_rounded),
-                      label: Text("Khaled"),
+                      icon: const Icon(Icons.copyright_rounded),
+                      label: const Text("Khaled"),
                     ),
                   ],
                 )

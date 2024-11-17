@@ -36,7 +36,7 @@ class PlaylistHeader extends StatelessWidget {
                     child: Image(
                       height: AppTheme.isDesktop ? 240 : 120,
                       width: double.maxFinite,
-                      errorBuilder: (_, __, ___) => SizedBox(height: 120),
+                      errorBuilder: (_, __, ___) => const SizedBox(height: 120),
                       frameBuilder: (context, child, frame, synchronous) {
                         if (synchronous) return child;
                         return AnimatedOpacity(
@@ -131,7 +131,7 @@ class PlaylistHeader extends StatelessWidget {
         backgroundColor: Colors.transparent,
         builder: (_) => ChangeNotifierProvider.value(
           value: context.read<PlaylistProvider>(),
-          child: PlaylistMenuSheet(),
+          child: const PlaylistMenuSheet(),
         ),
       ),
       icon: const Icon(Icons.more_horiz_rounded),
@@ -155,7 +155,7 @@ class PlaylistHeader extends StatelessWidget {
       Expanded(
         child: OutlinedButton.icon(
           onPressed: shufflePlay,
-          icon: Icon(Icons.shuffle_rounded),
+          icon: const Icon(Icons.shuffle_rounded),
           label: const Text(
             "Shuffle",
             maxLines: 1,

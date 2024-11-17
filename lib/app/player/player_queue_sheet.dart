@@ -13,18 +13,18 @@ class PlayerQueueSheet extends StatelessWidget {
       children: [
         Row(
           children: [
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             Text(
               "Playlist (${context.read<PlayerProvider>().playlist.medias.length})",
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            Spacer(),
-            SizedBox(width: 12),
+            const Spacer(),
+            const SizedBox(width: 12),
             ...actions(context),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
           ],
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Expanded(
           child: ListenableBuilder(
             listenable: context.read<PlayerProvider>().playlist,
@@ -35,7 +35,7 @@ class PlayerQueueSheet extends StatelessWidget {
                 builder: (context, nowPlaying, _) {
                   return ReorderableListView.builder(
                     buildDefaultDragHandles: false,
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       bottom: kBottomNavigationBarHeight,
                     ),
                     itemCount: playlist.medias.length,
@@ -46,8 +46,8 @@ class PlayerQueueSheet extends StatelessWidget {
                       selected: playlist.medias[index] == nowPlaying,
                       trailing: ReorderableDragStartListener(
                         index: index,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
+                        child: const Padding(
+                          padding: EdgeInsets.all(12),
                           child: Icon(Icons.drag_handle_rounded),
                         ),
                       ),
@@ -67,7 +67,7 @@ class PlayerQueueSheet extends StatelessWidget {
     return [
       IconButton(
         onPressed: context.read<PlayerProvider>().playlist.shuffle,
-        icon: Icon(Icons.shuffle_rounded),
+        icon: const Icon(Icons.shuffle_rounded),
       ),
       ValueListenableBuilder(
         valueListenable: context.read<PlayerProvider>().loopMode,
@@ -84,7 +84,7 @@ class PlayerQueueSheet extends StatelessWidget {
       ),
       IconButton(
         onPressed: () {},
-        icon: Icon(Icons.more_vert_rounded),
+        icon: const Icon(Icons.more_vert_rounded),
       ),
     ];
   }

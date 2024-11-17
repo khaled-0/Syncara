@@ -32,8 +32,8 @@ class DownloaderService {
 
     // Background downloader notifications
     FileDownloader().configureNotification(
-      running: TaskNotification('Downloading', '{displayName}'),
-      complete: TaskNotification('Download finished', '{displayName}'),
+      running: const TaskNotification('Downloading', '{displayName}'),
+      complete: const TaskNotification('Download finished', '{displayName}'),
       progressBar: true,
     );
 
@@ -145,7 +145,7 @@ class DownloaderService {
     NotificationType notificationType,
   ) {
     rootNavigator.currentState?.pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => ActiveDownloadsScreen()),
+      MaterialPageRoute(builder: (_) => const ActiveDownloadsScreen()),
       (route) => route.isFirst,
     );
   }

@@ -33,8 +33,8 @@ class LibraryMenuSheet extends StatelessWidget {
               context.read<LibraryProvider>().delete(playlist);
               Navigator.pop(context);
             },
-            leading: Icon(Icons.delete_rounded),
-            title: Text("Delete"),
+            leading: const Icon(Icons.delete_rounded),
+            title: const Text("Delete"),
           )
         ],
       ),

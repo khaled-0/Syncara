@@ -47,7 +47,7 @@ class MiniPlayerSheet extends StatelessWidget {
         DismissDirection.endToStart: 0.2,
       },
       child: ValueListenableBuilder(
-        key: ValueKey("NowPlaying"),
+        key: const ValueKey("NowPlaying"),
         valueListenable: context.read<PlayerProvider>().nowPlaying,
         builder: (context, nowPlaying, _) {
           return Column(
@@ -176,7 +176,7 @@ class MiniPlayerSheet extends StatelessWidget {
       barrierColor: adaptiveSheetBarrierColor,
       builder: (_) => Provider<PlayerProvider>.value(
         value: context.read<PlayerProvider>(),
-        child: LargePlayerSheet(),
+        child: const LargePlayerSheet(),
       ),
     );
   }

@@ -35,8 +35,8 @@ class PlaylistMenuSheet extends StatelessWidget {
               ActiveDownloadsScreen.showEnqueuedSnackbar(context);
               Navigator.pop(context);
             },
-            leading: Icon(Icons.download_rounded),
-            title: Text("Download All"),
+            leading: const Icon(Icons.download_rounded),
+            title: const Text("Download All"),
           ),
         ],
       ),

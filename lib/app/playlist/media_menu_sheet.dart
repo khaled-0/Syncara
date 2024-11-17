@@ -38,8 +38,8 @@ class MediaMenuSheet extends StatelessWidget {
                 Navigator.pop(context);
                 ActiveDownloadsScreen.showEnqueuedSnackbar(context);
               },
-              leading: Icon(Icons.download_rounded),
-              title: Text("Download"),
+              leading: const Icon(Icons.download_rounded),
+              title: const Text("Download"),
             ),
           if (media.downloaded == true)
             ListTile(
@@ -51,8 +51,8 @@ class MediaMenuSheet extends StatelessWidget {
 
                 Navigator.pop(context);
               },
-              leading: Icon(Icons.delete_rounded),
-              title: Text("Delete"),
+              leading: const Icon(Icons.delete_rounded),
+              title: const Text("Delete"),
             )
         ],
       ),

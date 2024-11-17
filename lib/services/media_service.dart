@@ -34,7 +34,7 @@ class MediaService extends BaseAudioHandler {
   static Future<void> init() async {
     _instance = await AudioService.init(
       builder: () => MediaService._(),
-      config: AudioServiceConfig(
+      config: const AudioServiceConfig(
         rewindInterval: Duration(seconds: 5),
         androidNotificationChannelName: 'TubeSync',
         androidNotificationChannelId: 'io.github.khaled_0.TubeSync',
@@ -88,7 +88,7 @@ class MediaService extends BaseAudioHandler {
     if (downloaded.existsSync()) return AudioSource.file(downloaded.path);
 
     if (!await DownloaderService.hasInternet) {
-      throw HttpException("No internet!");
+      throw const HttpException("No internet!");
     }
 
     final streamUri = await compute(
@@ -130,11 +130,11 @@ class MediaService extends BaseAudioHandler {
 
   @override
   Future<void> rewind() async {
-    return _player?.seek(_player!.position - Duration(seconds: 5));
+    return _player?.seek(_player!.position - const Duration(seconds: 5));
   }
 
   @override
   Future<void> fastForward() async {
-    return _player?.seek(_player!.position + Duration(seconds: 5));
+    return _player?.seek(_player!.position + const Duration(seconds: 5));
   }
 }

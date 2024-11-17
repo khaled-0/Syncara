@@ -12,11 +12,11 @@ class ActiveDownloadsScreen extends StatefulWidget {
   static void showEnqueuedSnackbar(BuildContext context) {
     ScaffoldMessenger.maybeOf(context)?.showSnackBar(
       SnackBar(
-        content: Text("Downloading....."),
+        content: const Text("Downloading....."),
         action: SnackBarAction(
           label: "View",
           onPressed: () => rootNavigator.currentState?.pushAndRemoveUntil(
-            MaterialPageRoute(builder: (_) => ActiveDownloadsScreen()),
+            MaterialPageRoute(builder: (_) => const ActiveDownloadsScreen()),
             (route) => route.isFirst,
           ),
         ),
@@ -45,7 +45,7 @@ class _ActiveDownloadsScreenState extends State<ActiveDownloadsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Active Downloads")),
+      appBar: AppBar(title: const Text("Active Downloads")),
       floatingActionButton: FutureBuilder(
         future: DownloaderService().db.allRecords(),
         initialData: [],
@@ -53,8 +53,8 @@ class _ActiveDownloadsScreenState extends State<ActiveDownloadsScreen> {
           if (snapshot.hasError) return const SizedBox();
           if (snapshot.requireData.isEmpty) return const SizedBox();
           return FloatingActionButton.extended(
-            icon: Icon(Icons.clear_all_rounded),
-            label: Text("Cancel All"),
+            icon: const Icon(Icons.clear_all_rounded),
+            label: const Text("Cancel All"),
             onPressed: () => DownloaderService().cancelAll().whenComplete(() {
               setState(() {});
             }),
@@ -79,7 +79,7 @@ class _ActiveDownloadsScreenState extends State<ActiveDownloadsScreen> {
 
           return ListView.builder(
             itemCount: snapshot.data?.length ?? 0,
-            padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight * 2),
+            padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight * 2),
             itemBuilder: (context, index) {
               final entry = snapshot.requireData[index];
               return DownloadEntryBuilder(

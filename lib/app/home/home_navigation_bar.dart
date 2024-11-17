@@ -18,7 +18,7 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
   @override
   Widget build(BuildContext context) {
     if (widget._rail) return _sideRailBar();
-    if (AppTheme.isDesktop) return SizedBox();
+    if (AppTheme.isDesktop) return const SizedBox();
     return _bottomNavBar();
   }
 
@@ -49,9 +49,9 @@ class _HomeNavigationBarState extends State<HomeNavigationBar> {
           child: Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: IconButton(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               onPressed: () {},
-              icon: Avatar(),
+              icon: const Avatar(),
             ),
           ),
         ),

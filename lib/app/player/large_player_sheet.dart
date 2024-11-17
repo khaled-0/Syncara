@@ -32,9 +32,9 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: RotatedBox(
+          icon: const RotatedBox(
             quarterTurns: -1, // Negative 90 Deg
-            child: const Icon(Icons.arrow_back_ios_new_rounded),
+            child: Icon(Icons.arrow_back_ios_new_rounded),
           ),
         ),
         title: Image.asset(
@@ -47,14 +47,14 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.more_vert_rounded),
+            icon: const Icon(Icons.more_vert_rounded),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
         ],
       ),
       body: Column(
         children: [
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           SegmentedButton<int>(
             segments: const [
               ButtonSegment(
@@ -83,9 +83,9 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
             child: TabBarView(
               controller: tabController,
               children: [
-                Artwork(),
-                Center(child: Text("Soon")),
-                Center(child: Text("Soon")),
+                const Artwork(),
+                const Center(child: Text("Soon")),
+                const Center(child: Text("Soon")),
               ],
             ),
           ),
@@ -94,7 +94,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
             builder: (context, media, _) {
               return Card.outlined(
                 elevation: 0,
-                margin: EdgeInsets.symmetric(horizontal: 8),
+                margin: const EdgeInsets.symmetric(horizontal: 8),
                 child: ListTile(
                   onTap: showPlayerQueue,
                   title: Text(
@@ -122,13 +122,13 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                       )
                     ],
                   ),
-                  leading: Icon(Icons.playlist_play_rounded),
-                  trailing: Icon(Icons.keyboard_arrow_right_rounded),
+                  leading: const Icon(Icons.playlist_play_rounded),
+                  trailing: const Icon(Icons.keyboard_arrow_right_rounded),
                 ),
               );
             },
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           // SeekBar
           ValueListenableBuilder(
             valueListenable: context.read<PlayerProvider>().nowPlaying,
@@ -144,14 +144,14 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                     Row(
                       children: [
                         Text(currentPosition.data.formatHHMM()),
-                        Spacer(),
+                        const Spacer(),
                         Text(media.duration.formatHHMM()),
                       ],
                     ),
                     ValueListenableBuilder(
                       valueListenable: context.read<PlayerProvider>().buffering,
                       builder: (context, buffering, child) {
-                        if (media.duration == null) return SizedBox();
+                        if (media.duration == null) return const SizedBox();
                         final player = context.read<PlayerProvider>().player;
                         final position = currentPosition.data ?? Duration.zero;
                         return SeekBar(
@@ -179,7 +179,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                 children: [
                   ListenableBuilder(
                     listenable: context.read<PlayerProvider>().playlist,
-                    child: Icon(Icons.skip_previous_rounded),
+                    child: const Icon(Icons.skip_previous_rounded),
                     builder: (_, icon) {
                       if (player.hasPrevious) {
                         return IconButton(
@@ -209,7 +209,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                   ),
                   ListenableBuilder(
                     listenable: context.read<PlayerProvider>().playlist,
-                    child: Icon(Icons.skip_next_rounded),
+                    child: const Icon(Icons.skip_next_rounded),
                     builder: (_, icon) {
                       if (player.hasNext) {
                         return IconButton(
@@ -224,7 +224,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
               );
             },
           ),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
         ],
       ),
     );
@@ -235,7 +235,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
       context: context,
       builder: (_) => Provider.value(
         value: context.read<PlayerProvider>(),
-        child: PlayerQueueSheet(),
+        child: const PlayerQueueSheet(),
       ),
       showDragHandle: true,
     );
