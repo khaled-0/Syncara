@@ -19,27 +19,37 @@ class Artwork extends StatelessWidget {
           initialData: context.read<PlayerProvider>().player.position,
           builder: (context, position) {
             // Modulo by 360 degree / 6.28 rad so the angle doesn't get too large
-            // todo not smooth also shuffle jumps from 1 to target
-            final angle = (position.requireData.inMilliseconds / 20000) % 6.28;
-            return Transform.rotate(
-              angle: angle.toPrecision(3),
-              child: CircleAvatar(
-                maxRadius: 120,
-                minRadius: 50,
-                foregroundImage:  NetworkToFileImage(
-                  url: media.thumbnail.high,
-                  file: MediaService().thumbnailFile(media.thumbnail.high),
+            final angle = (position.requireData.inMilliseconds / 42000) % 6.28;
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                Positioned.fill(
+                  child: Transform.rotate(
+                    angle: angle.toPrecision(5),
+                    child: CircleAvatar(
+                      maxRadius: 120,
+                      minRadius: 50,
+                      foregroundImage: NetworkToFileImage(
+                        url: media.thumbnail.high,
+                        file: MediaService().thumbnailFile(
+                          media.thumbnail.high,
+                        ),
+                      ),
+                      backgroundImage: NetworkToFileImage(
+                        url: media.thumbnail.medium,
+                        file: MediaService().thumbnailFile(
+                          media.thumbnail.medium,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                backgroundImage: NetworkToFileImage(
-                  url: media.thumbnail.medium,
-                  file: MediaService().thumbnailFile(media.thumbnail.medium),
-                ),
-                child: Icon(
+                Icon(
                   Icons.circle,
                   size: 48,
                   color: Theme.of(context).colorScheme.surface,
                 ),
-              ),
+              ],
             );
           },
         ),

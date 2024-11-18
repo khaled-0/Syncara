@@ -238,6 +238,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
         child: const PlayerQueueSheet(),
       ),
       showDragHandle: true,
+      scrollControlDisabledMaxHeightRatio: 0.8,
     );
   }
 
