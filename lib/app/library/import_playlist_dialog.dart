@@ -4,7 +4,9 @@ import 'package:tubesync/provider/library_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ImportPlaylistDialog extends StatefulWidget {
-  const ImportPlaylistDialog({super.key});
+  const ImportPlaylistDialog({super.key, this.url});
+
+  final String? url;
 
   @override
   State<ImportPlaylistDialog> createState() => _ImportPlaylistDialogState();
@@ -27,6 +29,15 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
       error = e.toString();
     } finally {
       if (mounted) setState(() => loading = false);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.url != null) {
+      input.text = widget.url!;
+      tryImportPlaylist();
     }
   }
 
@@ -77,6 +88,7 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
               if (error != null)
                 Card(
                   margin: const EdgeInsets.only(top: 12),
+                  elevation: 0,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(

@@ -86,7 +86,9 @@ class LibraryTab extends StatelessWidget {
           }
 
           return Padding(
-            padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight * 1.25),
+            padding: const EdgeInsets.only(
+              bottom: kBottomNavigationBarHeight * 1.25,
+            ),
             child: importFab(context, mini: true),
           );
         },
@@ -99,7 +101,7 @@ class LibraryTab extends StatelessWidget {
           context: context,
           useRootNavigator: true,
           builder: (_) => ChangeNotifierProvider.value(
-            value: context.watch<LibraryProvider>(),
+            value: context.read<LibraryProvider>(),
             child: const ImportPlaylistDialog(),
           ),
         );

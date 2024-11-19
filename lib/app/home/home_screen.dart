@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:tubesync/app/app_theme.dart';
+import 'package:tubesync/app/library/import_playlist_dialog.dart';
 import 'package:tubesync/app/library/library_tab.dart';
 import 'package:tubesync/app/more/more_tab.dart';
 import 'package:tubesync/provider/library_provider.dart';
@@ -71,6 +75,38 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   final homeNavigator = GlobalKey<NavigatorState>();
+  late final StreamSubscription shareHandler;
+
+  @override
+  void initState() {
+    super.initState();
+    shareHandler = ReceiveSharingIntent.instance.getMediaStream().listen(
+          handleSharedData,
+        );
+    ReceiveSharingIntent.instance
+        .getInitialMedia()
+        .then(handleSharedData)
+        .whenComplete(ReceiveSharingIntent.instance.reset);
+  }
+
+  void handleSharedData(List<SharedMediaFile> value) {
+    final url = value.firstOrNull?.path;
+    if (url == null || !mounted) return;
+    showDialog(
+      context: context,
+      useRootNavigator: true,
+      builder: (_) => ChangeNotifierProvider.value(
+        value: context.read<LibraryProvider>(),
+        child: ImportPlaylistDialog(url: url),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    shareHandler.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
