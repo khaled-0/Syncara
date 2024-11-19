@@ -84,9 +84,9 @@ class PlaylistTab extends StatelessWidget {
     final playlistCopy = PlaylistProvider(
       context.read<Isar>(),
       playlist ?? context.read<PlaylistProvider>().playlist,
+      sync: false,
     );
     prepare?.call(playlistCopy);
-    // FIXME: shuffle jumps from 1 to target
 
     _scaffoldOf(context)?.showBottomSheet(
       (_) => Provider<PlayerProvider>(

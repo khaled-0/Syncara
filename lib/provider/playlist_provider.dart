@@ -12,14 +12,14 @@ class PlaylistProvider extends ChangeNotifier {
   final Playlist playlist;
   final List<Media> medias = List.empty(growable: true);
 
-  PlaylistProvider(this.isar, this.playlist) {
+  PlaylistProvider(this.isar, this.playlist, {bool sync = true}) {
     for (final id in playlist.videoIds) {
       final media = isar.medias.where().idEqualTo(id).findFirst();
       if (media != null) medias.add(media);
     }
     updateDownloadStatus();
     notifyListeners();
-    refresh();
+    if (sync) refresh();
   }
 
   Future<void> refresh() async {
