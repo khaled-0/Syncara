@@ -56,11 +56,6 @@ class PlaylistProvider extends ChangeNotifier {
     }
   }
 
-  void shuffle() {
-    medias.shuffle();
-    notifyListeners();
-  }
-
   void updateDownloadStatus({Media? media}) {
     if (media != null) {
       media.downloaded = MediaService().isDownloaded(media);
@@ -70,14 +65,6 @@ class PlaylistProvider extends ChangeNotifier {
     for (final media in medias) {
       media.downloaded = MediaService().isDownloaded(media);
     }
-  }
-
-  void reorderList(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) newIndex -= 1;
-
-    final item = medias.removeAt(oldIndex);
-    medias.insert(newIndex, item);
-    notifyListeners();
   }
 
   bool _disposed = false;

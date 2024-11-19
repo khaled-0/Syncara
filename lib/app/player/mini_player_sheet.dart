@@ -116,10 +116,11 @@ class MiniPlayerSheet extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodySmall,
           ),
-          ListenableBuilder(
-            listenable: context.read<PlayerProvider>().playlist,
-            builder: (context, _) => Text(
-              "${positionInPlaylist(context, media)}"
+          Selector<PlayerProvider, List<Media>>(
+            selector: (_, provider) => provider.playlist,
+            shouldRebuild: (previous, next) => true,
+            builder: (context, playlist, _) => Text(
+              "${playlist.indexOf(media) + 1}/${playlist.length}"
               " \u2022 ${playlistInfo(context)}",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -174,7 +175,7 @@ class MiniPlayerSheet extends StatelessWidget {
       useSafeArea: true,
       useRootNavigator: true,
       barrierColor: adaptiveSheetBarrierColor,
-      builder: (_) => Provider<PlayerProvider>.value(
+      builder: (_) => ChangeNotifierProvider<PlayerProvider>.value(
         value: context.read<PlayerProvider>(),
         child: const LargePlayerSheet(),
       ),
@@ -187,12 +188,11 @@ class MiniPlayerSheet extends StatelessWidget {
   }
 
   String playlistInfo(BuildContext context) {
-    final playlist = context.read<PlayerProvider>().playlist.playlist;
-    return "${playlist.title} by ${playlist.author}";
-  }
+    final playlist = context.read<PlayerProvider>().playlistInfo;
+    if (playlist.length == 1) {
+      return "${playlist[0].title} by ${playlist[0].author}";
+    }
 
-  String positionInPlaylist(BuildContext context, Media media) {
-    final medias = context.read<PlayerProvider>().playlist.medias;
-    return "${medias.indexOf(media) + 1}/${medias.length}";
+    return "${playlist[0].title} and ${playlist.length} more";
   }
 }

@@ -5,7 +5,6 @@ import 'package:tubesync/app/player/components/seekbar.dart';
 import 'package:tubesync/app/player/player_queue_sheet.dart';
 import 'package:tubesync/extensions.dart';
 import 'package:tubesync/model/media.dart';
-import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/provider/player_provider.dart';
 
 class LargePlayerSheet extends StatefulWidget {
@@ -111,11 +110,12 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      ListenableBuilder(
-                        listenable: context.read<PlayerProvider>().playlist,
-                        builder: (_, __) => Text(
-                          "${positionInPlaylist(context.read<PlayerProvider>().playlist.medias, media)} "
-                          "\u2022 ${playlistInfo(context.read<PlayerProvider>().playlist.playlist)}",
+                      Selector<PlayerProvider, List<Media>>(
+                        selector: (_, provider) => provider.playlist,
+                        shouldRebuild: (previous, next) => true,
+                        builder: (context, playlist, _) => Text(
+                          "${playlist.indexOf(media) + 1}/${playlist.length}"
+                          " \u2022 ${playlistInfo(context)}",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -177,10 +177,11 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ListenableBuilder(
-                    listenable: context.read<PlayerProvider>().playlist,
+                  Selector<PlayerProvider, List<Media>>(
+                    selector: (_, provider) => provider.playlist,
+                    shouldRebuild: (previous, next) => true,
                     child: const Icon(Icons.skip_previous_rounded),
-                    builder: (_, icon) {
+                    builder: (context, _, icon) {
                       if (player.hasPrevious) {
                         return IconButton(
                           onPressed: player.previousTrack,
@@ -195,22 +196,23 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                     builder: (context, buffering, loading) {
                       if (buffering) return loading!;
                       if (playerState.requireData.playing) {
-                        return IconButton(
+                        return FloatingActionButton.small(
                           onPressed: player.player.pause,
-                          icon: const Icon(Icons.pause_rounded),
+                          child: const Icon(Icons.pause_rounded),
                         );
                       }
-                      return IconButton(
+                      return FloatingActionButton.small(
                         onPressed: player.player.play,
-                        icon: const Icon(Icons.play_arrow_rounded),
+                        child: const Icon(Icons.play_arrow_rounded),
                       );
                     },
                     child: const CircularProgressIndicator(),
                   ),
-                  ListenableBuilder(
-                    listenable: context.read<PlayerProvider>().playlist,
+                  Selector<PlayerProvider, List<Media>>(
+                    selector: (_, provider) => provider.playlist,
+                    shouldRebuild: (previous, next) => true,
                     child: const Icon(Icons.skip_next_rounded),
-                    builder: (_, icon) {
+                    builder: (context, _, icon) {
                       if (player.hasNext) {
                         return IconButton(
                           onPressed: player.nextTrack,
@@ -233,7 +235,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
   void showPlayerQueue() {
     showModalBottomSheet(
       context: context,
-      builder: (_) => Provider.value(
+      builder: (_) => ChangeNotifierProvider.value(
         value: context.read<PlayerProvider>(),
         child: const PlayerQueueSheet(),
       ),
@@ -242,11 +244,12 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
     );
   }
 
-  String playlistInfo(Playlist playlist) {
-    return "${playlist.title} by ${playlist.author}";
-  }
+  String playlistInfo(BuildContext context) {
+    final playlist = context.read<PlayerProvider>().playlistInfo;
+    if (playlist.length == 1) {
+      return "${playlist[0].title} by ${playlist[0].author}";
+    }
 
-  String positionInPlaylist(List<Media> medias, Media media) {
-    return "${medias.indexOf(media) + 1}/${medias.length}";
+    return "${playlist[0].title} and ${playlist.length} more";
   }
 }

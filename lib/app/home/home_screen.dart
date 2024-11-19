@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -75,18 +76,20 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   final homeNavigator = GlobalKey<NavigatorState>();
-  late final StreamSubscription shareHandler;
+  StreamSubscription? shareHandler;
 
   @override
   void initState() {
     super.initState();
-    shareHandler = ReceiveSharingIntent.instance.getMediaStream().listen(
-          handleSharedData,
-        );
-    ReceiveSharingIntent.instance
-        .getInitialMedia()
-        .then(handleSharedData)
-        .whenComplete(ReceiveSharingIntent.instance.reset);
+    if (Platform.isAndroid) {
+      shareHandler = ReceiveSharingIntent.instance.getMediaStream().listen(
+            handleSharedData,
+          );
+      ReceiveSharingIntent.instance
+          .getInitialMedia()
+          .then(handleSharedData)
+          .whenComplete(ReceiveSharingIntent.instance.reset);
+    }
   }
 
   void handleSharedData(List<SharedMediaFile> value) {
@@ -105,7 +108,7 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void dispose() {
     super.dispose();
-    shareHandler.cancel();
+    shareHandler?.cancel();
   }
 
   @override

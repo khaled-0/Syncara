@@ -24,7 +24,7 @@ class PlaylistTab extends StatelessWidget {
             launchPlayer(
               context: context,
               playlist: context.read<PlaylistProvider>().playlist,
-              prepare: (playlist) => playlist.shuffle(),
+              prepare: (playlist) => playlist.medias.shuffle(),
             );
           },
         ),
@@ -89,13 +89,12 @@ class PlaylistTab extends StatelessWidget {
     prepare?.call(playlistCopy);
 
     _scaffoldOf(context)?.showBottomSheet(
-      (_) => Provider<PlayerProvider>(
+      (_) => ChangeNotifierProvider<PlayerProvider>(
         create: (_) => PlayerProvider(
           context.read<Isar>(),
           playlistCopy,
           start: initialMedia,
         ),
-        dispose: (_, provider) => provider.dispose(),
         child: const MiniPlayerSheet(),
       ),
       enableDrag: true,

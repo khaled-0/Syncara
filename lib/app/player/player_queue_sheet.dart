@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/playlist/media_entry_builder.dart';
+import 'package:tubesync/model/media.dart';
 import 'package:tubesync/provider/player_provider.dart';
 
 class PlayerQueueSheet extends StatelessWidget {
@@ -11,11 +12,13 @@ class PlayerQueueSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Subtitle TODO
+
         Row(
           children: [
             const SizedBox(width: 16),
             Text(
-              "Playlist (${context.read<PlayerProvider>().playlist.medias.length})",
+              "Playlist (${context.read<PlayerProvider>().playlist.length})",
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const Spacer(),
@@ -26,10 +29,10 @@ class PlayerQueueSheet extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Expanded(
-          child: ListenableBuilder(
-            listenable: context.read<PlayerProvider>().playlist,
-            builder: (_, __) {
-              final playlist = context.read<PlayerProvider>().playlist;
+          child: Selector<PlayerProvider, List<Media>>(
+            selector: (_, provider) => provider.playlist,
+            shouldRebuild: (previous, next) => true,
+            builder: (context, playlist, __) {
               return ValueListenableBuilder(
                 valueListenable: context.read<PlayerProvider>().nowPlaying,
                 builder: (context, nowPlaying, _) {
@@ -38,12 +41,12 @@ class PlayerQueueSheet extends StatelessWidget {
                     padding: const EdgeInsets.only(
                       bottom: kBottomNavigationBarHeight,
                     ),
-                    itemCount: playlist.medias.length,
-                    onReorder: playlist.reorderList,
+                    itemCount: playlist.length,
+                    onReorder: context.read<PlayerProvider>().reorderList,
                     itemBuilder: (context, index) => MediaEntryBuilder(
-                      key: ValueKey(playlist.medias[index].hashCode),
-                      playlist.medias[index],
-                      selected: playlist.medias[index] == nowPlaying,
+                      key: ValueKey(playlist[index].hashCode),
+                      playlist[index],
+                      selected: playlist[index] == nowPlaying,
                       trailing: ReorderableDragStartListener(
                         index: index,
                         child: const Padding(
@@ -66,7 +69,7 @@ class PlayerQueueSheet extends StatelessWidget {
   List<Widget> actions(BuildContext context) {
     return [
       IconButton(
-        onPressed: context.read<PlayerProvider>().playlist.shuffle,
+        onPressed: context.read<PlayerProvider>().shuffle,
         icon: const Icon(Icons.shuffle_rounded),
       ),
       ValueListenableBuilder(
