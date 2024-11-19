@@ -54,14 +54,16 @@ dependencies:
   # Visuals
   dynamic_color: ^1.7.0
   window_manager: ^0.4.3
+  network_to_file_image: ^7.0.0
 
-  # Utils
+  # Common Utils
   path: ^1.9.0
   path_provider: ^2.1.5
-  network_to_file_image: ^7.0.0
-  permission_handler: ^11.3.1
   url_launcher: ^6.3.1
+  permission_handler: ^11.3.1
   package_info_plus: ^8.1.1
+  receive_sharing_intent: ^1.8.1
+
 
 dev_dependencies:
   flutter_test:
