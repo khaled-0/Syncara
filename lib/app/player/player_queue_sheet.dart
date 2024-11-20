@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:tubesync/app/player/components/queue_playlist_filter.dart';
 import 'package:tubesync/app/playlist/media_entry_builder.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/provider/player_provider.dart';
@@ -38,26 +39,34 @@ class PlayerQueueSheet extends StatelessWidget {
                     return ReorderableListView.builder(
                       scrollController: scrollController,
                       buildDefaultDragHandles: false,
+                      header: const QueuePlaylistFilter(),
                       padding: const EdgeInsets.only(
                         bottom: kBottomNavigationBarHeight,
                       ),
                       itemCount: playlist.length,
                       onReorder: context.read<PlayerProvider>().reorderList,
-                      itemBuilder: (context, index) => MediaEntryBuilder(
-                        key: ValueKey(playlist[index].hashCode),
-                        playlist[index],
-                        selected: playlist[index] == nowPlaying,
-                        trailing: ReorderableDragStartListener(
-                          index: index,
-                          child: const Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Icon(Icons.drag_handle_rounded),
+                      itemBuilder: (context, index) {
+                        if (index % 2 == 0) {
+                          return SizedBox(
+                            key: ValueKey(playlist[index].hashCode),
+                          );
+                        }
+                        return MediaEntryBuilder(
+                          key: ValueKey(playlist[index].hashCode),
+                          playlist[index],
+                          selected: playlist[index] == nowPlaying,
+                          trailing: ReorderableDragStartListener(
+                            index: index,
+                            child: const Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Icon(Icons.drag_handle_rounded),
+                            ),
                           ),
-                        ),
-                        onTap: () {
-                          context.read<PlayerProvider>().jumpTo(index);
-                        },
-                      ),
+                          onTap: () {
+                            context.read<PlayerProvider>().jumpTo(index);
+                          },
+                        );
+                      },
                     );
                   },
                 );
