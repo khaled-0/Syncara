@@ -112,7 +112,6 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                       ),
                       Selector<PlayerProvider, List<Media>>(
                         selector: (_, provider) => provider.playlist,
-                        shouldRebuild: (previous, next) => true,
                         builder: (context, playlist, _) => Text(
                           "${playlist.indexOf(media) + 1}/${playlist.length}"
                           " \u2022 ${playlistInfo(context)}",
@@ -179,7 +178,6 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                 children: [
                   Selector<PlayerProvider, List<Media>>(
                     selector: (_, provider) => provider.playlist,
-                    shouldRebuild: (previous, next) => true,
                     child: const Icon(Icons.skip_previous_rounded),
                     builder: (context, _, icon) {
                       if (player.hasPrevious) {
@@ -210,7 +208,6 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                   ),
                   Selector<PlayerProvider, List<Media>>(
                     selector: (_, provider) => provider.playlist,
-                    shouldRebuild: (previous, next) => true,
                     child: const Icon(Icons.skip_next_rounded),
                     builder: (context, _, icon) {
                       if (player.hasNext) {

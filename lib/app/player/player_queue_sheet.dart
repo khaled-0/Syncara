@@ -31,7 +31,6 @@ class PlayerQueueSheet extends StatelessWidget {
         Expanded(
           child: Selector<PlayerProvider, List<Media>>(
             selector: (_, provider) => provider.playlist,
-            shouldRebuild: (previous, next) => true,
             builder: (context, playlist, __) {
               return ValueListenableBuilder(
                 valueListenable: context.read<PlayerProvider>().nowPlaying,

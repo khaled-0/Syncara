@@ -118,7 +118,6 @@ class MiniPlayerSheet extends StatelessWidget {
           ),
           Selector<PlayerProvider, List<Media>>(
             selector: (_, provider) => provider.playlist,
-            shouldRebuild: (previous, next) => true,
             builder: (context, playlist, _) => Text(
               "${playlist.indexOf(media) + 1}/${playlist.length}"
               " \u2022 ${playlistInfo(context)}",

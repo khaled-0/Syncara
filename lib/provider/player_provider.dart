@@ -17,9 +17,12 @@ class PlayerProvider extends ChangeNotifier {
   final player = AudioPlayer();
   final Isar isar;
 
-  // Passing shouldRebuild => true is probably better that reconstructing list
-  final List<Playlist> playlistInfo = List.empty(growable: true);
-  final List<Media> playlist = List.empty(growable: true);
+  final List<Playlist> _playlistInfo = List.empty(growable: true);
+  final List<Media> _playlist = List.empty(growable: true);
+
+  List<Playlist> get playlistInfo => List.of(_playlistInfo);
+
+  List<Media> get playlist => List.of(_playlist);
 
   late ValueNotifier<Media> _nowPlaying;
 
@@ -34,9 +37,9 @@ class PlayerProvider extends ChangeNotifier {
   final ValueNotifier<LoopMode> loopMode = ValueNotifier(LoopMode.all);
 
   PlayerProvider(this.isar, PlaylistProvider provider, {Media? start}) {
-    playlistInfo.add(provider.playlist);
-    playlist.addAll(provider.medias);
-    _nowPlaying = ValueNotifier(start ?? playlist.first);
+    _playlistInfo.add(provider.playlist);
+    _playlist.addAll(provider.medias);
+    _nowPlaying = ValueNotifier(start ?? _playlist.first);
     nowPlaying.addListener(beginPlay);
 
     MediaService().bind(
@@ -83,11 +86,11 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   void addToQueue(PlaylistProvider provider) {
-    if (playlistInfo.contains(provider.playlist)) return;
+    if (_playlistInfo.contains(provider.playlist)) return;
 
-    playlistInfo.add(provider.playlist);
-    playlist.addAll(provider.medias.where(
-      (media) => !playlist.contains(media),
+    _playlistInfo.add(provider.playlist);
+    _playlist.addAll(provider.medias.where(
+      (media) => !_playlist.contains(media),
     ));
   }
 
@@ -141,7 +144,7 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   Playlist get nowPlayingPlaylist {
-    return playlistInfo.firstWhere(
+    return _playlistInfo.firstWhere(
       (element) => element.videoIds.contains(nowPlaying.value.id),
     );
   }
@@ -157,9 +160,10 @@ class PlayerProvider extends ChangeNotifier {
     );
   }
 
-  bool get hasPrevious => playlist.indexOf(nowPlaying.value) > 0;
+  bool get hasPrevious => _playlist.indexOf(nowPlaying.value) > 0;
 
-  bool get hasNext => playlist.indexOf(nowPlaying.value) < playlist.length - 1;
+  bool get hasNext =>
+      _playlist.indexOf(nowPlaying.value) < _playlist.length - 1;
 
   void toggleLoopMode() {
     int next = (LoopMode.values.indexOf(loopMode.value) + 1);
@@ -167,37 +171,37 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   void previousTrack() {
-    final currentIndex = playlist.indexOf(nowPlaying.value);
+    final currentIndex = _playlist.indexOf(nowPlaying.value);
     if (currentIndex == 0) return;
-    nowPlaying.value = playlist[currentIndex - 1];
+    nowPlaying.value = _playlist[currentIndex - 1];
   }
 
   void nextTrack() {
-    final currentIndex = playlist.indexOf(nowPlaying.value);
+    final currentIndex = _playlist.indexOf(nowPlaying.value);
     final int? nextIndex = switch (loopMode.value) {
       LoopMode.one => currentIndex,
       LoopMode.off => hasNext ? currentIndex + 1 : null,
       LoopMode.all => hasNext ? currentIndex + 1 : 0,
     };
 
-    if (nextIndex != null) nowPlaying.value = playlist[nextIndex];
+    if (nextIndex != null) nowPlaying.value = _playlist[nextIndex];
   }
 
-  void jumpTo(int index) => nowPlaying.value = playlist[index];
+  void jumpTo(int index) => nowPlaying.value = _playlist[index];
 
   void reorderList(int oldIndex, int newIndex) {
     if (oldIndex < newIndex) newIndex -= 1;
 
-    final item = playlist.removeAt(oldIndex);
-    playlist.insert(newIndex, item);
+    final item = _playlist.removeAt(oldIndex);
+    _playlist.insert(newIndex, item);
     notifyListeners();
   }
 
   void shuffle() {
-    playlist.shuffle();
+    _playlist.shuffle();
     // Put currently playing song at first when looping disabled
     if (loopMode.value == LoopMode.off) {
-      reorderList(playlist.indexOf(nowPlaying.value), 0);
+      reorderList(_playlist.indexOf(nowPlaying.value), 0);
     }
     notifyListeners();
   }
