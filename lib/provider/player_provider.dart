@@ -36,10 +36,18 @@ class PlayerProvider extends ChangeNotifier {
   // I don't want to migrate to just_audio dependent queue system
   final ValueNotifier<LoopMode> loopMode = ValueNotifier(LoopMode.all);
 
-  PlayerProvider(this.isar, PlaylistProvider provider, {Media? start}) {
+  PlayerProvider(
+    this.isar,
+    PlaylistProvider provider, {
+    Media? start,
+
+    /// Used to modify playlist beforehand, e.g shuffle
+    void Function(PlayerProvider provider)? prepare,
+  }) {
     _playlistInfo.add(provider.playlist);
     _playlist.addAll(provider.medias);
     _nowPlaying = ValueNotifier(start ?? _playlist.first);
+    prepare?.call(this);
     nowPlaying.addListener(beginPlay);
 
     MediaService().bind(

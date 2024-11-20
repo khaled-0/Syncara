@@ -6,7 +6,6 @@ import 'package:tubesync/app/player/mini_player_sheet.dart';
 import 'package:tubesync/app/playlist/media_entry_builder.dart';
 import 'package:tubesync/app/playlist/playlist_header.dart';
 import 'package:tubesync/model/media.dart';
-import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/provider/player_provider.dart';
 import 'package:tubesync/provider/playlist_provider.dart';
 
@@ -20,13 +19,11 @@ class PlaylistTab extends StatelessWidget {
       body: Consumer<PlaylistProvider>(
         child: PlaylistHeader(
           playAll: () => launchPlayer(context: context),
-          shufflePlay: () {
-            launchPlayer(
-              context: context,
-              playlist: context.read<PlaylistProvider>().playlist,
-              prepare: (playlist) => playlist.medias.shuffle(),
-            );
-          },
+          shufflePlay: () => launchPlayer(
+            context: context,
+            playlist: context.read<PlaylistProvider>(),
+            prepare: (player) => player.shuffle(),
+          ),
         ),
         builder: (context, playlist, header) {
           if (AppTheme.isDesktop) {
@@ -74,26 +71,17 @@ class PlaylistTab extends StatelessWidget {
 
   static void launchPlayer({
     required BuildContext context,
-    Playlist? playlist,
+    PlaylistProvider? playlist,
     Media? initialMedia,
-
-    /// Used to modify playlist beforehand, e.g shuffle
-    void Function(PlaylistProvider playlist)? prepare,
+    void Function(PlayerProvider provider)? prepare,
   }) {
-    // Create copy to avoid mutating original playlist
-    final playlistCopy = PlaylistProvider(
-      context.read<Isar>(),
-      playlist ?? context.read<PlaylistProvider>().playlist,
-      sync: false,
-    );
-    prepare?.call(playlistCopy);
-
     _scaffoldOf(context)?.showBottomSheet(
       (_) => ChangeNotifierProvider<PlayerProvider>(
         create: (_) => PlayerProvider(
           context.read<Isar>(),
-          playlistCopy,
+          playlist ?? context.read<PlaylistProvider>(),
           start: initialMedia,
+          prepare: prepare,
         ),
         child: const MiniPlayerSheet(),
       ),

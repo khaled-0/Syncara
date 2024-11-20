@@ -132,37 +132,34 @@ class LibraryTab extends StatelessWidget {
   }
 
   void resumePlayback(BuildContext context) {
-    final isar = context.read<Isar>();
-    final resumeData = isar.preferences.getValue<LastPlayedMedia>(
-      Preference.lastPlayed,
-      null,
-    );
-
-    if (resumeData == null) return;
-
-    final library = context.read<LibraryProvider>().entries;
     try {
-      final playlistProvider = PlaylistProvider(
-        isar,
-        library.firstWhere((e) => e.id == resumeData.playlistId),
+      final resumeData = context
+          .read<Isar>()
+          .preferences
+          .getValue<LastPlayedMedia>(Preference.lastPlayed, null);
+
+      final library = context.read<LibraryProvider>().entries;
+      final playlist = PlaylistProvider(
+        context.read<Isar>(),
+        library.firstWhere((e) => e.id == resumeData!.playlistId),
       );
 
-      final media = playlistProvider.medias.firstWhere(
-        (e) => e.id == resumeData.mediaId,
+      final media = playlist.medias.firstWhere(
+        (e) => e.id == resumeData!.mediaId,
       );
 
       PlaylistTab.launchPlayer(
         context: context,
         initialMedia: media,
-        playlist: playlistProvider.playlist,
+        playlist: playlist,
       );
     } catch (_) {
-      isar.preferences.remove(Preference.lastPlayed);
+      context.read<Isar>().preferences.remove(Preference.lastPlayed);
       MediaService().playbackState.add(
             MediaService().playbackState.value.copyWith(),
           );
       ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-        const SnackBar(content: Text("Media does not exist")),
+        const SnackBar(content: Text("Unable to resume")),
       );
     }
   }
