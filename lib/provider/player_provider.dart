@@ -50,11 +50,7 @@ class PlayerProvider extends ChangeNotifier {
     prepare?.call(this);
     nowPlaying.addListener(beginPlay);
 
-    MediaService().bind(
-      player: player,
-      nextTrackCallback: nextTrack,
-      previousTrackCallback: previousTrack,
-    );
+    MediaService().bind(this);
 
     player.processingStateStream.listen((state) {
       if (state == ProcessingState.ready) storeNowPlaying();
@@ -93,13 +89,14 @@ class PlayerProvider extends ChangeNotifier {
     beginPlay();
   }
 
-  void addToQueue(PlaylistProvider provider) {
+  void enqueue(PlaylistProvider provider) {
     if (_playlistInfo.contains(provider.playlist)) return;
 
     _playlistInfo.add(provider.playlist);
     _playlist.addAll(provider.medias.where(
       (media) => !_playlist.contains(media),
     ));
+    notifyListeners();
   }
 
   Future<void> beginPlay() async {
@@ -222,7 +219,7 @@ class PlayerProvider extends ChangeNotifier {
     nowPlaying.dispose();
     buffering.dispose();
     player.stop().whenComplete(player.dispose);
-    MediaService().unbind(player);
+    MediaService().unbind(this);
     super.dispose();
   }
 

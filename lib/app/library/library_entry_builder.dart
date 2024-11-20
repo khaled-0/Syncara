@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/library/library_menu_sheet.dart';
@@ -70,7 +71,7 @@ class LibraryEntryBuilder extends StatelessWidget {
             backgroundColor: Colors.transparent,
             builder: (_) => ChangeNotifierProvider.value(
               value: context.read<LibraryProvider>(),
-              child: LibraryMenuSheet(playlist),
+              child: LibraryMenuSheet(context.read<Isar>(), playlist),
             ),
           ),
           icon: const Icon(Icons.more_vert_rounded, size: 18),

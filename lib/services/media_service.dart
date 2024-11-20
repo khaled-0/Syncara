@@ -7,6 +7,8 @@ import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:tubesync/model/media.dart';
+import 'package:tubesync/provider/player_provider.dart';
+import 'package:tubesync/provider/playlist_provider.dart';
 import 'package:tubesync/services/downloader_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
@@ -22,9 +24,7 @@ class MediaService extends BaseAudioHandler {
 
   late final String _storageDir;
   final _ytClient = yt.YoutubeExplode().videos.streamsClient;
-  AudioPlayer? _player;
-  VoidCallback? _nextTrackCallback;
-  VoidCallback? _previousTrackCallback;
+  PlayerProvider? _playerProvider;
 
   String get downloadsDir => path.join(_storageDir, "downloads");
 
@@ -51,36 +51,27 @@ class MediaService extends BaseAudioHandler {
 
   /// Call this method for back and forth communication
   /// TODO Make player an internal of this, no need for player provider
-  void bind({
-    required AudioPlayer player,
-    required VoidCallback nextTrackCallback,
-    required VoidCallback previousTrackCallback,
-  }) {
-    _player = player;
-    _nextTrackCallback = nextTrackCallback;
-    _previousTrackCallback = previousTrackCallback;
-  }
+  /// Do PlayerProvider -> QueueProvider
+  void bind(PlayerProvider playerProvider) => _playerProvider = playerProvider;
 
-  void unbind(AudioPlayer player) async {
+  void unbind(PlayerProvider playerProvider) async {
     // No need to unbind if some other player is re binded
-    if (_player != player) return;
+    if (_playerProvider != playerProvider) return;
 
-    _player = null;
-    _nextTrackCallback = null;
-    _previousTrackCallback = null;
+    _playerProvider = null;
     playbackState.add(playbackState.value.copyWith(
       playing: false,
       processingState: AudioProcessingState.idle,
     ));
   }
 
-  File mediaFile(Media media) => File(
-        path.join(downloadsDir, media.id),
-      );
+  File mediaFile(Media media) => File(path.join(downloadsDir, media.id));
 
   File thumbnailFile(String url) => File(
         path.join(thumbnailsDir, url.hashCode.toString()),
       );
+
+  void enqueue(PlaylistProvider playlist) => _playerProvider?.enqueue(playlist);
 
   Future<AudioSource> getMediaSource(Media media) async {
     // Try from offline
@@ -110,31 +101,38 @@ class MediaService extends BaseAudioHandler {
     if (file.existsSync()) file.deleteSync();
   }
 
-  @override
-  Future<void> play() async => _player?.play();
+  bool get isPlayerActive => _playerProvider != null;
 
   @override
-  Future<void> pause() async => _player?.pause();
+  Future<void> play() async => _playerProvider?.player.play();
 
   @override
-  Future<void> stop() async => _player?.stop();
+  Future<void> pause() async => _playerProvider?.player.pause();
 
   @override
-  Future<void> seek(Duration position) async => _player?.seek(position);
+  Future<void> stop() async => _playerProvider?.player.stop();
 
   @override
-  Future<void> skipToPrevious() async => _previousTrackCallback?.call();
+  Future<void> seek(Duration position) async =>
+      _playerProvider?.player.seek(position);
 
   @override
-  Future<void> skipToNext() async => _nextTrackCallback?.call();
+  Future<void> skipToPrevious() async => _playerProvider?.previousTrack();
+
+  @override
+  Future<void> skipToNext() async => _playerProvider?.nextTrack();
 
   @override
   Future<void> rewind() async {
-    return _player?.seek(_player!.position - const Duration(seconds: 5));
+    return _playerProvider?.player.seek(
+      _playerProvider!.player.position - const Duration(seconds: 5),
+    );
   }
 
   @override
   Future<void> fastForward() async {
-    return _player?.seek(_player!.position + const Duration(seconds: 5));
+    return _playerProvider?.player.seek(
+      _playerProvider!.player.position + const Duration(seconds: 5),
+    );
   }
 }

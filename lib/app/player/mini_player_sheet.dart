@@ -192,6 +192,6 @@ class MiniPlayerSheet extends StatelessWidget {
       return "${playlist[0].title} by ${playlist[0].author}";
     }
 
-    return "${playlist[0].title} and ${playlist.length} more";
+    return "${playlist[0].title} and ${playlist.length - 1} more";
   }
 }

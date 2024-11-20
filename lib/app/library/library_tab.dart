@@ -67,10 +67,11 @@ class LibraryTab extends StatelessWidget {
       floatingActionButton: StreamBuilder<PlaybackState>(
         stream: MediaService().playbackState.stream,
         builder: (_, state) {
-          if (state.data?.processingState == AudioProcessingState.idle) {
-            final hasResumeData = context.read<Isar>().preferences.valueExists(
-                  Preference.lastPlayed,
-                );
+          if (!MediaService().isPlayerActive) {
+            final hasResumeData = context
+                .read<Isar>()
+                .preferences
+                .valueExists(Preference.lastPlayed);
 
             return Column(
               mainAxisSize: MainAxisSize.min,

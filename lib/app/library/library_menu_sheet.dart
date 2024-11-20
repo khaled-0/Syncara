@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/provider/library_provider.dart';
+import 'package:tubesync/provider/playlist_provider.dart';
+import 'package:tubesync/services/media_service.dart';
 
 class LibraryMenuSheet extends StatelessWidget {
   final Playlist playlist;
+  final Isar isar;
 
-  const LibraryMenuSheet(this.playlist, {super.key});
+  const LibraryMenuSheet(this.isar, this.playlist, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +32,17 @@ class LibraryMenuSheet extends StatelessWidget {
               ),
             ),
           ),
+          if (MediaService().isPlayerActive)
+            ListTile(
+              onTap: () {
+                MediaService().enqueue(
+                  PlaylistProvider(isar, playlist, sync: false),
+                );
+                Navigator.pop(context);
+              },
+              leading: const Icon(Icons.playlist_add_rounded),
+              title: const Text("Enqueue"),
+            ),
           ListTile(
             onTap: () {
               context.read<LibraryProvider>().delete(playlist);
@@ -35,7 +50,7 @@ class LibraryMenuSheet extends StatelessWidget {
             },
             leading: const Icon(Icons.delete_rounded),
             title: const Text("Delete"),
-          )
+          ),
         ],
       ),
     );

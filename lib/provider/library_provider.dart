@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 import 'package:tubesync/model/playlist.dart';
+import 'package:tubesync/provider/playlist_provider.dart';
 import 'package:tubesync/services/downloader_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
@@ -26,6 +27,8 @@ class LibraryProvider extends ChangeNotifier {
     playlist = await _playlistWithThumbnail(_ytClient, playlist);
 
     entries.add(Playlist.fromYTPlaylist(playlist));
+    // Preload the playlist for faster initial load time
+    await PlaylistProvider(isar, entries.last, sync: false).refresh();
     isar.writeAsyncWith(entries.last, (db, data) => db.playlists.put(data));
     notifyListeners();
   }
