@@ -179,10 +179,11 @@ class PlaylistHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(playlist(context).title, style: titleStyle),
+        Text(playlist(context).title, style: titleStyle, maxLines: 1),
         Text(
           "${playlist(context).videoCount} videos \u2022 by ${playlist(context).author}",
           style: bodyStyle,
+          maxLines: 1,
         ),
       ],
     );

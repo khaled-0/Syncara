@@ -6,6 +6,7 @@ import 'package:tubesync/app/player/player_queue_sheet.dart';
 import 'package:tubesync/extensions.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/provider/player_provider.dart';
+import 'package:window_manager/window_manager.dart';
 
 class LargePlayerSheet extends StatefulWidget {
   const LargePlayerSheet({super.key});
@@ -36,11 +37,13 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
             child: Icon(Icons.arrow_back_ios_new_rounded),
           ),
         ),
-        title: Image.asset(
-          "assets/tubesync.png",
-          height: 30,
-          fit: BoxFit.contain,
-          color: Theme.of(context).colorScheme.primary,
+        title: DragToMoveArea(
+          child: Image.asset(
+            "assets/tubesync.png",
+            height: 30,
+            fit: BoxFit.contain,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
         centerTitle: true,
         actions: [
@@ -93,7 +96,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
             builder: (context, media, _) {
               return Card.outlined(
                 elevation: 0,
-                margin: const EdgeInsets.symmetric(horizontal: 8),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 child: ListTile(
                   onTap: showPlayerQueue,
                   title: Text(
@@ -138,29 +141,34 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                   horizontal: 12,
                   vertical: 8,
                 ),
-                child: Column(
+                child: Row(
                   children: [
-                    Row(
-                      children: [
-                        Text(currentPosition.data.formatHHMM()),
-                        const Spacer(),
-                        Text(media.duration.formatHHMM()),
-                      ],
+                    SizedBox(
+                      width: currentPosition.data?.inHours == 0 ? 48 : 72,
+                      child: Text(currentPosition.data.formatHHMM()),
                     ),
-                    ValueListenableBuilder(
-                      valueListenable: context.read<PlayerProvider>().buffering,
-                      builder: (context, buffering, child) {
-                        if (media.duration == null) return const SizedBox();
-                        final player = context.read<PlayerProvider>().player;
-                        final position = currentPosition.data ?? Duration.zero;
-                        return SeekBar(
-                          buffering: buffering,
-                          duration: media.duration!,
-                          position: position,
-                          bufferedPosition: player.bufferedPosition,
-                          onChangeEnd: (v) => player.seek(v),
-                        );
-                      },
+                    Expanded(
+                      child: ValueListenableBuilder(
+                        valueListenable:
+                            context.read<PlayerProvider>().buffering,
+                        builder: (context, buffering, child) {
+                          if (media.duration == null) return const SizedBox();
+                          final player = context.read<PlayerProvider>().player;
+                          final position =
+                              currentPosition.data ?? Duration.zero;
+                          return SeekBar(
+                            buffering: buffering,
+                            duration: media.duration!,
+                            position: position,
+                            bufferedPosition: player.bufferedPosition,
+                            onChangeEnd: (v) => player.seek(v),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: media.duration?.inHours == 0 ? 48 : 72,
+                      child: Text(media.duration.formatHHMM()),
                     ),
                   ],
                 ),
@@ -168,13 +176,15 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
             ),
           ),
 
+          const SizedBox(height: 16),
+
           StreamBuilder(
             stream: context.read<PlayerProvider>().player.playerStateStream,
             initialData: context.read<PlayerProvider>().player.playerState,
             builder: (context, playerState) {
               final player = context.read<PlayerProvider>();
               return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Selector<PlayerProvider, List<Media>>(
                     selector: (_, provider) => provider.playlist,
@@ -189,6 +199,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                       return IconButton(onPressed: null, icon: icon!);
                     },
                   ),
+                  const SizedBox(width: 30),
                   ValueListenableBuilder(
                     valueListenable: context.read<PlayerProvider>().buffering,
                     builder: (context, buffering, loading) {
@@ -206,6 +217,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                     },
                     child: const CircularProgressIndicator(),
                   ),
+                  const SizedBox(width: 30),
                   Selector<PlayerProvider, List<Media>>(
                     selector: (_, provider) => provider.playlist,
                     child: const Icon(Icons.skip_next_rounded),
@@ -223,7 +235,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
               );
             },
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
         ],
       ),
     );
@@ -237,7 +249,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
         child: const PlayerQueueSheet(),
       ),
       showDragHandle: true,
-      scrollControlDisabledMaxHeightRatio: 0.8,
+      isScrollControlled: true,
     );
   }
 

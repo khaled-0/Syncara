@@ -10,58 +10,62 @@ class PlayerQueueSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Subtitle TODO
-
-        Row(
-          children: [
-            const SizedBox(width: 16),
-            Text(
-              "Playlist (${context.read<PlayerProvider>().playlist.length})",
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const Spacer(),
-            const SizedBox(width: 12),
-            ...actions(context),
-            const SizedBox(width: 12),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Expanded(
-          child: Selector<PlayerProvider, List<Media>>(
-            selector: (_, provider) => provider.playlist,
-            builder: (context, playlist, __) {
-              return ValueListenableBuilder(
-                valueListenable: context.read<PlayerProvider>().nowPlaying,
-                builder: (context, nowPlaying, _) {
-                  return ReorderableListView.builder(
-                    buildDefaultDragHandles: false,
-                    padding: const EdgeInsets.only(
-                      bottom: kBottomNavigationBarHeight,
-                    ),
-                    itemCount: playlist.length,
-                    onReorder: context.read<PlayerProvider>().reorderList,
-                    itemBuilder: (context, index) => MediaEntryBuilder(
-                      key: ValueKey(playlist[index].hashCode),
-                      playlist[index],
-                      selected: playlist[index] == nowPlaying,
-                      trailing: ReorderableDragStartListener(
-                        index: index,
-                        child: const Padding(
-                          padding: EdgeInsets.all(12),
-                          child: Icon(Icons.drag_handle_rounded),
-                        ),
-                      ),
-                      onTap: () => context.read<PlayerProvider>().jumpTo(index),
-                    ),
-                  );
-                },
-              );
-            },
+    return DraggableScrollableSheet(
+      expand: false,
+      builder: (context, scrollController) => Column(
+        children: [
+          Row(
+            children: [
+              const SizedBox(width: 16),
+              Text(
+                "Playlist (${context.read<PlayerProvider>().playlist.length})",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const Spacer(),
+              const SizedBox(width: 12),
+              ...actions(context),
+              const SizedBox(width: 12),
+            ],
           ),
-        ),
-      ],
+          const SizedBox(height: 12),
+          Expanded(
+            child: Selector<PlayerProvider, List<Media>>(
+              selector: (_, provider) => provider.playlist,
+              builder: (context, playlist, __) {
+                return ValueListenableBuilder(
+                  valueListenable: context.read<PlayerProvider>().nowPlaying,
+                  builder: (context, nowPlaying, _) {
+                    return ReorderableListView.builder(
+                      scrollController: scrollController,
+                      buildDefaultDragHandles: false,
+                      padding: const EdgeInsets.only(
+                        bottom: kBottomNavigationBarHeight,
+                      ),
+                      itemCount: playlist.length,
+                      onReorder: context.read<PlayerProvider>().reorderList,
+                      itemBuilder: (context, index) => MediaEntryBuilder(
+                        key: ValueKey(playlist[index].hashCode),
+                        playlist[index],
+                        selected: playlist[index] == nowPlaying,
+                        trailing: ReorderableDragStartListener(
+                          index: index,
+                          child: const Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Icon(Icons.drag_handle_rounded),
+                          ),
+                        ),
+                        onTap: () {
+                          context.read<PlayerProvider>().jumpTo(index);
+                        },
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 
