@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'common.g.dart';
 
-@embedded
-class Thumbnails {
+@Embedded(ignore: {"props", "stringify"})
+class Thumbnails with EquatableMixin {
   //low, high has vertical black borders
   final String low, medium, high;
 
@@ -15,13 +16,14 @@ class Thumbnails {
       Thumbnails(thumbs.lowResUrl, thumbs.mediumResUrl, thumbs.highResUrl);
 
   @override
-  String toString() {
-    return 'Thumbnails{low: $low, medium: $medium, high: $high}';
-  }
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props => [low, medium, high];
 }
 
 @JsonSerializable()
-class LastPlayedMedia {
+class LastPlayedMedia with EquatableMixin {
   String playlistId;
   String mediaId;
 
@@ -34,4 +36,10 @@ class LastPlayedMedia {
       _$LastPlayedMediaFromJson(json);
 
   Map<String, dynamic> toJson() => _$LastPlayedMediaToJson(this);
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props => [playlistId, mediaId];
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 import 'package:tubesync/model/common.dart';
 
@@ -7,8 +8,8 @@ part 'preferences.g.dart';
 
 enum Preference { materialYou, lastPlayed }
 
-@collection
-class Preferences {
+@Collection(ignore: {"props", "stringify"})
+class Preferences with EquatableMixin {
   @Id()
   final String key;
 
@@ -17,7 +18,7 @@ class Preferences {
   double? doubleValue;
   bool? boolValue;
 
-  String? jsonObject;
+  String? jsonValue;
 
   Preferences(this.key);
 
@@ -36,14 +37,14 @@ class Preferences {
         boolValue = value;
         break;
       default:
-        jsonObject = jsonEncode(value);
+        jsonValue = jsonEncode(value);
         break;
     }
   }
 
-  T get<T>() {
-    if (jsonObject != null) return _fromJson<T>(jsonDecode(jsonObject!));
-    return (stringValue ?? intValue ?? doubleValue ?? boolValue) as T;
+  T? get<T>() {
+    if (jsonValue != null) return _fromJson<T>(jsonDecode(jsonValue!));
+    return (stringValue ?? intValue ?? doubleValue ?? boolValue) as T?;
   }
 
   T _fromJson<T>(Map<String, dynamic> value) {
@@ -55,6 +56,13 @@ class Preferences {
         throw UnimplementedError("$T is not defined");
     }
   }
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props =>
+      [stringValue, intValue, doubleValue, boolValue, jsonValue];
 }
 
 extension PreferenceExtension on IsarCollection<String, Preferences> {

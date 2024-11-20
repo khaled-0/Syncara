@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 import 'package:tubesync/model/common.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 part 'playlist.g.dart';
 
-@collection
-class Playlist {
+@Collection(ignore: {"props", "stringify"})
+class Playlist with EquatableMixin {
   @Id()
   final String id;
   final String title, author;
@@ -42,15 +43,9 @@ class Playlist {
       );
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Playlist && runtimeType == other.runtimeType && id == other.id;
+  bool get stringify => true;
 
   @override
-  int get hashCode => id.hashCode;
-
-  @override
-  String toString() {
-    return 'Playlist{id: $id, title: $title, author: $author, description: $description, thumbnail: $thumbnail, videoCount: $videoCount, videoIds: $videoIds}';
-  }
+  List<Object?> get props =>
+      [id, title, author, thumbnail, videoCount, description, videoIds];
 }

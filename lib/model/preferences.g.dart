@@ -41,7 +41,7 @@ const PreferencesSchema = IsarGeneratedSchema(
         type: IsarType.bool,
       ),
       IsarPropertySchema(
-        name: 'jsonObject',
+        name: 'jsonValue',
         type: IsarType.string,
       ),
     ],
@@ -77,7 +77,7 @@ int serializePreferences(IsarWriter writer, Preferences object) {
     }
   }
   {
-    final value = object.jsonObject;
+    final value = object.jsonValue;
     if (value == null) {
       IsarCore.writeNull(writer, 6);
     } else {
@@ -118,7 +118,7 @@ Preferences deserializePreferences(IsarReader reader) {
       object.boolValue = IsarCore.readBool(reader, 5);
     }
   }
-  object.jsonObject = IsarCore.readString(reader, 6);
+  object.jsonValue = IsarCore.readString(reader, 6);
   return object;
 }
 
@@ -169,7 +169,7 @@ sealed class _PreferencesUpdate {
     int? intValue,
     double? doubleValue,
     bool? boolValue,
-    String? jsonObject,
+    String? jsonValue,
   });
 }
 
@@ -185,7 +185,7 @@ class _PreferencesUpdateImpl implements _PreferencesUpdate {
     Object? intValue = ignore,
     Object? doubleValue = ignore,
     Object? boolValue = ignore,
-    Object? jsonObject = ignore,
+    Object? jsonValue = ignore,
   }) {
     return collection.updateProperties([
           key
@@ -194,7 +194,7 @@ class _PreferencesUpdateImpl implements _PreferencesUpdate {
           if (intValue != ignore) 3: intValue as int?,
           if (doubleValue != ignore) 4: doubleValue as double?,
           if (boolValue != ignore) 5: boolValue as bool?,
-          if (jsonObject != ignore) 6: jsonObject as String?,
+          if (jsonValue != ignore) 6: jsonValue as String?,
         }) >
         0;
   }
@@ -207,7 +207,7 @@ sealed class _PreferencesUpdateAll {
     int? intValue,
     double? doubleValue,
     bool? boolValue,
-    String? jsonObject,
+    String? jsonValue,
   });
 }
 
@@ -223,14 +223,14 @@ class _PreferencesUpdateAllImpl implements _PreferencesUpdateAll {
     Object? intValue = ignore,
     Object? doubleValue = ignore,
     Object? boolValue = ignore,
-    Object? jsonObject = ignore,
+    Object? jsonValue = ignore,
   }) {
     return collection.updateProperties(key, {
       if (stringValue != ignore) 2: stringValue as String?,
       if (intValue != ignore) 3: intValue as int?,
       if (doubleValue != ignore) 4: doubleValue as double?,
       if (boolValue != ignore) 5: boolValue as bool?,
-      if (jsonObject != ignore) 6: jsonObject as String?,
+      if (jsonValue != ignore) 6: jsonValue as String?,
     });
   }
 }
@@ -247,7 +247,7 @@ sealed class _PreferencesQueryUpdate {
     int? intValue,
     double? doubleValue,
     bool? boolValue,
-    String? jsonObject,
+    String? jsonValue,
   });
 }
 
@@ -263,14 +263,14 @@ class _PreferencesQueryUpdateImpl implements _PreferencesQueryUpdate {
     Object? intValue = ignore,
     Object? doubleValue = ignore,
     Object? boolValue = ignore,
-    Object? jsonObject = ignore,
+    Object? jsonValue = ignore,
   }) {
     return query.updateProperties(limit: limit, {
       if (stringValue != ignore) 2: stringValue as String?,
       if (intValue != ignore) 3: intValue as int?,
       if (doubleValue != ignore) 4: doubleValue as double?,
       if (boolValue != ignore) 5: boolValue as bool?,
-      if (jsonObject != ignore) 6: jsonObject as String?,
+      if (jsonValue != ignore) 6: jsonValue as String?,
     });
   }
 }
@@ -294,7 +294,7 @@ class _PreferencesQueryBuilderUpdateImpl implements _PreferencesQueryUpdate {
     Object? intValue = ignore,
     Object? doubleValue = ignore,
     Object? boolValue = ignore,
-    Object? jsonObject = ignore,
+    Object? jsonValue = ignore,
   }) {
     final q = query.build();
     try {
@@ -303,7 +303,7 @@ class _PreferencesQueryBuilderUpdateImpl implements _PreferencesQueryUpdate {
         if (intValue != ignore) 3: intValue as int?,
         if (doubleValue != ignore) 4: doubleValue as double?,
         if (boolValue != ignore) 5: boolValue as bool?,
-        if (jsonObject != ignore) 6: jsonObject as String?,
+        if (jsonValue != ignore) 6: jsonValue as String?,
       });
     } finally {
       q.close();
@@ -930,21 +930,21 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectIsNull() {
+      jsonValueIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const IsNullCondition(property: 6));
     });
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectIsNotNull() {
+      jsonValueIsNotNull() {
     return QueryBuilder.apply(not(), (query) {
       return query.addFilterCondition(const IsNullCondition(property: 6));
     });
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectEqualTo(
+      jsonValueEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -960,7 +960,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectGreaterThan(
+      jsonValueGreaterThan(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -976,7 +976,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectGreaterThanOrEqualTo(
+      jsonValueGreaterThanOrEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -992,7 +992,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectLessThan(
+      jsonValueLessThan(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -1008,7 +1008,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectLessThanOrEqualTo(
+      jsonValueLessThanOrEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -1024,7 +1024,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectBetween(
+      jsonValueBetween(
     String? lower,
     String? upper, {
     bool caseSensitive = true,
@@ -1042,7 +1042,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectStartsWith(
+      jsonValueStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1058,7 +1058,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectEndsWith(
+      jsonValueEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1074,7 +1074,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectContains(String value, {bool caseSensitive = true}) {
+      jsonValueContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
@@ -1087,7 +1087,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectMatches(String pattern, {bool caseSensitive = true}) {
+      jsonValueMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
@@ -1100,7 +1100,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectIsEmpty() {
+      jsonValueIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
@@ -1112,7 +1112,7 @@ extension PreferencesQueryFilter
   }
 
   QueryBuilder<Preferences, Preferences, QAfterFilterCondition>
-      jsonObjectIsNotEmpty() {
+      jsonValueIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
@@ -1207,7 +1207,7 @@ extension PreferencesQuerySortBy
     });
   }
 
-  QueryBuilder<Preferences, Preferences, QAfterSortBy> sortByJsonObject(
+  QueryBuilder<Preferences, Preferences, QAfterSortBy> sortByJsonValue(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
@@ -1217,7 +1217,7 @@ extension PreferencesQuerySortBy
     });
   }
 
-  QueryBuilder<Preferences, Preferences, QAfterSortBy> sortByJsonObjectDesc(
+  QueryBuilder<Preferences, Preferences, QAfterSortBy> sortByJsonValueDesc(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
@@ -1295,14 +1295,14 @@ extension PreferencesQuerySortThenBy
     });
   }
 
-  QueryBuilder<Preferences, Preferences, QAfterSortBy> thenByJsonObject(
+  QueryBuilder<Preferences, Preferences, QAfterSortBy> thenByJsonValue(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(6, caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Preferences, Preferences, QAfterSortBy> thenByJsonObjectDesc(
+  QueryBuilder<Preferences, Preferences, QAfterSortBy> thenByJsonValueDesc(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(6, sort: Sort.desc, caseSensitive: caseSensitive);
@@ -1338,7 +1338,7 @@ extension PreferencesQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Preferences, Preferences, QAfterDistinct> distinctByJsonObject(
+  QueryBuilder<Preferences, Preferences, QAfterDistinct> distinctByJsonValue(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(6, caseSensitive: caseSensitive);
@@ -1378,7 +1378,7 @@ extension PreferencesQueryProperty1
     });
   }
 
-  QueryBuilder<Preferences, String?, QAfterProperty> jsonObjectProperty() {
+  QueryBuilder<Preferences, String?, QAfterProperty> jsonValueProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(6);
     });
@@ -1419,7 +1419,7 @@ extension PreferencesQueryProperty2<R>
     });
   }
 
-  QueryBuilder<Preferences, (R, String?), QAfterProperty> jsonObjectProperty() {
+  QueryBuilder<Preferences, (R, String?), QAfterProperty> jsonValueProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(6);
     });
@@ -1461,7 +1461,7 @@ extension PreferencesQueryProperty3<R1, R2>
   }
 
   QueryBuilder<Preferences, (R1, R2, String?), QOperations>
-      jsonObjectProperty() {
+      jsonValueProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(6);
     });

@@ -42,6 +42,7 @@ dependencies:
   isar: ^4.0.0-dev.14
   isar_flutter_libs: ^4.0.0-dev.14
   json_annotation: ^4.9.0
+  equatable: ^2.0.5
 
   # Audio Player / Service
   just_audio: ^0.9.42
