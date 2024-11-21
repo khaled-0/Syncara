@@ -13,6 +13,9 @@ class PlayerQueueSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       expand: false,
+      snap: true,
+      shouldCloseOnMinExtent: false,
+      minChildSize: 0.5,
       builder: (context, scrollController) => Column(
         children: [
           Row(
