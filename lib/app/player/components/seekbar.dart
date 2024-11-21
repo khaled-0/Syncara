@@ -64,7 +64,7 @@ class LineThumbShape extends SliderComponentShape {
   final Size thumbSize;
 
   const LineThumbShape({
-    this.thumbSize = const Size(8, 32),
+    this.thumbSize = const Size(6, 36),
   });
 
   @override

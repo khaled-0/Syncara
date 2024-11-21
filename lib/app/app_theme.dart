@@ -40,6 +40,7 @@ class AppTheme {
       ),
       sliderTheme: const SliderThemeData(
         thumbShape: LineThumbShape(),
+        trackHeight: 8,
       ),
       appBarTheme: AppBarTheme(
         systemOverlayStyle: systemOverlayStyle(theme),
