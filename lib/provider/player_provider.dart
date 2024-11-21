@@ -15,7 +15,7 @@ import 'package:tubesync/services/media_service.dart';
 
 class PlayerProvider extends ChangeNotifier {
   final player = AudioPlayer();
-  final Isar isar;
+  final Isar _isar;
 
   final List<Playlist> _playlistInfo = List.empty(growable: true);
   final List<Media> _playlist = List.empty(growable: true);
@@ -24,20 +24,21 @@ class PlayerProvider extends ChangeNotifier {
 
   List<Media> get playlist => List.of(_playlist);
 
-  late ValueNotifier<Media> _nowPlaying;
-
-  //TODO Use Selector
-  ValueNotifier<Media> get nowPlaying => _nowPlaying;
+  // Keeping track of the currently playing media
+  late final ValueNotifier<Media> nowPlaying;
 
   // Buffering state because we fetch Uri on demand
-  final ValueNotifier<bool> buffering = ValueNotifier(false);
+  bool _buffering = false;
 
-  // We can't use the default player one because nextTrack isn't called
-  // I don't want to migrate to just_audio dependent queue system
-  final ValueNotifier<LoopMode> loopMode = ValueNotifier(LoopMode.all);
+  bool get buffering => _buffering;
+
+  // We can't use the AudioPlayer based one because nextTrack isn't called
+  LoopMode _loopMode = LoopMode.all;
+
+  LoopMode get loopMode => _loopMode;
 
   PlayerProvider(
-    this.isar,
+    this._isar,
     PlaylistProvider provider, {
     Media? start,
 
@@ -46,7 +47,7 @@ class PlayerProvider extends ChangeNotifier {
   }) {
     _playlistInfo.add(provider.playlist);
     _playlist.addAll(provider.medias);
-    _nowPlaying = ValueNotifier(start ?? _playlist.first);
+    nowPlaying = ValueNotifier(start ?? _playlist.first);
     prepare?.call(this);
     nowPlaying.addListener(beginPlay);
 
@@ -67,21 +68,21 @@ class PlayerProvider extends ChangeNotifier {
     player.playerStateStream.listen(
       (state) => notificationState?.add(notificationState!.value.copyWith(
         playing: state.playing,
-        processingState: buffering.value
+        processingState: _buffering
             ? AudioProcessingState.loading
             : AudioProcessingState.values.byName(state.processingState.name),
         controls: [
           if (hasPrevious) MediaControl.skipToPrevious,
           if (hasNext) MediaControl.skipToNext,
-          if (!buffering.value) MediaControl.rewind,
-          if (!buffering.value) MediaControl.fastForward,
+          if (!_buffering) MediaControl.rewind,
+          if (!_buffering) MediaControl.fastForward,
         ],
         systemActions: {
           if (!hasPrevious) MediaAction.skipToPrevious,
           if (!hasNext) MediaAction.skipToNext,
-          if (!buffering.value) MediaAction.seek,
-          if (!buffering.value) MediaAction.rewind,
-          if (!buffering.value) MediaAction.fastForward,
+          if (!_buffering) MediaAction.seek,
+          if (!_buffering) MediaAction.rewind,
+          if (!_buffering) MediaAction.fastForward,
         },
       )),
     );
@@ -102,7 +103,7 @@ class PlayerProvider extends ChangeNotifier {
   Future<void> beginPlay() async {
     final media = nowPlaying.value;
     try {
-      buffering.value = true;
+      _buffering = true;
       //todo notification rebuilds unnecessarily
       await player.stop();
       await player.seek(Duration.zero);
@@ -139,12 +140,14 @@ class PlayerProvider extends ChangeNotifier {
       // Don't await this. Ever.
       // Fuck. I wasted whole day on this
       player.play();
-      buffering.value = false;
+      _buffering = false;
     } catch (err) {
       if (_disposed) return;
       if (media != nowPlaying.value) return;
       nextTrack();
       //TODO Show error
+    } finally {
+      notifyListeners();
     }
   }
 
@@ -156,7 +159,7 @@ class PlayerProvider extends ChangeNotifier {
 
   /// Store the currently playing media for resuming later
   void storeNowPlaying() {
-    isar.preferences.setValue<LastPlayedMedia>(
+    _isar.preferences.setValue<LastPlayedMedia>(
       Preference.lastPlayed,
       LastPlayedMedia(
         mediaId: nowPlaying.value.id,
@@ -167,12 +170,14 @@ class PlayerProvider extends ChangeNotifier {
 
   bool get hasPrevious => _playlist.indexOf(nowPlaying.value) > 0;
 
-  bool get hasNext =>
-      _playlist.indexOf(nowPlaying.value) < _playlist.length - 1;
+  bool get hasNext {
+    return _playlist.indexOf(nowPlaying.value) < _playlist.length - 1;
+  }
 
   void toggleLoopMode() {
-    int next = (LoopMode.values.indexOf(loopMode.value) + 1);
-    loopMode.value = LoopMode.values[next % LoopMode.values.length];
+    int next = (LoopMode.values.indexOf(_loopMode) + 1);
+    _loopMode = LoopMode.values[next % LoopMode.values.length];
+    notifyListeners();
   }
 
   void previousTrack() {
@@ -183,7 +188,7 @@ class PlayerProvider extends ChangeNotifier {
 
   void nextTrack() {
     final currentIndex = _playlist.indexOf(nowPlaying.value);
-    final int? nextIndex = switch (loopMode.value) {
+    final int? nextIndex = switch (_loopMode) {
       LoopMode.one => currentIndex,
       LoopMode.off => hasNext ? currentIndex + 1 : null,
       LoopMode.all => hasNext ? currentIndex + 1 : 0,
@@ -205,7 +210,7 @@ class PlayerProvider extends ChangeNotifier {
   void shuffle() {
     _playlist.shuffle();
     // Put currently playing song at first when looping disabled
-    if (loopMode.value == LoopMode.off) {
+    if (_loopMode == LoopMode.off) {
       reorderList(_playlist.indexOf(nowPlaying.value), 0);
     }
     notifyListeners();
@@ -217,7 +222,6 @@ class PlayerProvider extends ChangeNotifier {
   void dispose() {
     _disposed = true;
     nowPlaying.dispose();
-    buffering.dispose();
     player.stop().whenComplete(player.dispose);
     MediaService().unbind(this);
     super.dispose();

@@ -87,8 +87,8 @@ class PlayerQueueSheet extends StatelessWidget {
         onPressed: context.read<PlayerProvider>().shuffle,
         icon: const Icon(Icons.shuffle_rounded),
       ),
-      ValueListenableBuilder(
-        valueListenable: context.read<PlayerProvider>().loopMode,
+      Selector<PlayerProvider, LoopMode>(
+        selector: (_, provider) => provider.loopMode,
         builder: (context, loopMode, _) => IconButton(
           onPressed: context.read<PlayerProvider>().toggleLoopMode,
           icon: Icon(

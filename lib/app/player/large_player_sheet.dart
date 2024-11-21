@@ -148,18 +148,15 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                       child: Text(currentPosition.data.formatHHMM()),
                     ),
                     Expanded(
-                      child: ValueListenableBuilder(
-                        valueListenable:
-                            context.read<PlayerProvider>().buffering,
+                      child: Selector<PlayerProvider, bool>(
+                        selector: (_, provider) => provider.buffering,
                         builder: (context, buffering, child) {
                           if (media.duration == null) return const SizedBox();
                           final player = context.read<PlayerProvider>().player;
-                          final position =
-                              currentPosition.data ?? Duration.zero;
                           return SeekBar(
                             buffering: buffering,
                             duration: media.duration!,
-                            position: position,
+                            position: currentPosition.data ?? Duration.zero,
                             bufferedPosition: player.bufferedPosition,
                             onChangeEnd: (v) => player.seek(v),
                           );
@@ -195,8 +192,8 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                   ),
                 ),
                 const SizedBox(width: 30),
-                ValueListenableBuilder(
-                  valueListenable: context.read<PlayerProvider>().buffering,
+                Selector<PlayerProvider, bool>(
+                  selector: (_, provider) => provider.buffering,
                   builder: (_, loading, child) => FloatingActionButton.small(
                     elevation: 0,
                     highlightElevation: 1,

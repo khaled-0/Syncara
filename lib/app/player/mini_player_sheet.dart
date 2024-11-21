@@ -56,8 +56,8 @@ class MiniPlayerSheet extends StatelessWidget {
             children: [
               mediaDetails(context, nowPlaying),
               // Progress Indicator
-              ValueListenableBuilder(
-                valueListenable: context.read<PlayerProvider>().buffering,
+              Selector<PlayerProvider, bool>(
+                selector: (_, provider) => provider.buffering,
                 builder: (_, buffering, progressIndicator) {
                   if (!buffering) return progressIndicator!;
                   return LinearProgressIndicator(
@@ -134,8 +134,8 @@ class MiniPlayerSheet extends StatelessWidget {
   }
 
   Widget actions(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: context.read<PlayerProvider>().buffering,
+    return Selector<PlayerProvider, bool>(
+      selector: (_, provider) => provider.buffering,
       child: IconButton(
         onPressed: () => Navigator.pop(context),
         icon: const Icon(Icons.close_rounded),
