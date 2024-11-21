@@ -58,10 +58,10 @@ class PlayerProvider extends ChangeNotifier {
       if (state == ProcessingState.completed) nextTrack();
     });
 
-    player.positionStream.listen(
+    player.bufferedPositionStream.listen(
       (position) => notificationState?.add(notificationState!.value.copyWith(
-        updatePosition: position,
-        bufferedPosition: player.bufferedPosition,
+        updatePosition: player.position,
+        bufferedPosition: position,
       )),
     );
 
@@ -103,9 +103,11 @@ class PlayerProvider extends ChangeNotifier {
   Future<void> beginPlay() async {
     final media = nowPlaying.value;
     try {
+      // HACK: Quickly toggle _disposed flag so stop event doesn't get emitted by notificationState
       _buffering = true;
-      //todo notification rebuilds unnecessarily
+      _disposed = true;
       await player.stop();
+      _disposed = false;
       await player.seek(Duration.zero);
 
       final thumbnail = MediaService().thumbnailFile(

@@ -113,8 +113,10 @@ class MediaService extends BaseAudioHandler {
   Future<void> stop() async => _playerProvider?.player.stop();
 
   @override
-  Future<void> seek(Duration position) async =>
-      _playerProvider?.player.seek(position);
+  Future<void> seek(Duration position) async {
+    _playerProvider?.player.seek(position);
+    playbackState.add(playbackState.value.copyWith(updatePosition: position));
+  }
 
   @override
   Future<void> skipToPrevious() async => _playerProvider?.previousTrack();
@@ -124,15 +126,17 @@ class MediaService extends BaseAudioHandler {
 
   @override
   Future<void> rewind() async {
-    return _playerProvider?.player.seek(
-      _playerProvider!.player.position - const Duration(seconds: 5),
-    );
+    _playerProvider?.player
+        .seek(_playerProvider!.player.position - const Duration(seconds: 5))
+        .whenComplete(() => playbackState.add(playbackState.value
+            .copyWith(updatePosition: _playerProvider!.player.position)));
   }
 
   @override
   Future<void> fastForward() async {
-    return _playerProvider?.player.seek(
-      _playerProvider!.player.position + const Duration(seconds: 5),
-    );
+    _playerProvider?.player
+        .seek(_playerProvider!.player.position + const Duration(seconds: 5))
+        .whenComplete(() => playbackState.add(playbackState.value
+            .copyWith(updatePosition: _playerProvider!.player.position)));
   }
 }
