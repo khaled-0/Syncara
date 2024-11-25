@@ -14,7 +14,6 @@ class PlayerQueueSheet extends StatelessWidget {
     return DraggableScrollableSheet(
       expand: false,
       snap: true,
-      // shouldCloseOnMinExtent: false, Should or Not???  Can't decide !!
       minChildSize: 0.5,
       builder: (context, scrollController) => Column(
         children: [
@@ -49,11 +48,6 @@ class PlayerQueueSheet extends StatelessWidget {
                       itemCount: playlist.length,
                       onReorder: context.read<PlayerProvider>().reorderList,
                       itemBuilder: (context, index) {
-                        if (index % 2 == 0) {
-                          return SizedBox(
-                            key: ValueKey(playlist[index].hashCode),
-                          );
-                        }
                         return MediaEntryBuilder(
                           key: ValueKey(playlist[index].hashCode),
                           playlist[index],

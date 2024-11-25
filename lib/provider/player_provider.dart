@@ -211,10 +211,9 @@ class PlayerProvider extends ChangeNotifier {
 
   void shuffle() {
     _playlist.shuffle();
-    // Put currently playing song at first when looping disabled
-    if (_loopMode == LoopMode.off) {
-      reorderList(_playlist.indexOf(nowPlaying.value), 0);
-    }
+    // Put currently playing song at first
+    final nowPlayingIndex = _playlist.indexOf(nowPlaying.value);
+    if (nowPlayingIndex > 0) reorderList(nowPlayingIndex, 0);
     notifyListeners();
   }
 
