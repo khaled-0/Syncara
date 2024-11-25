@@ -35,7 +35,6 @@ class MediaService extends BaseAudioHandler {
     _instance = await AudioService.init(
       builder: () => MediaService._(),
       config: const AudioServiceConfig(
-        rewindInterval: Duration(seconds: 5),
         androidNotificationChannelName: 'TubeSync',
         androidNotificationChannelId: 'io.github.khaled_0.TubeSync',
         androidNotificationIcon: 'drawable/ic_launcher_foreground',
@@ -127,7 +126,7 @@ class MediaService extends BaseAudioHandler {
   @override
   Future<void> rewind() async {
     _playerProvider?.player
-        .seek(_playerProvider!.player.position - const Duration(seconds: 5))
+        .seek(_playerProvider!.player.position - const Duration(seconds: 10))
         .whenComplete(() => playbackState.add(playbackState.value
             .copyWith(updatePosition: _playerProvider!.player.position)));
   }
@@ -135,8 +134,13 @@ class MediaService extends BaseAudioHandler {
   @override
   Future<void> fastForward() async {
     _playerProvider?.player
-        .seek(_playerProvider!.player.position + const Duration(seconds: 5))
+        .seek(_playerProvider!.player.position + const Duration(seconds: 10))
         .whenComplete(() => playbackState.add(playbackState.value
             .copyWith(updatePosition: _playerProvider!.player.position)));
+  }
+
+  @override
+  Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode) async {
+    print(shuffleMode);
   }
 }

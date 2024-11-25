@@ -74,15 +74,12 @@ class PlayerProvider extends ChangeNotifier {
         controls: [
           if (hasPrevious) MediaControl.skipToPrevious,
           if (hasNext) MediaControl.skipToNext,
-          if (!_buffering) MediaControl.rewind,
-          if (!_buffering) MediaControl.fastForward,
         ],
         systemActions: {
-          if (!hasPrevious) MediaAction.skipToPrevious,
-          if (!hasNext) MediaAction.skipToNext,
+          if (hasPrevious) MediaAction.skipToPrevious,
+          if (hasNext) MediaAction.skipToNext,
           if (!_buffering) MediaAction.seek,
-          if (!_buffering) MediaAction.rewind,
-          if (!_buffering) MediaAction.fastForward,
+          MediaAction.setShuffleMode, // FIXME NOT WORKING
         },
       )),
     );

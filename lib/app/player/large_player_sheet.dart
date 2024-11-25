@@ -226,7 +226,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                     },
             ),
             child: const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(12),
               child: CircularProgressIndicator(strokeWidth: 2),
             ),
           ),
