@@ -46,18 +46,22 @@ Also available in your favourite app stores
 ### Android
 
 <p align="center">
-  <a href="https://apt.izzysoft.de/fdroid/index/apk/tubesync.app" target="_blank">
-    <span>Get it on IzzyOnDroid</span><br>
-    <img width="240" src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="IzzyOnDroid"/>
+  <a href="https://apt.izzysoft.de/fdroid/index/apk/tubesync.app" style="text-decoration:none" target="_blank">
+    <img width="200" src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid"/>
+  </a>
+   <a href="https://www.openapk.net/tubesync/tubesync.app/" style="text-decoration:none" target="_blank">
+    <img width="200" src="https://www.openapk.net/images/openapk-badge.png" alt="Get it on OpenAPK"/>
+  </a>
+  <a href="https://www.androidfreeware.net/download-tubesync-apk.html" style="text-decoration:none" target="_blank">
+    <img width="200" src="https://i.ibb.co.com/MNRBz0C/image.png" alt="Get it on AndroidFreeWare"/>
   </a>
 </p>
 
 ### Linux
 
 <p align="center">
-  <a href="https://flathub.org/apps/io.github.khaled_0.TubeSync" target="_blank">
-    <span>Get it on Flathub</span><br>
-    <img width="240" src="https://flathub.org/api/badge?locale=en" alt="Flathub"/>
+  <a href="https://flathub.org/apps/io.github.khaled_0.TubeSync" style="text-decoration:none" target="_blank">
+    <img width="200" src="https://flathub.org/api/badge?locale=en" alt="Get it on Flathub"/>
   </a>
 </p>
 
