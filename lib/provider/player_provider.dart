@@ -79,7 +79,7 @@ class PlayerProvider extends ChangeNotifier {
           if (hasPrevious) MediaAction.skipToPrevious,
           if (hasNext) MediaAction.skipToNext,
           if (!_buffering) MediaAction.seek,
-          MediaAction.setShuffleMode, // FIXME NOT WORKING
+          // MediaAction.setShuffleMode, // FIXME NOT WORKING
         },
       )),
     );

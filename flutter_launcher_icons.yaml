@@ -4,4 +4,4 @@ flutter_launcher_icons:
   adaptive_icon_foreground_inset: 30
   adaptive_icon_foreground: "assets/tubesync.png"
   adaptive_icon_background: "#ffffff"
-  adaptive_icon_monochrome: "assets/tubesync.png"
+  adaptive_icon_monochrome: "assets/tubesync_mono.png"

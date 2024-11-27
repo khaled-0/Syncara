@@ -33,12 +33,16 @@ class MoreTab extends StatelessWidget {
       children: [
         // BigAss Branding
         const SizedBox(height: 8),
-        Hero(
-          tag: "branding",
-          child: Image.asset(
-            "assets/tubesync.png",
-            height: 80,
-            color: Theme.of(context).colorScheme.primary,
+        Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(80),
+            child: Image.asset(
+              "assets/tubesync_mono.png",
+              width: 80,
+              height: 80,
+              color: Theme.of(context).colorScheme.primary,
+              fit: BoxFit.fill,
+            ),
           ),
         ),
         const SizedBox(height: 16),

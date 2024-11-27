@@ -37,13 +37,8 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
             child: Icon(Icons.arrow_back_ios_new_rounded),
           ),
         ),
-        title: DragToMoveArea(
-          child: Image.asset(
-            "assets/tubesync.png",
-            height: 30,
-            fit: BoxFit.contain,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+        title: const DragToMoveArea(
+          child: Text("TubeSync"),
         ),
         centerTitle: true,
         actions: [

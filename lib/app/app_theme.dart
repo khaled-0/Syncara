@@ -9,7 +9,7 @@ import 'package:tubesync/app/player/components/seekbar.dart';
 class AppTheme {
   static ValueNotifier<bool> dynamicColors = ValueNotifier(false);
 
-  final Color _color = const Color(0xffff0000);
+  final Color _color = const Color(0xffF04C4E);
   final ColorScheme? colorScheme;
 
   AppTheme({this.colorScheme});

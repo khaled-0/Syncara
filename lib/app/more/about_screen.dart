@@ -23,12 +23,9 @@ class AboutScreen extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Hero(
-                  tag: "branding",
-                  child: Image.asset(
-                    "assets/tubesync.png",
-                    height: 80,
-                  ),
+                Image.asset(
+                  "assets/tubesync.png",
+                  height: 80,
                 ),
                 const SizedBox(height: 20),
                 Text(

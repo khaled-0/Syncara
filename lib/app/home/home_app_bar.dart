@@ -12,9 +12,12 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(12),
-          child: Image.asset(
-            "assets/tubesync.png",
-            color: Theme.of(context).colorScheme.primary,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(38),
+            child: Image.asset(
+              "assets/tubesync_mono.png",
+              color: Theme.of(context).colorScheme.primary,
+            ),
           ),
         ),
         titleSpacing: 0,
