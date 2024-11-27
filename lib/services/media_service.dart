@@ -140,7 +140,11 @@ class MediaService extends BaseAudioHandler {
   }
 
   @override
-  Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode) async {
-    print(shuffleMode);
+  Future<void> customAction(String name, [Map<String, dynamic>? extras]) async {
+    switch (name) {
+      case "Shuffle":
+        _playerProvider?.shuffle();
+        break;
+    }
   }
 }

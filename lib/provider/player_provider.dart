@@ -74,12 +74,18 @@ class PlayerProvider extends ChangeNotifier {
         controls: [
           if (hasPrevious) MediaControl.skipToPrevious,
           if (hasNext) MediaControl.skipToNext,
+          const MediaControl(
+            androidIcon: "drawable/shuffle_24px",
+            label: "Shuffle",
+            action: MediaAction.custom,
+            customAction: CustomMediaAction(name: "Shuffle"),
+          ),
         ],
         systemActions: {
           if (hasPrevious) MediaAction.skipToPrevious,
           if (hasNext) MediaAction.skipToNext,
           if (!_buffering) MediaAction.seek,
-          // MediaAction.setShuffleMode, // FIXME NOT WORKING
+          MediaAction.custom,
         },
       )),
     );
