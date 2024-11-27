@@ -37,7 +37,7 @@ class MediaService extends BaseAudioHandler {
       config: const AudioServiceConfig(
         androidNotificationChannelName: 'TubeSync',
         androidNotificationChannelId: 'io.github.khaled_0.TubeSync',
-        androidNotificationIcon: 'drawable/ic_launcher_foreground',
+        androidNotificationIcon: 'drawable/ic_launcher_monochrome',
         preloadArtwork: true,
       ),
     );
