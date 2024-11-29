@@ -47,7 +47,7 @@ class YTMediaClient implements BaseMediaClient {
         return trackManifest.captions.map((e) {
           // FIXME: Don't do hacks
           final timestamp = (e.offset).toString().substring(2, 10);
-          final lyric = e.text.replaceAll("\n", "\n[$timestamp]");
+          final lyric = e.text.replaceAll("\n", " ");
 
           return "[$timestamp]$lyric";
         }).toList();

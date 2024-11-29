@@ -33,7 +33,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Card(
+    return Card.filled(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       child: ValueListenableBuilder(
         valueListenable: context.read<PlayerProvider>().nowPlaying,
@@ -73,7 +73,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
       position: playerPosition,
       playing: playing,
       emptyBuilder: () => const Center(child: Text("............")),
-      lyricUi: _LyricsUI(Theme.of(context).colorScheme.primary),
+      lyricUi: _LyricsUI(context),
     );
   }
 
@@ -93,10 +93,19 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
 }
 
 class _LyricsUI extends UINetease {
-  final Color highlightColor;
+  final BuildContext context;
 
-  _LyricsUI(this.highlightColor);
+  _LyricsUI(this.context);
 
   @override
-  Color getLyricHightlightColor() => highlightColor;
+  Color getLyricHightlightColor() => Theme.of(context).colorScheme.primary;
+
+  @override
+  bool get highlight => false;
+
+  @override
+  TextStyle getPlayingMainTextStyle() => Theme.of(context).textTheme.titleLarge!;
+
+  @override
+  TextStyle getOtherMainTextStyle() => Theme.of(context).textTheme.bodyMedium!;
 }
