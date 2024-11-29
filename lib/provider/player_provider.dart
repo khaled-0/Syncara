@@ -6,6 +6,7 @@ import 'package:isar/isar.dart';
 import 'package:just_audio/just_audio.dart';
 // ignore: depend_on_referenced_packages Just for Types. Doesn't matter
 import 'package:rxdart/rxdart.dart' show BehaviorSubject;
+import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/common.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/model/playlist.dart';
@@ -113,7 +114,7 @@ class PlayerProvider extends ChangeNotifier {
       _disposed = false;
       await player.seek(Duration.zero);
 
-      final thumbnail = MediaService().thumbnailFile(
+      final thumbnail = MediaClient().thumbnailFile(
         nowPlaying.value.thumbnail.medium,
       );
 
@@ -136,7 +137,7 @@ class PlayerProvider extends ChangeNotifier {
         updatePosition: Duration.zero,
       ));
 
-      final source = await MediaService().getMediaSource(media);
+      final source = await MediaClient().getMediaSource(media);
 
       if (media != nowPlaying.value) return;
       await player.setAudioSource(source);

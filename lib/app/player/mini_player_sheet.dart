@@ -3,9 +3,9 @@ import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/player/large_player_sheet.dart';
+import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/provider/player_provider.dart';
-import 'package:tubesync/services/media_service.dart';
 
 class MiniPlayerSheet extends StatelessWidget {
   const MiniPlayerSheet({super.key});
@@ -97,7 +97,7 @@ class MiniPlayerSheet extends StatelessWidget {
         radius: 24,
         backgroundImage: NetworkToFileImage(
           url: media.thumbnail.medium,
-          file: MediaService().thumbnailFile(media.thumbnail.medium),
+          file: MediaClient().thumbnailFile(media.thumbnail.medium),
         ),
       ),
       titleTextStyle: Theme.of(context).textTheme.bodyMedium,

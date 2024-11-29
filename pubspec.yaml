@@ -56,6 +56,8 @@ dependencies:
   dynamic_color: ^1.7.0
   window_manager: ^0.4.3
   network_to_file_image: ^7.0.0
+  flutter_lyric: ^2.0.4+6
+  amlv: ^1.0.2
 
   # Common Utils
   path: ^1.9.0

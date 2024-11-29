@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/home/home_screen.dart';
+import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/model/preferences.dart';
@@ -37,6 +38,7 @@ void main() async {
 
   await DownloaderService.init();
   await MediaService.init();
+  await MediaClient.init();
 
   MaterialApp app({
     required ThemeData light,

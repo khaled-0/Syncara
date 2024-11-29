@@ -1,16 +1,7 @@
-import 'dart:io';
-
 import 'package:audio_service/audio_service.dart';
-import 'package:flutter/foundation.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_media_kit/just_audio_media_kit.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
-import 'package:tubesync/model/media.dart';
 import 'package:tubesync/provider/player_provider.dart';
 import 'package:tubesync/provider/playlist_provider.dart';
-import 'package:tubesync/services/downloader_service.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class MediaService extends BaseAudioHandler {
   /// <-- Singleton
@@ -22,13 +13,7 @@ class MediaService extends BaseAudioHandler {
 
   /// Singleton -->
 
-  late final String _storageDir;
-  final _ytClient = yt.YoutubeExplode().videos.streamsClient;
   PlayerProvider? _playerProvider;
-
-  String get downloadsDir => path.join(_storageDir, "downloads");
-
-  String get thumbnailsDir => path.join(_storageDir, "thumbnails");
 
   /// Must call before runApp
   static Future<void> init() async {
@@ -42,9 +27,6 @@ class MediaService extends BaseAudioHandler {
       ),
     );
 
-    _instance._storageDir = (await getApplicationSupportDirectory()).path;
-    Directory(_instance.downloadsDir).createSync(recursive: true);
-    Directory(_instance.thumbnailsDir).createSync(recursive: true);
     JustAudioMediaKit.ensureInitialized();
   }
 
@@ -64,41 +46,7 @@ class MediaService extends BaseAudioHandler {
     ));
   }
 
-  File mediaFile(Media media) => File(path.join(downloadsDir, media.id));
-
-  File thumbnailFile(String url) => File(
-        path.join(thumbnailsDir, url.hashCode.toString()),
-      );
-
   void enqueue(PlaylistProvider playlist) => _playerProvider?.enqueue(playlist);
-
-  Future<AudioSource> getMediaSource(Media media) async {
-    // Try from offline
-    final downloaded = mediaFile(media);
-    if (downloaded.existsSync()) return AudioSource.file(downloaded.path);
-
-    if (!await DownloaderService.hasInternet) {
-      throw const HttpException("No internet!");
-    }
-
-    final streamUri = await compute(
-      (data) async {
-        final ytClient = data[0] as yt.StreamClient;
-        final videoManifest = await ytClient.getManifest(data[1]);
-        return videoManifest.audioOnly.withHighestBitrate().url;
-      },
-      [_ytClient, media.id],
-    );
-
-    return AudioSource.uri(streamUri);
-  }
-
-  bool isDownloaded(Media media) => mediaFile(media).existsSync();
-
-  void delete(Media media) {
-    final file = mediaFile(media);
-    if (file.existsSync()) file.deleteSync();
-  }
 
   bool get isPlayerActive => _playerProvider != null;
 

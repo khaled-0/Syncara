@@ -3,9 +3,9 @@ import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/playlist/playlist_menu_sheet.dart';
+import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/provider/playlist_provider.dart';
-import 'package:tubesync/services/media_service.dart';
 
 class PlaylistHeader extends StatelessWidget {
   const PlaylistHeader({
@@ -39,7 +39,7 @@ class PlaylistHeader extends StatelessWidget {
                       errorBuilder: (_, __, ___) => const SizedBox(height: 120),
                       image: NetworkToFileImage(
                         url: playlist(context).thumbnail.high,
-                        file: MediaService().thumbnailFile(
+                        file: MediaClient().thumbnailFile(
                           playlist(context).thumbnail.high,
                         ),
                       ),

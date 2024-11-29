@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/more/downloads/active_downloads_screen.dart';
+import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/provider/playlist_provider.dart';
 import 'package:tubesync/services/downloader_service.dart';
-import 'package:tubesync/services/media_service.dart';
 
 class MediaMenuSheet extends StatelessWidget {
   final Media media;
@@ -44,7 +44,7 @@ class MediaMenuSheet extends StatelessWidget {
           if (media.downloaded == true)
             ListTile(
               onTap: () {
-                MediaService().delete(media);
+                MediaClient().delete(media);
                 context.read<PlaylistProvider>()
                   ..updateDownloadStatus(media: media)
                   ..notifyListeners();

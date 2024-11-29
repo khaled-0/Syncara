@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:tubesync/app/more/downloads/active_downloads_screen.dart';
+import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/main.dart';
 import 'package:tubesync/model/media.dart';
-import 'package:tubesync/services/media_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class DownloaderService {
@@ -54,7 +54,7 @@ class DownloaderService {
 
   Future<void> download(Media media) async {
     try {
-      if (MediaService().isDownloaded(media)) return;
+      if (MediaClient().isDownloaded(media)) return;
       final manifest = await compute(
         (data) => (data[0] as yt.StreamClient).getManifest(data[1]),
         [_ytClient, media.id],
@@ -64,7 +64,7 @@ class DownloaderService {
       final task = DownloadTask(
         url: url,
         displayName: media.title,
-        directory: MediaService().downloadsDir,
+        directory: MediaClient().downloadsDir,
         filename: media.id,
         baseDirectory: BaseDirectory.root,
         updates: Updates.statusAndProgress,
@@ -82,7 +82,7 @@ class DownloaderService {
     _abortQueueing = false;
     for (final media in medias) {
       try {
-        if (MediaService().isDownloaded(media)) continue;
+        if (MediaClient().isDownloaded(media)) continue;
 
         final manifest = await compute(
           (data) => (data[0] as yt.StreamClient).getManifest(data[1]),
@@ -95,7 +95,7 @@ class DownloaderService {
         FileDownloader().enqueue(DownloadTask(
           url: url,
           displayName: media.title,
-          directory: MediaService().downloadsDir,
+          directory: MediaClient().downloadsDir,
           filename: media.id,
           baseDirectory: BaseDirectory.root,
           updates: Updates.statusAndProgress,

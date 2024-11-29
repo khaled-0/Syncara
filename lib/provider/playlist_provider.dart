@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
+import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/services/downloader_service.dart';
-import 'package:tubesync/services/media_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class PlaylistProvider extends ChangeNotifier {
@@ -58,12 +58,12 @@ class PlaylistProvider extends ChangeNotifier {
 
   void updateDownloadStatus({Media? media}) {
     if (media != null) {
-      media.downloaded = MediaService().isDownloaded(media);
+      media.downloaded = MediaClient().isDownloaded(media);
       return;
     }
 
     for (final media in medias) {
-      media.downloaded = MediaService().isDownloaded(media);
+      media.downloaded = MediaClient().isDownloaded(media);
     }
   }
 

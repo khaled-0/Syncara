@@ -27,7 +27,6 @@ class AppTheme {
       colorScheme: theme,
       snackBarTheme: const SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        showCloseIcon: true,
       ),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(

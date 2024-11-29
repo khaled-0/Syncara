@@ -3,9 +3,9 @@ import 'package:isar/isar.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/library/library_menu_sheet.dart';
+import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/provider/library_provider.dart';
-import 'package:tubesync/services/media_service.dart';
 
 class LibraryEntryBuilder extends StatelessWidget {
   final Playlist playlist;
@@ -48,7 +48,7 @@ class LibraryEntryBuilder extends StatelessWidget {
               },
               image: NetworkToFileImage(
                 url: playlist.thumbnail.medium,
-                file: MediaService().thumbnailFile(playlist.thumbnail.medium),
+                file: MediaClient().thumbnailFile(playlist.thumbnail.medium),
               ),
               fit: BoxFit.cover,
             ),

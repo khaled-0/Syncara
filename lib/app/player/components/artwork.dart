@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
+import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/extensions.dart';
 import 'package:tubesync/provider/player_provider.dart';
-import 'package:tubesync/services/media_service.dart';
 
 class Artwork extends StatelessWidget {
   const Artwork({super.key});
@@ -31,13 +31,13 @@ class Artwork extends StatelessWidget {
                       minRadius: 50,
                       foregroundImage: NetworkToFileImage(
                         url: media.thumbnail.high,
-                        file: MediaService().thumbnailFile(
+                        file: MediaClient().thumbnailFile(
                           media.thumbnail.high,
                         ),
                       ),
                       backgroundImage: NetworkToFileImage(
                         url: media.thumbnail.medium,
-                        file: MediaService().thumbnailFile(
+                        file: MediaClient().thumbnailFile(
                           media.thumbnail.medium,
                         ),
                       ),
