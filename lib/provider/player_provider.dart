@@ -195,10 +195,16 @@ class PlayerProvider extends ChangeNotifier {
   void nextTrack() {
     final currentIndex = _playlist.indexOf(nowPlaying.value);
     final int? nextIndex = switch (_loopMode) {
-      LoopMode.one => currentIndex,
       LoopMode.off => hasNext ? currentIndex + 1 : null,
       LoopMode.all => hasNext ? currentIndex + 1 : 0,
+      LoopMode.one => currentIndex,
     };
+
+    if (currentIndex == nextIndex) {
+      player.seek(Duration.zero);
+      player.play();
+      return;
+    }
 
     if (nextIndex != null) nowPlaying.value = _playlist[nextIndex];
   }
