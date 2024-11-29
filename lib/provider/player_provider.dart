@@ -73,17 +73,34 @@ class PlayerProvider extends ChangeNotifier {
             ? AudioProcessingState.loading
             : AudioProcessingState.values.byName(state.processingState.name),
         controls: [
-          if (hasPrevious) MediaControl.skipToPrevious,
-          if (hasNext) MediaControl.skipToNext,
           const MediaControl(
             androidIcon: "drawable/shuffle_24px",
             label: "Shuffle",
             action: MediaAction.custom,
             customAction: CustomMediaAction(name: "Shuffle"),
           ),
+          if (hasPrevious) MediaControl.skipToPrevious,
+          if (!buffering) ...{
+            if (player.playing) MediaControl.pause else MediaControl.pause
+          },
+          if (hasNext) MediaControl.skipToNext,
+          MediaControl(
+            androidIcon: switch (_loopMode) {
+              LoopMode.off => "drawable/repeat_off_24px",
+              LoopMode.one => "drawable/repeat_one_24px",
+              LoopMode.all => "drawable/repeat_all_24px",
+            },
+            label: "Repeat",
+            action: MediaAction.custom,
+            customAction: const CustomMediaAction(name: "Repeat"),
+          ),
         ],
+        androidCompactActionIndices: [1, 2, if (!buffering) 3],
         systemActions: {
           if (hasPrevious) MediaAction.skipToPrevious,
+          if (!buffering) ...{
+            if (player.playing) MediaAction.pause else MediaAction.pause
+          },
           if (hasNext) MediaAction.skipToNext,
           if (!_buffering) MediaAction.seek,
           MediaAction.custom,

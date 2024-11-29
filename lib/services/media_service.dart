@@ -93,6 +93,9 @@ class MediaService extends BaseAudioHandler {
       case "Shuffle":
         _playerProvider?.shuffle();
         break;
+      case "Repeat":
+        _playerProvider?.toggleLoopMode();
+        break;
     }
   }
 }
