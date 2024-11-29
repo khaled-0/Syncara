@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tubesync/model/media.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 part 'common.g.dart';
 
@@ -13,7 +13,7 @@ class Thumbnails with EquatableMixin {
 
   Thumbnails(this.low, this.medium, this.high);
 
-  factory Thumbnails.fromYTThumbnails(ThumbnailSet thumbs) =>
+  factory Thumbnails.fromYTThumbnails(yt.ThumbnailSet thumbs) =>
       Thumbnails(thumbs.lowResUrl, thumbs.mediumResUrl, thumbs.highResUrl);
 
   @override
@@ -29,23 +29,29 @@ class LyricMetadata with EquatableMixin {
   final String lang, langCode;
 
   @ignore
-  final Uri? tempUri;
+  final yt.ClosedCaptionTrackInfo? ytCCObj;
 
-  LyricMetadata(this.mediaID, this.lang, this.langCode, {this.tempUri});
+  LyricMetadata(
+    this.mediaID,
+    this.lang,
+    this.langCode, {
+    this.ytCCObj,
+  });
 
-  factory LyricMetadata.fromYTCaption(Media media, ClosedCaptionTrackInfo cc) =>
+  factory LyricMetadata.fromYTCaption(
+          Media media, yt.ClosedCaptionTrackInfo cc) =>
       LyricMetadata(
         media.id,
         cc.language.name,
         cc.language.code,
-        tempUri: cc.url,
+        ytCCObj: cc,
       );
 
   @override
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [mediaID, lang, langCode, tempUri];
+  List<Object?> get props => [mediaID, lang, langCode];
 }
 
 @JsonSerializable()

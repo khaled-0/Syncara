@@ -37,18 +37,22 @@ class YTMediaClient implements BaseMediaClient {
   }
 
   @override
-  Future<List<String>> getLRCLyrics(LyricMetadata track) async {
+  Future<List<String>> getLRCLyrics(LyricMetadata meta) async {
     return await compute(
       (data) async {
         final ytClient = data[0] as yt.ClosedCaptionClient;
         final trackManifest = await ytClient.get(
           data[1] as yt.ClosedCaptionTrackInfo,
         );
-        return trackManifest.captions
-            .map((e) => "[${e.duration.toString()}]${e.text}")
-            .toList();
+        return trackManifest.captions.map((e) {
+          // FIXME: Don't do hacks
+          final timestamp = (e.offset).toString().substring(2, 10);
+          final lyric = e.text.replaceAll("\n", "\n[$timestamp]");
+
+          return "[$timestamp]$lyric";
+        }).toList();
       },
-      [_ytClient.closedCaptions, track],
+      [_ytClient.closedCaptions, meta.ytCCObj],
     );
   }
 }
