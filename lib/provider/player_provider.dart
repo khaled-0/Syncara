@@ -56,7 +56,7 @@ class PlayerProvider extends ChangeNotifier {
 
     player.processingStateStream.listen((state) {
       if (state == ProcessingState.ready) storeNowPlaying();
-      if (state == ProcessingState.completed) nextTrack();
+      if (state == ProcessingState.completed) nextTrack(ignoreLoopMode: false);
     });
 
     player.bufferedPositionStream.listen(
@@ -150,7 +150,7 @@ class PlayerProvider extends ChangeNotifier {
     } catch (err) {
       if (_disposed) return;
       if (media != nowPlaying.value) return;
-      nextTrack();
+      nextTrack(ignoreLoopMode: false);
       //TODO Show error
     } finally {
       notifyListeners();
@@ -192,7 +192,7 @@ class PlayerProvider extends ChangeNotifier {
     nowPlaying.value = _playlist[currentIndex - 1];
   }
 
-  void nextTrack() {
+  void nextTrack({bool ignoreLoopMode = true}) {
     final currentIndex = _playlist.indexOf(nowPlaying.value);
     final int? nextIndex = switch (_loopMode) {
       LoopMode.off => hasNext ? currentIndex + 1 : null,
@@ -201,12 +201,16 @@ class PlayerProvider extends ChangeNotifier {
     };
 
     if (currentIndex == nextIndex) {
+      if (ignoreLoopMode && hasNext) {
+        nowPlaying.value = _playlist[nextIndex! + 1];
+        return;
+      }
+
       player.seek(Duration.zero);
       player.play();
-      return;
+    } else if (nextIndex != null) {
+      nowPlaying.value = _playlist[nextIndex];
     }
-
-    if (nextIndex != null) nowPlaying.value = _playlist[nextIndex];
   }
 
   void jumpTo(int index) => nowPlaying.value = _playlist[index];
