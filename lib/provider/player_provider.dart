@@ -48,8 +48,8 @@ class PlayerProvider extends ChangeNotifier {
   }) {
     _playlistInfo.add(provider.playlist);
     _playlist.addAll(provider.medias);
-    nowPlaying = ValueNotifier(start ?? _playlist.first);
     prepare?.call(this);
+    nowPlaying = ValueNotifier(start ?? _playlist.first);
     nowPlaying.addListener(beginPlay);
 
     MediaService().bind(this);
@@ -221,11 +221,19 @@ class PlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void shuffle() {
+  /// preserveCurrentIndex: Put currently playing song at first
+  void shuffle({bool preserveCurrentIndex = true}) {
     _playlist.shuffle();
-    // Put currently playing song at first
-    final nowPlayingIndex = _playlist.indexOf(nowPlaying.value);
-    if (nowPlayingIndex > 0) reorderList(nowPlayingIndex, 0);
+
+    if (preserveCurrentIndex) {
+      final nowPlayingIndex = _playlist.indexOf(nowPlaying.value);
+      if (nowPlayingIndex == -1) {
+        nowPlaying.value = _playlist.first;
+      } else {
+        reorderList(nowPlayingIndex, 0);
+      }
+    }
+
     notifyListeners();
   }
 

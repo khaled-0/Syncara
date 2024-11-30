@@ -22,7 +22,7 @@ class PlaylistTab extends StatelessWidget {
           shufflePlay: () => launchPlayer(
             context: context,
             playlist: context.read<PlaylistProvider>(),
-            prepare: (player) => player.shuffle(),
+            prepare: (player) => player.shuffle(preserveCurrentIndex: false),
           ),
         ),
         builder: (context, playlist, header) {
