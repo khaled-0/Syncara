@@ -72,30 +72,7 @@ class PlayerProvider extends ChangeNotifier {
         processingState: _buffering
             ? AudioProcessingState.loading
             : AudioProcessingState.values.byName(state.processingState.name),
-        controls: [
-          const MediaControl(
-            androidIcon: "drawable/shuffle_24px",
-            label: "Shuffle",
-            action: MediaAction.custom,
-            customAction: CustomMediaAction(name: "Shuffle"),
-          ),
-          if (hasPrevious) MediaControl.skipToPrevious,
-          if (!buffering) ...{
-            if (player.playing) MediaControl.pause else MediaControl.pause
-          },
-          if (hasNext) MediaControl.skipToNext,
-          MediaControl(
-            androidIcon: switch (_loopMode) {
-              LoopMode.off => "drawable/repeat_off_24px",
-              LoopMode.one => "drawable/repeat_one_24px",
-              LoopMode.all => "drawable/repeat_all_24px",
-            },
-            label: "Repeat",
-            action: MediaAction.custom,
-            customAction: const CustomMediaAction(name: "Repeat"),
-          ),
-        ],
-        androidCompactActionIndices: [1, 2, if (!buffering) 3],
+        controls: mediaControls,
         systemActions: {
           if (hasPrevious) MediaAction.skipToPrevious,
           if (!buffering) ...{
@@ -200,6 +177,10 @@ class PlayerProvider extends ChangeNotifier {
   void toggleLoopMode() {
     int next = (LoopMode.values.indexOf(_loopMode) + 1);
     _loopMode = LoopMode.values[next % LoopMode.values.length];
+    // Force notification update
+    notificationState?.add(notificationState!.value.copyWith(
+      controls: mediaControls,
+    ));
     notifyListeners();
   }
 
@@ -263,6 +244,30 @@ class PlayerProvider extends ChangeNotifier {
   void notifyListeners() {
     if (!_disposed) super.notifyListeners();
   }
+
+  List<MediaControl> get mediaControls => [
+        const MediaControl(
+          androidIcon: "drawable/shuffle_24px",
+          label: "Shuffle",
+          action: MediaAction.custom,
+          customAction: CustomMediaAction(name: "Shuffle"),
+        ),
+        if (hasPrevious) MediaControl.skipToPrevious,
+        if (!buffering) ...{
+          if (player.playing) MediaControl.pause else MediaControl.pause
+        },
+        if (hasNext) MediaControl.skipToNext,
+        MediaControl(
+          androidIcon: switch (_loopMode) {
+            LoopMode.off => "drawable/repeat_off_24px",
+            LoopMode.one => "drawable/repeat_one_24px",
+            LoopMode.all => "drawable/repeat_all_24px",
+          },
+          label: "Repeat",
+          action: MediaAction.custom,
+          customAction: const CustomMediaAction(name: "Repeat"),
+        ),
+      ];
 
   BehaviorSubject<PlaybackState>? get notificationState {
     if (_disposed) return null;
