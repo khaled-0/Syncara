@@ -39,13 +39,16 @@ class LyricMetadata with EquatableMixin {
   });
 
   factory LyricMetadata.fromYTCaption(
-          Media media, yt.ClosedCaptionTrackInfo cc) =>
-      LyricMetadata(
-        media.id,
-        cc.language.name,
-        cc.language.code,
-        ytCCObj: cc,
-      );
+    Media media,
+    yt.ClosedCaptionTrackInfo cc,
+  ) {
+    return LyricMetadata(
+      media.id,
+      cc.language.name.split("-").first.trim(),
+      cc.language.code,
+      ytCCObj: cc,
+    );
+  }
 
   @override
   bool get stringify => true;

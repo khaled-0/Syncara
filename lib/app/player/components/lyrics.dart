@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
-import 'package:flutter_lyric/lyrics_reader_model.dart';
 import 'package:provider/provider.dart';
+import 'package:tubesync/app/player/components/action_buttons.dart';
 import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/common.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/provider/player_provider.dart';
 
+typedef LyricFutureResult = (List<LyricMetadata>, LyricMetadata, List<String>);
+
 class Lyrics extends StatefulWidget {
-  const Lyrics({super.key});
+  const Lyrics({
+    super.key,
+    this.fullscreen = false,
+    this.initialData,
+  });
+
+  final bool fullscreen;
+  final LyricFutureResult? initialData;
 
   @override
   State<Lyrics> createState() => _LyricsState();
@@ -19,15 +28,14 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
 
   String preferredLanguage = "en";
 
-  Future<(List<LyricMetadata>, List<String>)> fetchLyrics(Media media) async {
+  Future<LyricFutureResult> fetchLyrics(Media media) async {
     final lyrics = await MediaClient().getAvailableLyrics(media);
-    final lyricData = await MediaClient().getLRCLyrics(
-      lyrics.firstWhere(
+    if (lyrics.isEmpty) throw "No lyrics available";
+    final lyric = lyrics.firstWhere(
         (element) => element.langCode == preferredLanguage,
-        orElse: () => lyrics.first,
-      ),
-    );
-    return (lyrics, lyricData);
+        orElse: () => lyrics.first);
+    final lyricData = await MediaClient().getLRCLyrics(lyric);
+    return (lyrics, lyric, lyricData);
   }
 
   @override
@@ -39,41 +47,117 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
         valueListenable: context.read<PlayerProvider>().nowPlaying,
         builder: (context, nowPlaying, _) => FutureBuilder(
           future: fetchLyrics(nowPlaying),
-          builder: (context, result) {
-            if (result.hasError) return _errorView(result.error);
-            if (!result.hasData) return _loadingView();
-            final lyricModel = LyricsModelBuilder.create()
-                .bindLyricToMain(result.requireData.$2.join("\n"))
-                .getModel();
-
-            // FIXME Flickers
-            return StreamBuilder(
-              stream: context.read<PlayerProvider>().player.positionStream,
-              initialData: Duration.zero,
-              builder: (context, snapshot) => _lyricsView(
-                lyricModel,
-                snapshot.requireData.inMilliseconds,
-                context.read<PlayerProvider>().player.playing,
+          initialData: widget.initialData,
+          key: ValueKey(nowPlaying.hashCode),
+          builder: (context, result) => Stack(
+            children: [
+              Positioned.fill(child: _lyricsView(result)),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: AnimatedOpacity(
+                  duration: Durations.medium2,
+                  opacity: result.hasError ? 0 : 1,
+                  child: _lyricSelector(result),
+                ),
               ),
-            );
-          },
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _lyricsView(
-    LyricsReaderModel lyricModel,
-    int playerPosition,
-    bool playing,
-  ) {
-    return LyricsReader(
-      padding: const EdgeInsets.all(12),
-      model: lyricModel,
-      position: playerPosition,
-      playing: playing,
-      emptyBuilder: () => const Center(child: Text("............")),
-      lyricUi: _LyricsUI(context),
+  Widget _lyricsView(AsyncSnapshot<LyricFutureResult> result) {
+    if (result.hasError) return _errorView(result.error);
+    if (!result.hasData) return _loadingView();
+
+    final lyricModel = LyricsModelBuilder.create()
+        .bindLyricToMain(result.requireData.$3.join("\n"))
+        .getModel();
+
+    // FIXME Flickers
+    return StreamBuilder(
+      stream: context.read<PlayerProvider>().player.positionStream,
+      initialData: Duration.zero,
+      builder: (context, snapshot) => LyricsReader(
+        padding: const EdgeInsets.all(12),
+        model: lyricModel,
+        position: snapshot.requireData.inMilliseconds,
+        playing: playerProvider.player.playing,
+        emptyBuilder: () => const Center(child: Text("............")),
+        lyricUi: _LyricsUI(context),
+      ),
+    );
+  }
+
+  Widget _lyricSelector(AsyncSnapshot<LyricFutureResult> result) {
+    int availableLyrics = result.data?.$1.length ?? 0;
+    String current = result.data?.$2.lang ?? "Fetching lyrics";
+
+    return Card(
+      elevation: 0,
+      child: ListTile(
+        dense: true,
+        onTap: changePreferedLanguageDialog,
+        //isFullScreenNot
+        leading: const Icon(Icons.language_rounded),
+        title: Text(current),
+        contentPadding: const EdgeInsets.only(left: 16, right: 8),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (availableLyrics > 1)
+              IconButton(
+                onPressed: changePreferedLanguageDialog,
+                icon: const Icon(Icons.change_circle_rounded),
+              ),
+            const VerticalDivider(),
+            IconButton(
+              onPressed: () => toggleFullScreen(result.data),
+              icon: widget.fullscreen
+                  ? const Icon(Icons.fullscreen_exit_rounded)
+                  : const Icon(Icons.fullscreen_rounded),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void changePreferedLanguageDialog() {}
+
+  void toggleFullScreen(LyricFutureResult? data) {
+    if (widget.fullscreen) return Navigator.pop(context);
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return HorizontalScaleTransition(
+            scale: animation.drive(
+              Tween(begin: 0.55, end: 1),
+            ),
+            child: child,
+          );
+        },
+        transitionDuration: Durations.short3,
+        reverseTransitionDuration: Durations.short2,
+        pageBuilder: (context, _, __) => ChangeNotifierProvider.value(
+          value: playerProvider,
+          child: Material(
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Expanded(child: Lyrics(fullscreen: true, initialData: data)),
+                  const ActionButtons(),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -104,8 +188,32 @@ class _LyricsUI extends UINetease {
   bool get highlight => false;
 
   @override
-  TextStyle getPlayingMainTextStyle() => Theme.of(context).textTheme.titleLarge!;
+  TextStyle getPlayingMainTextStyle() =>
+      Theme.of(context).textTheme.titleLarge!;
 
   @override
   TextStyle getOtherMainTextStyle() => Theme.of(context).textTheme.bodyMedium!;
+}
+
+class HorizontalScaleTransition extends MatrixTransition {
+  /// Creates a scale transition.
+  ///
+  /// The [alignment] argument defaults to [Alignment.center].
+  const HorizontalScaleTransition({
+    super.key,
+    required Animation<double> scale,
+    super.alignment = Alignment.center,
+    super.filterQuality,
+    super.child,
+  }) : super(animation: scale, onTransform: _handleScaleMatrix);
+
+  /// The animation that controls the scale of the child.
+  Animation<double> get scale => animation;
+
+  /// The callback that controls the scale of the child.
+  ///
+  /// If the current value of the animation is v, the child will be
+  /// painted v times its normal size.
+  static Matrix4 _handleScaleMatrix(double value) =>
+      Matrix4.diagonal3Values(1.0, value, 1.0);
 }

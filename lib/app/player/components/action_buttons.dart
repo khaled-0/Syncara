@@ -28,6 +28,7 @@ class ActionButtons extends StatelessWidget {
           Selector<PlayerProvider, bool>(
             selector: (_, provider) => provider.buffering,
             builder: (_, loading, child) => FloatingActionButton(
+              heroTag: "PlayButtonLarge",
               elevation: 0,
               highlightElevation: 1,
               hoverElevation: 1,

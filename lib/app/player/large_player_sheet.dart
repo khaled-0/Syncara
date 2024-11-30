@@ -103,8 +103,9 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
       valueListenable: context.read<PlayerProvider>().nowPlaying,
       builder: (context, media, _) => Card.outlined(
         elevation: 0,
-        margin: const EdgeInsets.symmetric(horizontal: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 12),
         child: ListTile(
+          contentPadding: const EdgeInsets.only(left: 16, right: 12),
           onTap: showPlayerQueue,
           title: Text(
             media.title,
