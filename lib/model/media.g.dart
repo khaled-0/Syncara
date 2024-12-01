@@ -106,6 +106,7 @@ Media deserializeMedia(IsarReader reader) {
         '',
         '',
         '',
+        '',
       );
     } else {
       final embedded = deserializeThumbnails(objectReader);
@@ -149,6 +150,7 @@ dynamic deserializeMediaProp(IsarReader reader, int property) {
         final objectReader = IsarCore.readObject(reader, 6);
         if (objectReader.isNull) {
           return Thumbnails(
+            '',
             '',
             '',
             '',

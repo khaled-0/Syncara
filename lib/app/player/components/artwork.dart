@@ -32,9 +32,9 @@ class Artwork extends StatelessWidget {
                     angle: angle.toPrecision(5),
                     child: CircleAvatar(
                       foregroundImage: NetworkToFileImage(
-                        url: media.thumbnail.high,
+                        url: media.thumbnail.max,
                         file: MediaClient().thumbnailFile(
-                          media.thumbnail.high,
+                          media.thumbnail.max,
                         ),
                       ),
                       backgroundImage: NetworkToFileImage(

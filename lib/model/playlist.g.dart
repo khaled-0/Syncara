@@ -107,6 +107,7 @@ Playlist deserializePlaylist(IsarReader reader) {
         '',
         '',
         '',
+        '',
       );
     } else {
       final embedded = deserializeThumbnails(objectReader);
@@ -163,6 +164,7 @@ dynamic deserializePlaylistProp(IsarReader reader, int property) {
         final objectReader = IsarCore.readObject(reader, 5);
         if (objectReader.isNull) {
           return Thumbnails(
+            '',
             '',
             '',
             '',

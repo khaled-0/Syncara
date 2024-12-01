@@ -27,6 +27,10 @@ const ThumbnailsSchema = IsarGeneratedSchema(
         name: 'high',
         type: IsarType.string,
       ),
+      IsarPropertySchema(
+        name: 'max',
+        type: IsarType.string,
+      ),
     ],
     indexes: [],
   ),
@@ -41,6 +45,7 @@ int serializeThumbnails(IsarWriter writer, Thumbnails object) {
   IsarCore.writeString(writer, 1, object.low);
   IsarCore.writeString(writer, 2, object.medium);
   IsarCore.writeString(writer, 3, object.high);
+  IsarCore.writeString(writer, 4, object.max);
   return 0;
 }
 
@@ -52,10 +57,13 @@ Thumbnails deserializeThumbnails(IsarReader reader) {
   _medium = IsarCore.readString(reader, 2) ?? '';
   final String _high;
   _high = IsarCore.readString(reader, 3) ?? '';
+  final String _max;
+  _max = IsarCore.readString(reader, 4) ?? '';
   final object = Thumbnails(
     _low,
     _medium,
     _high,
+    _max,
   );
   return object;
 }
@@ -579,6 +587,180 @@ extension ThumbnailsQueryFilter
       return query.addFilterCondition(
         const GreaterCondition(
           property: 3,
+          value: '',
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition> maxEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 4,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition> maxGreaterThan(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 4,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition>
+      maxGreaterThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 4,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition> maxLessThan(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 4,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition>
+      maxLessThanOrEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 4,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition> maxBetween(
+    String lower,
+    String upper, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 4,
+          lower: lower,
+          upper: upper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition> maxStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        StartsWithCondition(
+          property: 4,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition> maxEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EndsWithCondition(
+          property: 4,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition> maxContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        ContainsCondition(
+          property: 4,
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition> maxMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        MatchesCondition(
+          property: 4,
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition> maxIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const EqualCondition(
+          property: 4,
+          value: '',
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Thumbnails, Thumbnails, QAfterFilterCondition> maxIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const GreaterCondition(
+          property: 4,
           value: '',
         ),
       );
