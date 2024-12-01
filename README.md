@@ -34,7 +34,8 @@ Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 ### Music Sheet
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/fb942283-79a4-4a14-81c2-cee0ee6e90d6" width="300" alt="Screenshot 3">
+  <img src="https://github.com/user-attachments/assets/fb942283-79a4-4a14-81c2-cee0ee6e90d6" width="360" alt="Screenshot 3"> 
+  <img src="https://i.ibb.co.com/BgKSwTF/image.png" width="360" alt="Screenshot 4">
 </p>
 
 ## Download

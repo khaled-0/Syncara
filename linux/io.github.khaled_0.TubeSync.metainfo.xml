@@ -66,6 +66,9 @@
       <image>https://i.ibb.co.com/qpYZf54/Screenshot-From-2024-11-12-21-56-35.png</image>
     </screenshot>
     <screenshot>
+      <image>https://i.ibb.co.com/k6GH2j7/image.png</image>
+    </screenshot>
+    <screenshot>
       <image>https://i.ibb.co.com/KNQ3kMm/Screenshot-From-2024-11-12-21-56-01.png</image>
     </screenshot>
     <screenshot>
@@ -79,7 +82,7 @@
   </developer>
 
   <releases>
-    <release version="0.1.4" date="2024-11-17">
+    <release version="0.1.5" date="2024-12-01">
       <description>Read the full changelog at Github</description>
       <url>https://github.com/khaled-0/TubeSync/releases</url>
     </release>
