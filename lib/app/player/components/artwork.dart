@@ -11,7 +11,7 @@ class Artwork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       child: ValueListenableBuilder(
         valueListenable: context.read<PlayerProvider>().nowPlaying,
         builder: (context, media, child) => StreamBuilder(
@@ -24,11 +24,13 @@ class Artwork extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 Positioned.fill(
+                  top: 12,
+                  left: 16,
+                  bottom: 12,
+                  right: 16,
                   child: Transform.rotate(
                     angle: angle.toPrecision(5),
                     child: CircleAvatar(
-                      maxRadius: 120,
-                      minRadius: 50,
                       foregroundImage: NetworkToFileImage(
                         url: media.thumbnail.high,
                         file: MediaClient().thumbnailFile(

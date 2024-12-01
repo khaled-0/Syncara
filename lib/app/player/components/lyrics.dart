@@ -83,17 +83,34 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
         .bindLyricToMain(result.requireData.$3.join("\n"))
         .getModel();
 
-    // FIXME Flickers
-    return StreamBuilder(
-      stream: context.read<PlayerProvider>().player.positionStream,
-      initialData: Duration.zero,
-      builder: (context, snapshot) => LyricsReader(
-        padding: const EdgeInsets.all(12),
-        model: lyricModel,
-        position: snapshot.requireData.inMilliseconds,
-        playing: playerProvider.player.playing,
-        emptyBuilder: () => const Center(child: Text("............")),
-        lyricUi: _LyricsUI(context),
+    return ShaderMask(
+      shaderCallback: (Rect bounds) {
+        return LinearGradient(
+          colors: [
+            Colors.white.withOpacity(0.2),
+            Colors.white.withOpacity(0.7),
+            Colors.white,
+            Colors.white,
+            Colors.white.withOpacity(0.7),
+            Colors.white.withOpacity(0.2),
+          ],
+          stops: [0.1, 0.2, 0.3, 0.8, 0.9, 1],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          tileMode: TileMode.mirror,
+        ).createShader(bounds);
+      },
+      child: StreamBuilder(
+        stream: context.read<PlayerProvider>().player.positionStream,
+        initialData: Duration.zero,
+        builder: (context, snapshot) => LyricsReader(
+          padding: const EdgeInsets.all(12),
+          model: lyricModel,
+          position: snapshot.requireData.inMilliseconds,
+          playing: playerProvider.player.playing,
+          emptyBuilder: () => const Center(child: Text("............")),
+          lyricUi: _LyricsUI(context),
+        ),
       ),
     );
   }
@@ -105,9 +122,8 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
     return Card(
       elevation: 0,
       child: ListTile(
-        dense: true,
+        dense: !widget.fullscreen,
         onTap: changePreferedLanguageDialog,
-        //isFullScreenNot
         leading: const Icon(Icons.language_rounded),
         title: Text(current),
         contentPadding: const EdgeInsets.only(left: 16, right: 8),
@@ -175,20 +191,21 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
 class _LyricsUI extends UINetease {
   final BuildContext context;
 
-  _LyricsUI(this.context);
-
-  @override
-  Color getLyricHightlightColor() => Theme.of(context).colorScheme.primary;
+  _LyricsUI(this.context) : super(lineGap: 18);
 
   @override
   bool get highlight => false;
 
   @override
-  TextStyle getPlayingMainTextStyle() =>
-      Theme.of(context).textTheme.titleLarge!;
+  TextStyle getPlayingMainTextStyle() => getOtherMainTextStyle()
+      .copyWith(color: Theme.of(context).colorScheme.primary);
 
   @override
-  TextStyle getOtherMainTextStyle() => Theme.of(context).textTheme.bodyMedium!;
+  TextStyle getOtherMainTextStyle() =>
+      Theme.of(context).textTheme.titleLarge!.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).disabledColor,
+          );
 }
 
 class _ExpandedLyrics extends StatelessWidget {
