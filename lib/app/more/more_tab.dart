@@ -67,8 +67,7 @@ class MoreTab extends StatelessWidget {
         ListTile(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => const ActiveDownloadsScreen()),
+            MaterialPageRoute(builder: (_) => const ActiveDownloadsScreen()),
           ),
           leading: const Icon(Icons.download_rounded),
           title: const Text("Download Queue"),
