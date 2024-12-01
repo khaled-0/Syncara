@@ -3,7 +3,7 @@ name: Nightly Build
 on:
   workflow_dispatch:
   push:
-    branches: ["main"]
+    branches: ["ios"]
 
 jobs:
   build-android:
