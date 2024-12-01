@@ -60,7 +60,7 @@ class MoreTab extends StatelessWidget {
             },
             secondary: const Icon(Icons.palette_rounded),
             title: const Text("Material You"),
-            subtitle: const Text("Use dynamic colors"),
+            subtitle: const Text("Use dynamic colors when available"),
           ),
         ),
         const Divider(),

@@ -8,13 +8,14 @@ part 'common.g.dart';
 
 @Embedded(ignore: {"props", "stringify"})
 class Thumbnails with EquatableMixin {
-  //low, high has vertical black borders
+  // low has vertical black borders
+  // high might not always be available
   final String low, medium, high;
 
   Thumbnails(this.low, this.medium, this.high);
 
   factory Thumbnails.fromYTThumbnails(yt.ThumbnailSet thumbs) =>
-      Thumbnails(thumbs.lowResUrl, thumbs.mediumResUrl, thumbs.highResUrl);
+      Thumbnails(thumbs.lowResUrl, thumbs.mediumResUrl, thumbs.maxResUrl);
 
   @override
   bool get stringify => true;

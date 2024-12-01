@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
@@ -174,8 +175,13 @@ class MiniPlayerSheet extends StatelessWidget {
       useSafeArea: true,
       useRootNavigator: true,
       barrierColor: adaptiveSheetBarrierColor,
-      builder: (_) => ChangeNotifierProvider<PlayerProvider>.value(
-        value: context.read<PlayerProvider>(),
+      builder: (_) => MultiProvider(
+        providers: [
+          Provider.value(value: context.read<Isar>()),
+          ChangeNotifierProvider<PlayerProvider>.value(
+            value: context.read<PlayerProvider>(),
+          ),
+        ],
         child: const LargePlayerSheet(),
       ),
     );

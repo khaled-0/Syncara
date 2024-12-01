@@ -6,7 +6,7 @@ import 'package:tubesync/model/common.dart';
 
 part 'preferences.g.dart';
 
-enum Preference { materialYou, lastPlayed }
+enum Preference { materialYou, lastPlayed, subsPreferredLang }
 
 @Collection(ignore: {"props", "stringify"})
 class Preferences with EquatableMixin {

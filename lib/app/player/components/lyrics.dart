@@ -1,11 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
+import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/player/components/action_buttons.dart';
 import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/common.dart';
 import 'package:tubesync/model/media.dart';
+import 'package:tubesync/model/preferences.dart';
 import 'package:tubesync/provider/player_provider.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -26,7 +29,11 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
   late LyricFutureResult? cachedResult = widget.initialData;
   bool paused = false;
 
-  String preferredLanguage = "en";
+  late String preferredLanguage =
+      context.read<Isar>().preferences.getValue<String>(
+            Preference.subsPreferredLang,
+            PlatformDispatcher.instance.locale.languageCode,
+          )!;
 
   Future<LyricFutureResult> fetchLyrics(Media media) async {
     if (paused) throw "Fullscreen mode active";
@@ -39,8 +46,9 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
     final lyrics = await MediaClient().getAvailableLyrics(media);
     if (lyrics.isEmpty) throw "No lyrics available";
     final lyric = lyrics.firstWhere(
-        (element) => element.langCode == preferredLanguage,
-        orElse: () => lyrics.first);
+      (element) => element.langCode == preferredLanguage,
+      orElse: () => lyrics.first,
+    );
     final lyricData = await MediaClient().getLRCLyrics(lyric);
     return (lyrics, lyric, lyricData);
   }
@@ -54,7 +62,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
         valueListenable: context.read<PlayerProvider>().nowPlaying,
         builder: (context, nowPlaying, _) => FutureBuilder(
           future: fetchLyrics(nowPlaying),
-          key: ValueKey(nowPlaying.hashCode),
+          key: ValueKey(nowPlaying.hashCode.toString() + preferredLanguage),
           builder: (context, result) => Stack(
             children: [
               Positioned.fill(child: _lyricsView(result)),
@@ -76,8 +84,10 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
   }
 
   Widget _lyricsView(AsyncSnapshot<LyricFutureResult> result) {
+    if (result.connectionState == ConnectionState.waiting) {
+      return _loadingView();
+    }
     if (result.hasError) return _errorView(result.error);
-    if (!result.hasData) return _loadingView();
 
     final lyricModel = LyricsModelBuilder.create()
         .bindLyricToMain(result.requireData.$3.join("\n"))
@@ -117,13 +127,19 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
 
   Widget _lyricSelector(AsyncSnapshot<LyricFutureResult> result) {
     int availableLyrics = result.data?.$1.length ?? 0;
-    String current = result.data?.$2.lang ?? "Fetching lyrics";
+    String current = "Fetching lyrics";
+    if (result.connectionState == ConnectionState.done) {
+      current = result.data?.$2.lang ?? "Unavailable";
+    }
 
     return Card(
       elevation: 0,
       child: ListTile(
         dense: !widget.fullscreen,
-        onTap: changePreferedLanguageDialog,
+        onTap: () => changePreferedLanguageDialog(
+          result.requireData.$1,
+          result.requireData.$2,
+        ),
         leading: const Icon(Icons.language_rounded),
         title: Text(current),
         contentPadding: const EdgeInsets.only(left: 16, right: 8),
@@ -133,7 +149,10 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
           children: [
             if (availableLyrics > 1)
               IconButton(
-                onPressed: changePreferedLanguageDialog,
+                onPressed: () => changePreferedLanguageDialog(
+                  result.requireData.$1,
+                  result.requireData.$2,
+                ),
                 icon: const Icon(Icons.change_circle_rounded),
               ),
             const VerticalDivider(),
@@ -149,7 +168,42 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  void changePreferedLanguageDialog() {}
+  Future<void> changePreferedLanguageDialog(
+    List<LyricMetadata> selections,
+    LyricMetadata current,
+  ) async {
+    final selection = await showModalBottomSheet<LyricMetadata?>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          itemCount: selections.length,
+          itemBuilder: (context, index) => ListTile(
+            dense: true,
+            selected: selections[index] == current,
+            title: Text(
+              "${selections[index].lang} (${selections[index].langCode})",
+            ),
+            trailing: selections[index] == current
+                ? const Icon(Icons.check_rounded)
+                : null,
+            onTap: () => Navigator.pop(context, selections[index]),
+          ),
+        );
+      },
+    );
+
+    if (selection != null && selection.langCode != preferredLanguage) {
+      setState(() => preferredLanguage = selection.langCode);
+      if (mounted) {
+        context.read<Isar>().preferences.setValue(
+              Preference.subsPreferredLang,
+              preferredLanguage,
+            );
+      }
+    }
+  }
 
   Future<void> toggleFullScreen(LyricFutureResult? result) async {
     if (widget.fullscreen) return Navigator.pop(context, result);
