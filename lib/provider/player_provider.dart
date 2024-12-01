@@ -145,7 +145,7 @@ class PlayerProvider extends ChangeNotifier {
       if (_disposed) return;
       if (media != nowPlaying.value) return;
       nextTrack(ignoreLoopMode: false);
-      //TODO Show error
+      print(err);
     } finally {
       notifyListeners();
     }
