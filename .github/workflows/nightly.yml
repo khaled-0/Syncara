@@ -7,6 +7,7 @@ on:
 
 jobs:
   build-android:
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,6 +57,7 @@ jobs:
           path: build/app/outputs/flutter-apk/app-profile.apk
 
   build-linux:
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -83,3 +85,35 @@ jobs:
         with:
           name: tubesync_linux_nightly
           path: build/linux/x64/release/bundle/
+
+  build-ios:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+
+      - run: flutter --version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Perform Code Generation
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build iOS Release
+        run: flutter build ios --release --no-codesign
+
+      - name: Prepare .ipa
+        run: |
+          mkdir Payload
+          mv build/ios/iphoneos/Runner.app/ Payload
+          zip -qq -r -9 tubesync_unsigned.ipa Payload
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tubesync_ios_nightly
+          path: tubesync_unsigned.ipa
