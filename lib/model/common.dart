@@ -25,7 +25,7 @@ class Thumbnails with EquatableMixin {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [low, medium, high];
+  List<Object?> get props => [low, medium, high, max];
 }
 
 @Embedded(ignore: {"props", "stringify"})

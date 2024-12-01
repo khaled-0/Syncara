@@ -218,9 +218,15 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
         },
         transitionDuration: Durations.short3,
         reverseTransitionDuration: Durations.short2,
-        pageBuilder: (_, __, ___) => ChangeNotifierProvider.value(
-          value: playerProvider,
-          child: _ExpandedLyrics(result),
+        pageBuilder: (_, __, ___) => MultiProvider(
+          providers: [
+            Provider.value(value: context.read<Isar>()),
+            ChangeNotifierProvider.value(value: playerProvider),
+          ],
+          child: ChangeNotifierProvider.value(
+            value: playerProvider,
+            child: _ExpandedLyrics(result),
+          ),
         ),
       ),
     );
