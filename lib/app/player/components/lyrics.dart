@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
 import 'package:provider/provider.dart';
+import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/player/components/action_buttons.dart';
 import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/common.dart';
@@ -227,27 +228,4 @@ class _ExpandedLyrics extends StatelessWidget {
       ),
     );
   }
-}
-
-class HorizontalScaleTransition extends MatrixTransition {
-  /// Creates a scale transition.
-  ///
-  /// The [alignment] argument defaults to [Alignment.center].
-  const HorizontalScaleTransition({
-    super.key,
-    required Animation<double> scale,
-    super.alignment = Alignment.center,
-    super.filterQuality,
-    super.child,
-  }) : super(animation: scale, onTransform: _handleScaleMatrix);
-
-  /// The animation that controls the scale of the child.
-  Animation<double> get scale => animation;
-
-  /// The callback that controls the scale of the child.
-  ///
-  /// If the current value of the animation is v, the child will be
-  /// painted v times its normal size.
-  static Matrix4 _handleScaleMatrix(double value) =>
-      Matrix4.diagonal3Values(1.0, value, 1.0);
 }

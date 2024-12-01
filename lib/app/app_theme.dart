@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tubesync/app/player/components/seekbar.dart';
 
 class AppTheme {
   static ValueNotifier<bool> dynamicColors = ValueNotifier(false);
@@ -121,4 +120,81 @@ class AppTheme {
         surfaceContainerHigh: additionalColours[6],
         surfaceContainerHighest: additionalColours[7],
       );
+}
+
+/// A variant of the default circle thumb shape
+/// Similar to the one found in Android 13 Media control
+class LineThumbShape extends SliderComponentShape {
+  /// The size of the thumb
+  final Size thumbSize;
+
+  const LineThumbShape({
+    this.thumbSize = const Size(6, 36),
+  });
+
+  @override
+  Size getPreferredSize(bool isEnabled, bool isDiscrete) {
+    return thumbSize;
+  }
+
+  @override
+  void paint(
+    PaintingContext context,
+    Offset center, {
+    required Animation<double> activationAnimation,
+    required Animation<double> enableAnimation,
+    required bool isDiscrete,
+    required TextPainter labelPainter,
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required TextDirection textDirection,
+    required double value,
+    required double textScaleFactor,
+    required Size sizeWithOverflow,
+  }) {
+    assert(sliderTheme.disabledThumbColor != null);
+    assert(sliderTheme.thumbColor != null);
+
+    final colorTween = ColorTween(
+      begin: sliderTheme.disabledThumbColor,
+      end: sliderTheme.thumbColor,
+    );
+
+    final paint = Paint()..color = colorTween.evaluate(enableAnimation)!;
+
+    context.canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromCenter(
+          center: center,
+          width: thumbSize.width,
+          height: thumbSize.height,
+        ),
+        Radius.circular(thumbSize.width),
+      ),
+      paint,
+    );
+  }
+}
+
+class HorizontalScaleTransition extends MatrixTransition {
+  /// Creates a scale transition.
+  ///
+  /// The [alignment] argument defaults to [Alignment.center].
+  const HorizontalScaleTransition({
+    super.key,
+    required Animation<double> scale,
+    super.alignment = Alignment.center,
+    super.filterQuality,
+    super.child,
+  }) : super(animation: scale, onTransform: _handleScaleMatrix);
+
+  /// The animation that controls the scale of the child.
+  Animation<double> get scale => animation;
+
+  /// The callback that controls the scale of the child.
+  ///
+  /// If the current value of the animation is v, the child will be
+  /// painted v times its normal size.
+  static Matrix4 _handleScaleMatrix(double value) =>
+      Matrix4.diagonal3Values(1.0, value, 1.0);
 }
