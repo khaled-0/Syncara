@@ -72,7 +72,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
                 right: 0,
                 child: AnimatedOpacity(
                   duration: Durations.medium2,
-                  opacity: result.hasError ? 0 : 1,
+                  opacity: (!widget.fullscreen && result.hasError) ? 0 : 1,
                   child: _lyricSelector(result),
                 ),
               ),
