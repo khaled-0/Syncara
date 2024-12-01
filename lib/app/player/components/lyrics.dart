@@ -6,15 +6,12 @@ import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/common.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/provider/player_provider.dart';
+import 'package:window_manager/window_manager.dart';
 
 typedef LyricFutureResult = (List<LyricMetadata>, LyricMetadata, List<String>);
 
 class Lyrics extends StatefulWidget {
-  const Lyrics({
-    super.key,
-    this.fullscreen = false,
-    this.initialData,
-  });
+  const Lyrics({super.key, this.fullscreen = false, this.initialData});
 
   final bool fullscreen;
   final LyricFutureResult? initialData;
@@ -25,10 +22,19 @@ class Lyrics extends StatefulWidget {
 
 class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
   PlayerProvider get playerProvider => context.read<PlayerProvider>();
+  late LyricFutureResult? cachedResult = widget.initialData;
+  bool paused = false;
 
   String preferredLanguage = "en";
 
   Future<LyricFutureResult> fetchLyrics(Media media) async {
+    if (paused) throw "Fullscreen mode active";
+    if (cachedResult != null) {
+      final result = cachedResult;
+      cachedResult = null;
+      return result!;
+    }
+
     final lyrics = await MediaClient().getAvailableLyrics(media);
     if (lyrics.isEmpty) throw "No lyrics available";
     final lyric = lyrics.firstWhere(
@@ -47,7 +53,6 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
         valueListenable: context.read<PlayerProvider>().nowPlaying,
         builder: (context, nowPlaying, _) => FutureBuilder(
           future: fetchLyrics(nowPlaying),
-          initialData: widget.initialData,
           key: ValueKey(nowPlaying.hashCode),
           builder: (context, result) => Stack(
             children: [
@@ -129,36 +134,26 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
 
   void changePreferedLanguageDialog() {}
 
-  void toggleFullScreen(LyricFutureResult? data) {
-    if (widget.fullscreen) return Navigator.pop(context);
-    Navigator.of(context).push(
+  Future<void> toggleFullScreen(LyricFutureResult? result) async {
+    if (widget.fullscreen) return Navigator.pop(context, result);
+    paused = true;
+    cachedResult = await Navigator.of(context).push(
       PageRouteBuilder(
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return HorizontalScaleTransition(
-            scale: animation.drive(
-              Tween(begin: 0.55, end: 1),
-            ),
+            scale: animation.drive(Tween(begin: 0.55, end: 1)),
             child: child,
           );
         },
         transitionDuration: Durations.short3,
         reverseTransitionDuration: Durations.short2,
-        pageBuilder: (context, _, __) => ChangeNotifierProvider.value(
+        pageBuilder: (_, __, ___) => ChangeNotifierProvider.value(
           value: playerProvider,
-          child: Material(
-            child: SafeArea(
-              child: Column(
-                children: [
-                  Expanded(child: Lyrics(fullscreen: true, initialData: data)),
-                  const ActionButtons(),
-                  const SizedBox(height: 16),
-                ],
-              ),
-            ),
-          ),
+          child: _ExpandedLyrics(result),
         ),
       ),
     );
+    setState(() => paused = false);
   }
 
   Widget _errorView(Object? err) {
@@ -193,6 +188,45 @@ class _LyricsUI extends UINetease {
 
   @override
   TextStyle getOtherMainTextStyle() => Theme.of(context).textTheme.bodyMedium!;
+}
+
+class _ExpandedLyrics extends StatelessWidget {
+  const _ExpandedLyrics(this.initialData);
+
+  final LyricFutureResult? initialData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: SafeArea(
+        child: Column(
+          children: [
+            DragToMoveArea(
+              child: ValueListenableBuilder(
+                valueListenable: context.read<PlayerProvider>().nowPlaying,
+                builder: (_, value, __) => Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text(
+                    value.title,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Lyrics(
+                fullscreen: true,
+                initialData: initialData,
+              ),
+            ),
+            const ActionButtons(),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class HorizontalScaleTransition extends MatrixTransition {
