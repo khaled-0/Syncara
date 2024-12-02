@@ -12,4 +12,4 @@ flutter_launcher_icons:
 
   macos:
     generate: true
-    image_path: "assets/tubesync_ios.png"
+    image_path: "assets/tubesync_mac.png"
