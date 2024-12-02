@@ -73,15 +73,6 @@ class PlayerProvider extends ChangeNotifier {
             ? AudioProcessingState.loading
             : AudioProcessingState.values.byName(state.processingState.name),
         controls: mediaControls,
-        systemActions: {
-          if (hasPrevious) MediaAction.skipToPrevious,
-          if (!buffering) ...{
-            if (player.playing) MediaAction.pause else MediaAction.pause
-          },
-          if (hasNext) MediaAction.skipToNext,
-          if (!_buffering) MediaAction.seek,
-          MediaAction.custom,
-        },
       )),
     );
 
@@ -129,6 +120,7 @@ class PlayerProvider extends ChangeNotifier {
         processingState: AudioProcessingState.loading,
         playing: false,
         updatePosition: Duration.zero,
+        controls: mediaControls,
       ));
 
       final source = await MediaClient().getMediaSource(media);
@@ -262,7 +254,7 @@ class PlayerProvider extends ChangeNotifier {
         ),
         if (hasPrevious) MediaControl.skipToPrevious,
         if (!buffering) ...{
-          if (player.playing) MediaControl.pause else MediaControl.pause
+          if (player.playing) MediaControl.pause else MediaControl.play
         },
         if (hasNext) MediaControl.skipToNext,
         MediaControl(
