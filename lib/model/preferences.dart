@@ -6,7 +6,15 @@ import 'package:tubesync/model/common.dart';
 
 part 'preferences.g.dart';
 
-enum Preference { materialYou, lastPlayed, subsPreferredLang }
+enum Preference {
+  // Appearance
+  materialYou,
+  // Auto Remember Stuff
+  lastPlayed,
+  subsPreferredLang,
+  // Media Notification
+  notifShowShuffle, notifShowRepeat
+}
 
 @Collection(ignore: {"props", "stringify"})
 class Preferences with EquatableMixin {
@@ -68,8 +76,7 @@ class Preferences with EquatableMixin {
 extension PreferenceExtension on IsarCollection<String, Preferences> {
   void setValue<T>(Preference key, T value) {
     final preference = Preferences(key.name)..set(value);
-
-    isar.writeAsyncWith(preference, (db, data) => db.preferences.put(data));
+    isar.write((db) => db.preferences.put(preference));
   }
 
   void remove(Preference key) => isar.write(
@@ -82,4 +89,7 @@ extension PreferenceExtension on IsarCollection<String, Preferences> {
   T? getValue<T>(Preference key, T? defaultValue) {
     return get(key.name)?.get<T>() ?? defaultValue;
   }
+
+  Stream<Preferences?> watch(Preference key) =>
+      watchObject(key.name, fireImmediately: true);
 }

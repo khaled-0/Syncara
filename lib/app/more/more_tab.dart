@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+import 'package:provider/provider.dart';
 import 'package:tubesync/app/more/about_screen.dart';
 import 'package:tubesync/app/more/downloads/active_downloads_screen.dart';
 import 'package:tubesync/app/more/preferences/preference_screen.dart';
@@ -57,7 +59,12 @@ class MoreTab extends StatelessWidget {
         ListTile(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const PreferenceScreen()),
+            MaterialPageRoute(
+              builder: (_) => Provider.value(
+                value: context.read<Isar>(),
+                child: const PreferenceScreen(),
+              ),
+            ),
           ),
           leading: const Icon(Icons.settings_rounded),
           title: const Text("Preferences"),

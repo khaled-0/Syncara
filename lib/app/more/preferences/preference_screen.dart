@@ -24,21 +24,51 @@ class PreferenceScreen extends StatelessWidget {
                 value: value == true,
                 onChanged: (value) {
                   AppTheme.dynamicColors.value = value;
-                  context.read<Isar>().preferences.setValue(
-                        Preference.materialYou,
-                        value,
-                      );
+                  preferences(context).setValue(Preference.materialYou, value);
                 },
                 secondary: const Icon(Icons.palette_rounded),
                 title: const Text("Material You"),
                 subtitle: const Text("Use dynamic colors when available"),
               ),
             ),
-          
+          _title(context, "Notification"),
+          StreamBuilder(
+            stream: preferences(context).watch(
+              Preference.notifShowShuffle,
+            ),
+            builder: (c, value) => SwitchListTile(
+              value: value.data?.get<bool>() != false,
+              onChanged: (value) => preferences(c).setValue(
+                Preference.notifShowShuffle,
+                value,
+              ),
+              secondary: const Icon(Icons.shuffle_rounded),
+              title: const Text("Show shuffle button"),
+              subtitle: const Text("May not work on all devices/platforms"),
+            ),
+          ),
+          StreamBuilder(
+            stream: preferences(context).watch(
+              Preference.notifShowRepeat,
+            ),
+            builder: (c, value) => SwitchListTile(
+              value: value.data?.get<bool>() != false,
+              onChanged: (value) => preferences(c).setValue(
+                Preference.notifShowRepeat,
+                value,
+              ),
+              secondary: const Icon(Icons.repeat_rounded),
+              title: const Text("Show repeat button"),
+              subtitle: const Text("May not work on all devices/platforms"),
+            ),
+          ),
         ],
       ),
     );
   }
+
+  IsarCollection<String, Preferences> preferences(BuildContext c) =>
+      c.read<Isar>().preferences;
 
   Widget _title(BuildContext context, String text) {
     return Padding(

@@ -137,7 +137,6 @@ class PlayerProvider extends ChangeNotifier {
       if (_disposed) return;
       if (media != nowPlaying.value) return;
       nextTrack(ignoreLoopMode: false);
-      print(err);
     } finally {
       notifyListeners();
     }
@@ -246,27 +245,29 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   List<MediaControl> get mediaControls => [
-        const MediaControl(
-          androidIcon: "drawable/shuffle_24px",
-          label: "Shuffle",
-          action: MediaAction.custom,
-          customAction: CustomMediaAction(name: "Shuffle"),
-        ),
+        if (_isar.preferences.getValue(Preference.notifShowShuffle, true)!)
+          const MediaControl(
+            androidIcon: "drawable/shuffle_24px",
+            label: "Shuffle",
+            action: MediaAction.custom,
+            customAction: CustomMediaAction(name: "Shuffle"),
+          ),
         if (hasPrevious) MediaControl.skipToPrevious,
         if (!buffering) ...{
           if (player.playing) MediaControl.pause else MediaControl.play
         },
         if (hasNext) MediaControl.skipToNext,
-        MediaControl(
-          androidIcon: switch (_loopMode) {
-            LoopMode.off => "drawable/repeat_off_24px",
-            LoopMode.one => "drawable/repeat_one_24px",
-            LoopMode.all => "drawable/repeat_all_24px",
-          },
-          label: "Repeat",
-          action: MediaAction.custom,
-          customAction: const CustomMediaAction(name: "Repeat"),
-        ),
+        if (_isar.preferences.getValue(Preference.notifShowRepeat, true)!)
+          MediaControl(
+            androidIcon: switch (_loopMode) {
+              LoopMode.off => "drawable/repeat_off_24px",
+              LoopMode.one => "drawable/repeat_one_24px",
+              LoopMode.all => "drawable/repeat_all_24px",
+            },
+            label: "Repeat",
+            action: MediaAction.custom,
+            customAction: const CustomMediaAction(name: "Repeat"),
+          ),
       ];
 
   BehaviorSubject<PlaybackState>? get notificationState {
