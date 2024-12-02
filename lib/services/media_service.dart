@@ -27,7 +27,7 @@ class MediaService extends BaseAudioHandler {
       ),
     );
 
-    JustAudioMediaKit.ensureInitialized();
+    JustAudioMediaKit.ensureInitialized(iOS: true);
   }
 
   /// Call this method for back and forth communication

@@ -1,6 +1,7 @@
 flutter_launcher_icons:
   android: true
-  ios: "assets/tubesync_ios.png"
+  ios: true
+  image_path_ios: "assets/tubesync_ios.png"
   image_path: "assets/tubesync.png"
   adaptive_icon_foreground_inset: 30
   adaptive_icon_foreground: "assets/tubesync.png"
