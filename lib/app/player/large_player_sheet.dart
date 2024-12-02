@@ -92,7 +92,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
           const ActionButtons(),
           const SizedBox(height: 36),
           queueView(context),
-          const SizedBox(height: 12),
+          const SizedBox(height: 18),
         ],
       ),
     );

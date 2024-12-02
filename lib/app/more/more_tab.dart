@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
@@ -47,22 +49,23 @@ class MoreTab extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         const Divider(),
-        ValueListenableBuilder(
-          valueListenable: AppTheme.dynamicColors,
-          builder: (_, value, __) => SwitchListTile(
-            value: value == true,
-            onChanged: (value) {
-              AppTheme.dynamicColors.value = value;
-              context.read<Isar>().preferences.setValue(
-                    Preference.materialYou,
-                    value,
-                  );
-            },
-            secondary: const Icon(Icons.palette_rounded),
-            title: const Text("Material You"),
-            subtitle: const Text("Use dynamic colors when available"),
+        if (!Platform.isIOS)
+          ValueListenableBuilder(
+            valueListenable: AppTheme.dynamicColors,
+            builder: (_, value, __) => SwitchListTile(
+              value: value == true,
+              onChanged: (value) {
+                AppTheme.dynamicColors.value = value;
+                context.read<Isar>().preferences.setValue(
+                      Preference.materialYou,
+                      value,
+                    );
+              },
+              secondary: const Icon(Icons.palette_rounded),
+              title: const Text("Material You"),
+              subtitle: const Text("Use dynamic colors when available"),
+            ),
           ),
-        ),
         const Divider(),
         ListTile(
           onTap: () => Navigator.push(
