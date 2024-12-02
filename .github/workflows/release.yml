@@ -104,3 +104,43 @@ jobs:
           path: |
             build/linux/x64/release/bundle/
             !build/linux/x64/release/bundle/tubesync_linux.zip
+
+
+  build-ios:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+          flutter-version-file: pubspec.yaml
+
+      - run: flutter --version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Perform Code Generation
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build iOS Release
+        run: flutter build ios --release --no-codesign
+
+      - name: Prepare .ipa
+        run: |
+          mkdir Payload
+          mv build/ios/iphoneos/Runner.app/ Payload
+          zip -qq -r -9 tubesync_unsigned.ipa Payload
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: tubesync_unsigned.ipa
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tubesync_ios_release
+          path: tubesync_unsigned.ipa
