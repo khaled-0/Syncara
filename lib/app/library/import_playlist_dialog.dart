@@ -19,9 +19,11 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
   String? error;
 
   Future<void> tryImportPlaylist() async {
+    if (loading) return;
     try {
       error = null;
       setState(() => loading = true);
+      FocusManager.instance.primaryFocus?.unfocus();
       if (input.text.isEmpty) throw "Empty url!";
       await context.read<LibraryProvider>().importPlaylist(input.text.trim());
       if (mounted) Navigator.pop(context);
@@ -95,8 +97,9 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
                       error!,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style:
-                          TextStyle(color: Theme.of(context).colorScheme.error),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                     ),
                   ),
                 ),
@@ -105,11 +108,16 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text("Cancel"),
-        ),
-        FilledButton(onPressed: tryImportPlaylist, child: const Text("Import"))
+        if (!loading)
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+        if (!loading)
+          FilledButton(
+            onPressed: tryImportPlaylist,
+            child: const Text("Import"),
+          ),
       ],
     );
   }

@@ -101,6 +101,7 @@ class LibraryTab extends StatelessWidget {
     void onPressed() => showDialog(
           context: context,
           useRootNavigator: true,
+          barrierDismissible: false,
           builder: (_) => ChangeNotifierProvider.value(
             value: context.read<LibraryProvider>(),
             child: const ImportPlaylistDialog(),

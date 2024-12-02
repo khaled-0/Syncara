@@ -98,6 +98,7 @@ class _HomeTabState extends State<HomeTab> {
     showDialog(
       context: context,
       useRootNavigator: true,
+      barrierDismissible: false,
       builder: (_) => ChangeNotifierProvider.value(
         value: context.read<LibraryProvider>(),
         child: ImportPlaylistDialog(url: url),
