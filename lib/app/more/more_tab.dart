@@ -1,12 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
-import 'package:provider/provider.dart';
-import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/more/about_screen.dart';
 import 'package:tubesync/app/more/downloads/active_downloads_screen.dart';
-import 'package:tubesync/model/preferences.dart';
+import 'package:tubesync/app/more/preferences/preference_screen.dart';
 
 class MoreTab extends StatelessWidget {
   MoreTab({super.key});
@@ -49,24 +44,6 @@ class MoreTab extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         const Divider(),
-        if (!Platform.isIOS)
-          ValueListenableBuilder(
-            valueListenable: AppTheme.dynamicColors,
-            builder: (_, value, __) => SwitchListTile(
-              value: value == true,
-              onChanged: (value) {
-                AppTheme.dynamicColors.value = value;
-                context.read<Isar>().preferences.setValue(
-                      Preference.materialYou,
-                      value,
-                    );
-              },
-              secondary: const Icon(Icons.palette_rounded),
-              title: const Text("Material You"),
-              subtitle: const Text("Use dynamic colors when available"),
-            ),
-          ),
-        const Divider(),
         ListTile(
           onTap: () => Navigator.push(
             context,
@@ -75,6 +52,15 @@ class MoreTab extends StatelessWidget {
           leading: const Icon(Icons.download_rounded),
           title: const Text("Download Queue"),
           subtitle: const Text("Manage running downloads"),
+        ),
+        const Divider(),
+        ListTile(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PreferenceScreen()),
+          ),
+          leading: const Icon(Icons.settings_rounded),
+          title: const Text("Preferences"),
         ),
         const Divider(),
         ListTile(
