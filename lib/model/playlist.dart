@@ -46,6 +46,5 @@ class Playlist with EquatableMixin {
   bool get stringify => true;
 
   @override
-  List<Object?> get props =>
-      [id, title, author, thumbnail, videoCount, description, videoIds];
+  List<Object?> get props => [id];
 }

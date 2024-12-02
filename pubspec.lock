@@ -1286,11 +1286,12 @@ packages:
   youtube_explode_dart:
     dependency: "direct main"
     description:
-      name: youtube_explode_dart
-      sha256: "6d5f9a0a55d02743e59ca495887432814bddb6b11400b08ee0eeaf69c83d0089"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.5"
+      path: "."
+      ref: patch-1
+      resolved-ref: b20c367bf29aba24b8b4074187274ecc483cf1bc
+      url: "https://github.com/khaled-0/youtube_explode_dart.git"
+    source: git
+    version: "2.3.6"
 sdks:
   dart: ">=3.5.3 <4.0.0"
   flutter: ">=3.24.5"

@@ -46,6 +46,5 @@ class Media with EquatableMixin {
   bool get stringify => true;
 
   @override
-  List<Object?> get props =>
-      [id, title, author, downloaded, description, durationMs, thumbnail];
+  List<Object?> get props => [id, downloaded, durationMs];
 }
