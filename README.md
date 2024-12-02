@@ -66,6 +66,12 @@ Also available in your favourite app stores
   </a>
 </p>
 
+### iOS
+
+Unsigned IOS (.ipa) builds are available in the [releases section on GitHub](https://github.com/khaled-0/TubeSync/releases). You will have to use [Sideloadly](https://sideloadly.io/) to install it.
+
+**NOTE:** AltStore and other sideloading methods may or may not work.
+
 <br /> 
 Alternatively, you can try the nightly (unstable) build:
 
