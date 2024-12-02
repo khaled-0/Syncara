@@ -11,4 +11,4 @@ PRODUCT_NAME = TubeSync
 PRODUCT_BUNDLE_IDENTIFIER = app.tubesync
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = An open-source application available for Android, iOS, MacOS, and Windows.
+PRODUCT_COPYRIGHT = An open-source GPLv3 software available for Android, iOS, MacOS, Linux and Windows(ugh).
