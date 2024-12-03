@@ -131,7 +131,9 @@ jobs:
         run: flutter build macos --release
 
       - name: Prepare bundle
-        run: zip -r tubesync_macos.zip build/macos/Build/Products/Release/TubeSync.app
+        run: |
+          mv build/macos/Build/Products/Release/*.app ./
+          zip -r tubesync_macos.zip *.app
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
