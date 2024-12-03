@@ -11,9 +11,11 @@ enum Preference {
   materialYou,
   // Auto Remember Stuff
   lastPlayed,
-  subsPreferredLang,
+  subsLang,
+  loopMode,
   // Media Notification
-  notifShowShuffle, notifShowRepeat
+  notifShowShuffle,
+  notifShowRepeat,
 }
 
 @Collection(ignore: {"props", "stringify"})

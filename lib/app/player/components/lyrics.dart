@@ -31,7 +31,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
 
   late String preferredLanguage =
       context.read<Isar>().preferences.getValue<String>(
-            Preference.subsPreferredLang,
+            Preference.subsLang,
             PlatformDispatcher.instance.locale.languageCode,
           )!;
 
@@ -198,7 +198,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
       setState(() => preferredLanguage = selection.langCode);
       if (mounted) {
         context.read<Isar>().preferences.setValue(
-              Preference.subsPreferredLang,
+              Preference.subsLang,
               preferredLanguage,
             );
       }

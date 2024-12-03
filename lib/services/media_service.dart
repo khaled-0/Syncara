@@ -72,22 +72,6 @@ class MediaService extends BaseAudioHandler {
   Future<void> skipToNext() async => _playerProvider?.nextTrack();
 
   @override
-  Future<void> rewind() async {
-    _playerProvider?.player
-        .seek(_playerProvider!.player.position - const Duration(seconds: 10))
-        .whenComplete(() => playbackState.add(playbackState.value
-            .copyWith(updatePosition: _playerProvider!.player.position)));
-  }
-
-  @override
-  Future<void> fastForward() async {
-    _playerProvider?.player
-        .seek(_playerProvider!.player.position + const Duration(seconds: 10))
-        .whenComplete(() => playbackState.add(playbackState.value
-            .copyWith(updatePosition: _playerProvider!.player.position)));
-  }
-
-  @override
   Future<void> customAction(String name, [Map<String, dynamic>? extras]) async {
     switch (name) {
       case "Shuffle":

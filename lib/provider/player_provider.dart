@@ -34,7 +34,8 @@ class PlayerProvider extends ChangeNotifier {
   bool get buffering => _buffering;
 
   // We can't use the AudioPlayer based one because nextTrack isn't called
-  LoopMode _loopMode = LoopMode.all;
+  late LoopMode _loopMode = LoopMode.values[_isar.preferences
+      .getValue<int>(Preference.loopMode, LoopMode.all.index)!];
 
   LoopMode get loopMode => _loopMode;
 
@@ -73,6 +74,7 @@ class PlayerProvider extends ChangeNotifier {
             ? AudioProcessingState.loading
             : AudioProcessingState.values.byName(state.processingState.name),
         controls: mediaControls,
+        systemActions: mediaActions,
       )),
     );
 
@@ -121,6 +123,7 @@ class PlayerProvider extends ChangeNotifier {
         playing: false,
         updatePosition: Duration.zero,
         controls: mediaControls,
+        systemActions: mediaActions,
       ));
 
       final source = await MediaClient().getMediaSource(media);
@@ -159,9 +162,13 @@ class PlayerProvider extends ChangeNotifier {
     );
   }
 
-  bool get hasPrevious => _playlist.indexOf(nowPlaying.value) > 0;
+  bool get hasPrevious {
+    if (loopMode == LoopMode.all) return true;
+    return _playlist.indexOf(nowPlaying.value) > 0;
+  }
 
   bool get hasNext {
+    if (loopMode == LoopMode.all) return true;
     return _playlist.indexOf(nowPlaying.value) < _playlist.length - 1;
   }
 
@@ -171,30 +178,31 @@ class PlayerProvider extends ChangeNotifier {
     // Force notification update
     notificationState?.add(notificationState!.value.copyWith(
       controls: mediaControls,
+      systemActions: mediaActions,
     ));
+    _isar.preferences.setValue<int>(Preference.loopMode, _loopMode.index);
     notifyListeners();
   }
 
   void previousTrack() {
-    final currentIndex = _playlist.indexOf(nowPlaying.value);
-    if (currentIndex == 0) return;
-    nowPlaying.value = _playlist[currentIndex - 1];
+    if (!hasPrevious) return;
+    final current = _playlist.indexOf(nowPlaying.value);
+    if (current == 0 && loopMode == LoopMode.all) {
+      nowPlaying.value = _playlist.last;
+      return;
+    }
+    nowPlaying.value = _playlist[current - 1];
   }
 
   void nextTrack({bool ignoreLoopMode = true}) {
-    final currentIndex = _playlist.indexOf(nowPlaying.value);
+    final current = _playlist.indexOf(nowPlaying.value);
     final int? nextIndex = switch (_loopMode) {
-      LoopMode.off => hasNext ? currentIndex + 1 : null,
-      LoopMode.all => hasNext ? currentIndex + 1 : 0,
-      LoopMode.one => currentIndex,
+      LoopMode.off => hasNext ? current + 1 : null,
+      LoopMode.all => current + 1 == playlist.length ? 0 : current + 1,
+      LoopMode.one => ignoreLoopMode && hasNext ? current + 1 : current,
     };
 
-    if (currentIndex == nextIndex) {
-      if (ignoreLoopMode && hasNext) {
-        nowPlaying.value = _playlist[nextIndex! + 1];
-        return;
-      }
-
+    if (current == nextIndex) {
       player.seek(Duration.zero);
       player.play();
     } else if (nextIndex != null) {
@@ -243,6 +251,8 @@ class PlayerProvider extends ChangeNotifier {
   void notifyListeners() {
     if (!_disposed) super.notifyListeners();
   }
+
+  Set<MediaAction> get mediaActions => {if (!buffering) MediaAction.seek};
 
   List<MediaControl> get mediaControls => [
         if (_isar.preferences.getValue(Preference.notifShowShuffle, true)!)
