@@ -9,40 +9,44 @@ Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 - Offline downloads
 - Background playback
 - Fluid gesture navigations
+- Lyrics support
 
 ## Look & Feel
 
 - Follows modern material-3 interface design guidelines
 - Adaptive and responsive layout
+- Dark and Night mode support
+- Matches your system color scheme automatically
 
 ### Mobile
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0eb81a73-740f-4c8c-9e7a-60fe0d3fa52f" width="300" alt="Screenshot 1">
-  <img src="https://github.com/user-attachments/assets/65e4192c-9cf9-4592-9f97-36da8251915b" width="300" alt="Screenshot 2">
-  <img src="https://github.com/user-attachments/assets/faac1962-0599-448e-b98a-d642d409d070" width="300" alt="Screenshot 3">
+  <img src="./docs/screenshots/android_1.png" width="24%" alt="Screenshot 1">
+  <img src="./docs/screenshots/android_2.png" width="24%" alt="Screenshot 2">
+  <img src="./docs/screenshots/android_3.png" width="24%" alt="Screenshot 3">
+  <img src="./docs/screenshots/android_4.png" width="24%" alt="Screenshot 4">
 </p>
 
 ### Desktop
 
 <p align="center">
-  <img src="https://i.ibb.co.com/DtpvdKh/image.png" width="480" alt="Screenshot 3">
-  <img src="https://github.com/user-attachments/assets/7d312ec5-a298-4a68-a1f6-8a740ee8d0a8" width="480" alt="Screenshot 1">
-  <img src="https://github.com/user-attachments/assets/8577cf94-d86c-4ddf-b62d-e4363cf2759b" width="480" alt="Screenshot 2">
-</p>
-
-### Music Sheet
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/fb942283-79a4-4a14-81c2-cee0ee6e90d6" width="360" alt="Screenshot 3"> 
-  <img src="https://i.ibb.co.com/BgKSwTF/image.png" width="360" alt="Screenshot 4">
+ <img src="./docs/screenshots/linux_1.png" width="32%" alt="Screenshot 1">
+  <img src="./docs/screenshots/linux_2.png" width="32%" alt="Screenshot 2">
+  <img src="./docs/screenshots/linux_3.png" width="32%" alt="Screenshot 3">
+  <img src="./docs/screenshots/macos_1.png" width="97%" alt="Screenshot 4">
 </p>
 
 ## Download
 
-To download TubeSync, you can access the stable release from the [releases section on GitHub](https://github.com/khaled-0/TubeSync/releases).
+TubeSync for all platform are primarily released on Github.
 
-Also available in your favourite app stores
+ <p align="center">
+  <a href="https://github.com/khaled-0/TubeSync/releases/latest" style="text-decoration:none" target="_blank">
+    <img width="200" src="https://raw.githubusercontent.com/khaled-0/TubeSync/refs/heads/main/docs/badges/get-it-on-github.png" alt="Get it on GitHub"/>
+  </a>
+</p>
+
+Also available on your favourite app stores
 
 ### Android
 
@@ -66,11 +70,13 @@ Also available in your favourite app stores
   </a>
 </p>
 
-### iOS
+### iOS and MacOS
 
-Unsigned IOS (.ipa) builds are available in the [releases section on GitHub](https://github.com/khaled-0/TubeSync/releases). You will have to use [Sideloadly](https://sideloadly.io/) to install it.
+**IOS:** Unsigned (.ipa) builds are available. [Download (IOS) from here](https://github.com/khaled-0/TubeSync/releases/latest/download/tubesync_unsigned.ipa). <br>
+**Note:** Use [Sideloadly](https://sideloadly.io/) to install it.
+AltStore and other sideloading methods may or may not work.
 
-**NOTE:** AltStore and other sideloading methods may or may not work.
+**MacOS**: Available directly as app (.app) [Download (MacOS) from here](https://github.com/khaled-0/TubeSync/releases/latest/download/tubesync_macos.zip)
 
 <br /> 
 Alternatively, you can try the nightly (unstable) build:

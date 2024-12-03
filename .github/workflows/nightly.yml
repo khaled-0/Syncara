@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches: ["main"]
+    paths-ignore:
+      - "*.md"
+      - "docs/**"
 
 jobs:
   build-android:
