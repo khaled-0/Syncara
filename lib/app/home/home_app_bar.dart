@@ -13,10 +13,14 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: Padding(
           padding: const EdgeInsets.all(12),
           child: ClipRRect(
+            clipBehavior: Clip.hardEdge,
             borderRadius: BorderRadius.circular(38),
-            child: Image.asset(
-              "assets/tubesync_mono.png",
-              color: Theme.of(context).colorScheme.primary,
+            child: ColoredBox(
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+              child: Image.asset(
+                "assets/icons/tubesync_mono.webp",
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
             ),
           ),
         ),

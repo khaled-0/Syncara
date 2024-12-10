@@ -35,12 +35,16 @@ class MoreTab extends StatelessWidget {
         Center(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(80),
-            child: Image.asset(
-              "assets/tubesync_mono.png",
-              width: 80,
-              height: 80,
-              color: Theme.of(context).colorScheme.primary,
-              fit: BoxFit.fill,
+            clipBehavior: Clip.hardEdge,
+            child: ColoredBox(
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+              child: Image.asset(
+                "assets/icons/tubesync_mono.webp",
+                width: 80,
+                height: 80,
+                color: Theme.of(context).colorScheme.primaryContainer,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
         ),

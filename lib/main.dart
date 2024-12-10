@@ -21,7 +21,6 @@ void main() async {
 
   if (AppTheme.isDesktop) {
     await WindowManager.instance.ensureInitialized();
-    WindowManager.instance.setIcon("assets/tubesync.png");
     WindowManager.instance.setMinimumSize(const Size(480, 360));
   }
 

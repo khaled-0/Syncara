@@ -33,7 +33,6 @@ jobs:
       - name: Perform Prerequisites
         run: |
           flutter pub run flutter_launcher_icons -f flutter_launcher_icons.yaml
-          flutter pub run flutter_native_splash:create
           flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Decode Release Key
@@ -80,7 +79,6 @@ jobs:
       - name: Perform Prerequisites
         run: |
           flutter pub run flutter_launcher_icons -f flutter_launcher_icons.yaml
-          flutter pub run flutter_native_splash:create
           flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Build Linux Release
@@ -123,7 +121,6 @@ jobs:
       - name: Perform Prerequisites
         run: |
           flutter pub run flutter_launcher_icons -f flutter_launcher_icons.yaml
-          flutter pub run flutter_native_splash:create
           flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Build iOS Release
