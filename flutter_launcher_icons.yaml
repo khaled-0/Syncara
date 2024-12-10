@@ -10,7 +10,7 @@ flutter_launcher_icons:
 
   ios: true
   image_path_ios: "assets/icons/tubesync_ios.webp"
-  remove_alpha_ios: true
+  # remove_alpha_ios: true
 
   macos:
     generate: true

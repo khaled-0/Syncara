@@ -1287,11 +1287,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: patch-1
-      resolved-ref: b20c367bf29aba24b8b4074187274ecc483cf1bc
-      url: "https://github.com/khaled-0/youtube_explode_dart.git"
+      ref: HEAD
+      resolved-ref: "3ddec6fa145c94f92ec089ee2462842c1170b988"
+      url: "https://github.com/Hexer10/youtube_explode_dart.git"
     source: git
-    version: "2.3.6"
+    version: "2.3.7"
 sdks:
   dart: ">=3.5.3 <4.0.0"
   flutter: ">=3.24.5"
