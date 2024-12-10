@@ -6,9 +6,9 @@
   <summary>Sync YouTube playlists offline</summary>
   <url type="homepage">https://github.com/khaled-0/TubeSync/blob/main/README.md</url>
   <url type="bugtracker">https://github.com/khaled-0/TubeSync/issues</url>
-  <!-- <url type="donation">TODO</url> -->
+  <url type="donation">https://patreon.com/khaled_0</url>
   <url type="vcs-browser">https://github.com/khaled-0/TubeSync/</url>
-  <!-- <url type="contribute">TODO</url> -->
+  <url type="contribute">https://github.com/khaled-0/TubeSync/pulls</url>
 
   <branding>
     <color type="primary" scheme_preference="light">#abcdfe</color>
@@ -60,19 +60,20 @@
   <launchable type="desktop-id">io.github.khaled_0.TubeSync.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://i.ibb.co.com/DtpvdKh/image.png</image>
+      <image>
+        https://raw.githubusercontent.com/khaled-0/TubeSync/refs/heads/main/docs/screenshots/linux_3.png</image>
     </screenshot>
     <screenshot>
-      <image>https://i.ibb.co.com/qpYZf54/Screenshot-From-2024-11-12-21-56-35.png</image>
+      <image>
+        https://raw.githubusercontent.com/khaled-0/TubeSync/refs/heads/main/docs/screenshots/macos_1.png</image>
     </screenshot>
     <screenshot>
-      <image>https://i.ibb.co.com/k6GH2j7/image.png</image>
+      <image>
+        https://raw.githubusercontent.com/khaled-0/TubeSync/refs/heads/main/docs/screenshots/linux_2.png</image>
     </screenshot>
     <screenshot>
-      <image>https://i.ibb.co.com/KNQ3kMm/Screenshot-From-2024-11-12-21-56-01.png</image>
-    </screenshot>
-    <screenshot>
-      <image>https://i.ibb.co.com/QrJHTLz/Screenshot-From-2024-11-12-21-55-55.png</image>
+      <image>
+        https://raw.githubusercontent.com/khaled-0/TubeSync/refs/heads/main/docs/screenshots/linux_1.png</image>
     </screenshot>
   </screenshots>
 
