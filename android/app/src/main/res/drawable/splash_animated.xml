@@ -46,17 +46,21 @@
             tools:ignore="UnusedAttribute">
             <set>
                 <objectAnimator
-                    android:duration="1000"
-                    android:interpolator="@android:interpolator/overshoot"
+                    android:duration="1200"
+                    android:interpolator="@android:anim/linear_interpolator"
                     android:propertyName="scaleX"
-                    android:valueFrom="0"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse"
+                    android:valueFrom="0.7"
                     android:valueTo="1"
                     android:valueType="floatType" />
                 <objectAnimator
-                    android:duration="1000"
-                    android:interpolator="@android:interpolator/overshoot"
+                    android:duration="1200"
+                    android:interpolator="@android:anim/linear_interpolator"
                     android:propertyName="scaleY"
-                    android:valueFrom="0"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse"
+                    android:valueFrom="0.7"
                     android:valueTo="1"
                     android:valueType="floatType" />
             </set>
