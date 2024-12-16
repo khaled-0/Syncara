@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tubesync/app/player/components/action_buttons.dart';
 import 'package:tubesync/app/player/components/artwork.dart';
 import 'package:tubesync/app/player/components/lyrics.dart';
+import 'package:tubesync/app/player/components/player_menu_sheet.dart';
 import 'package:tubesync/app/player/components/seekbar.dart';
 import 'package:tubesync/app/player/player_queue_sheet.dart';
 import 'package:tubesync/model/media.dart';
@@ -44,7 +45,15 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              useSafeArea: true,
+              backgroundColor: Colors.transparent,
+              builder: (_) => ChangeNotifierProvider.value(
+                value: context.read<PlayerProvider>(),
+                child: const PlayerMenuSheet(),
+              ),
+            ),
             icon: const Icon(Icons.more_vert_rounded),
           ),
           const SizedBox(width: 8),

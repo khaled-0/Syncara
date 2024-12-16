@@ -33,6 +33,17 @@ class PlayerProvider extends ChangeNotifier {
 
   bool get buffering => _buffering;
 
+  // Sleep Timer
+  bool _sleepAfterSongEnd = false;
+  Timer? _sleepTimerCountDown;
+  Duration? _sleepAfterDuration;
+  final StreamController<Duration?> _sleepTimerState =
+      StreamController.broadcast();
+
+  Stream<Duration?> get sleepTimerCountdown => _sleepTimerState.stream;
+
+  Duration? get sleepTimer => _sleepAfterDuration;
+
   // We can't use the AudioPlayer based one because nextTrack isn't called
   late LoopMode _loopMode = LoopMode.values[_isar.preferences
       .getValue<int>(Preference.loopMode, LoopMode.all.index)!];
@@ -78,6 +89,16 @@ class PlayerProvider extends ChangeNotifier {
       )),
     );
 
+    _sleepTimerState.stream.listen((event) {
+      if (event == null) {
+        _sleepTimerCountDown?.cancel();
+      } else if (event <= Duration.zero) {
+        player.stop();
+        _sleepAfterSongEnd = false;
+        _sleepTimerState.add(null);
+      }
+    });
+
     beginPlay();
   }
 
@@ -100,6 +121,7 @@ class PlayerProvider extends ChangeNotifier {
       await player.stop();
       _disposed = false;
       await player.seek(Duration.zero);
+      if (_sleepAfterSongEnd) setSleepTimer(afterSong: _sleepAfterSongEnd);
 
       final thumbnail = MediaClient().thumbnailFile(
         nowPlaying.value.thumbnail.medium,
@@ -136,6 +158,7 @@ class PlayerProvider extends ChangeNotifier {
       // Fuck. I wasted whole day on this
       player.play();
       _buffering = false;
+      if (_sleepAfterSongEnd) setSleepTimer(afterSong: _sleepAfterSongEnd);
     } catch (err) {
       if (_disposed) return;
       if (media != nowPlaying.value) return;
@@ -236,12 +259,55 @@ class PlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Passing null duration & afterSong will cancel the timer
+  void setSleepTimer({Duration? duration, bool? afterSong}) {
+    if (duration == null && afterSong == null) {
+      // Cancel sleepTimer if null
+      _sleepTimerState.add(null);
+      return;
+    }
+
+    _sleepTimerCountDown?.cancel();
+    _sleepAfterSongEnd = afterSong == true;
+    _sleepAfterDuration = duration;
+
+    if (_sleepAfterSongEnd) {
+      final nowPlayingDuration = nowPlaying.value.duration;
+      if (nowPlayingDuration == null) return _sleepTimerState.add(null);
+      _sleepAfterDuration = nowPlayingDuration - player.position;
+    }
+
+    void countDown(Duration elapsed) {
+      if (!_sleepAfterSongEnd) {
+        final timeLeft = _sleepAfterDuration! - elapsed;
+        _sleepAfterDuration = timeLeft;
+        _sleepTimerState.add(timeLeft);
+        return;
+      }
+
+      final nowPlayingDuration = nowPlaying.value.duration;
+      if (nowPlayingDuration != null) {
+        _sleepTimerState.add(nowPlayingDuration - player.position);
+      } else {
+        _sleepTimerState.add(null);
+      }
+    }
+
+    countDown(Duration.zero);
+    _sleepTimerCountDown = Timer.periodic(const Duration(seconds: 1), (_) {
+      // Don't countdown if paused
+      if (!buffering && player.playing) countDown(const Duration(seconds: 1));
+    });
+  }
+
   bool _disposed = false;
 
   @override
   void dispose() {
     _disposed = true;
     nowPlaying.dispose();
+    _sleepTimerCountDown?.cancel();
+    _sleepTimerState.close();
     player.stop().whenComplete(player.dispose);
     MediaService().unbind(this);
     super.dispose();

@@ -94,13 +94,7 @@ class MiniPlayerSheet extends StatelessWidget {
     return ListTile(
       onTap: () => openPlayerSheet(context),
       contentPadding: const EdgeInsets.only(left: 8, right: 4),
-      leading: CircleAvatar(
-        radius: 24,
-        backgroundImage: NetworkToFileImage(
-          url: media.thumbnail.medium,
-          file: MediaClient().thumbnailFile(media.thumbnail.medium),
-        ),
-      ),
+      leading: leading(context, media),
       titleTextStyle: Theme.of(context).textTheme.bodyMedium,
       title: Column(
         mainAxisSize: MainAxisSize.min,
@@ -163,6 +157,29 @@ class MiniPlayerSheet extends StatelessWidget {
             ),
             closeButton!
           ],
+        );
+      },
+    );
+  }
+
+  Widget leading(BuildContext context, Media media) {
+    return StreamBuilder(
+      stream: context.read<PlayerProvider>().sleepTimerCountdown,
+      initialData: context.read<PlayerProvider>().sleepTimer,
+      builder: (context, snapshot) {
+        if (snapshot.data == null) {
+          return CircleAvatar(
+            radius: 24,
+            backgroundImage: NetworkToFileImage(
+              url: media.thumbnail.medium,
+              file: MediaClient().thumbnailFile(media.thumbnail.medium),
+            ),
+          );
+        }
+        //TODO: Some Top To Bottom Indicator BG
+        return const CircleAvatar(
+          radius: 24,
+          child: Icon(Icons.bedtime_rounded, size: 24),
         );
       },
     );
