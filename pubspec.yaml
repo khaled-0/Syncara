@@ -34,8 +34,7 @@ dependencies:
 
   # Youtube / Network Client
   youtube_explode_dart:
-    git:
-      url: https://github.com/Hexer10/youtube_explode_dart.git
+    git: https://github.com/Hexer10/youtube_explode_dart.git
   background_downloader: ^8.8.0
   internet_connection_checker_plus: ^2.5.2
 
@@ -72,8 +71,8 @@ dependencies:
   #  https://github.com/KasemJaffer/receive_sharing_intent/pull/333
   receive_sharing_intent:
     git:
-      url: https://github.com/ad-angelo/receive_sharing_intent.git
-      ref: deec27f3dd36d6c9f51c22d0026baa7b6f0850a3
+      url: https://github.com/KasemJaffer/receive_sharing_intent.git
+      ref: 2cea396843cd3ab1b5ec4334be4233864637874e
 
 dev_dependencies:
   flutter_test:
