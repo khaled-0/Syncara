@@ -278,19 +278,18 @@ class PlayerProvider extends ChangeNotifier {
     }
 
     void countDown(Duration elapsed) {
-      if (!_sleepAfterSongEnd) {
-        final timeLeft = _sleepAfterDuration! - elapsed;
-        _sleepAfterDuration = timeLeft;
-        _sleepTimerState.add(timeLeft);
+      final nowPlayingDuration = nowPlaying.value.duration;
+      if (_sleepAfterSongEnd && nowPlayingDuration == null) {
+        _sleepTimerState.add(null);
         return;
       }
 
-      final nowPlayingDuration = nowPlaying.value.duration;
-      if (nowPlayingDuration != null) {
-        _sleepTimerState.add(nowPlayingDuration - player.position);
-      } else {
-        _sleepTimerState.add(null);
-      }
+      final timeLeft = _sleepAfterSongEnd
+          ? nowPlayingDuration! - player.position
+          : _sleepAfterDuration! - elapsed;
+
+      _sleepAfterDuration = timeLeft;
+      _sleepTimerState.add(timeLeft);
     }
 
     countDown(Duration.zero);
