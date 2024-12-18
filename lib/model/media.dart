@@ -6,6 +6,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 part 'media.g.dart';
 
 @Collection(ignore: {"props", "stringify"})
+// TODO Cache download in DB and update asynchronously
 class Media with EquatableMixin {
   @Id()
   final String id;
@@ -13,7 +14,7 @@ class Media with EquatableMixin {
 
   final String? description;
 
-  int? durationMs;
+  final int? durationMs;
 
   final Thumbnails thumbnail;
 

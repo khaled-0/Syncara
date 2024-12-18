@@ -64,8 +64,8 @@ class LyricMetadata with EquatableMixin {
 
 @JsonSerializable()
 class LastPlayedMedia with EquatableMixin {
-  String playlistId;
-  String mediaId;
+  final String playlistId;
+  final String mediaId;
 
   LastPlayedMedia({
     required this.playlistId,

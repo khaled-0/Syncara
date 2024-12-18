@@ -117,7 +117,7 @@ class _HomeTabState extends State<HomeTab> {
     return HeroControllerScope(
       controller: MaterialApp.createMaterialHeroController(),
       child: NavigatorPopHandler(
-        onPop: () => homeNavigator.currentState?.pop(),
+        onPopWithResult: (_) => homeNavigator.currentState?.pop(),
         child: Navigator(
           key: homeNavigator,
           onGenerateRoute: (settings) => MaterialPageRoute(

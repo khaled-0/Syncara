@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 import 'package:tubesync/model/common.dart';
 
@@ -18,8 +17,8 @@ enum Preference {
   notifShowRepeat,
 }
 
-@Collection(ignore: {"props", "stringify"})
-class Preferences with EquatableMixin {
+@Collection()
+class Preferences {
   @Id()
   final String key;
 
@@ -66,13 +65,6 @@ class Preferences with EquatableMixin {
         throw UnimplementedError("$T is not defined");
     }
   }
-
-  @override
-  bool get stringify => true;
-
-  @override
-  List<Object?> get props =>
-      [stringValue, intValue, doubleValue, boolValue, jsonValue];
 }
 
 extension PreferenceExtension on IsarCollection<String, Preferences> {

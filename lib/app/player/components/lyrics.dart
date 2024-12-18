@@ -97,12 +97,12 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
       shaderCallback: (Rect bounds) {
         return LinearGradient(
           colors: [
-            Colors.white.withOpacity(0.2),
-            Colors.white.withOpacity(0.7),
+            Colors.white.withAlpha(55),
+            Colors.white.withAlpha(180),
             Colors.white,
             Colors.white,
-            Colors.white.withOpacity(0.7),
-            Colors.white.withOpacity(0.2),
+            Colors.white.withAlpha(180),
+            Colors.white.withAlpha(55),
           ],
           stops: [0.1, 0.2, 0.3, 0.8, 0.9, 1],
           begin: Alignment.topCenter,
