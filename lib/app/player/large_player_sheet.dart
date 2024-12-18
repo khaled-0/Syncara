@@ -4,7 +4,7 @@ import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/player/components/action_buttons.dart';
 import 'package:tubesync/app/player/components/artwork.dart';
 import 'package:tubesync/app/player/components/lyrics.dart';
-import 'package:tubesync/app/player/components/player_menu_sheet.dart';
+import 'package:tubesync/app/player/player_menu_sheet.dart';
 import 'package:tubesync/app/player/components/seekbar.dart';
 import 'package:tubesync/app/player/components/sleep_time_indicator.dart';
 import 'package:tubesync/app/player/player_queue_sheet.dart';

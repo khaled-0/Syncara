@@ -92,9 +92,10 @@ class PlayerProvider extends ChangeNotifier {
     _sleepTimerState.stream.listen((event) {
       if (event == null) {
         _sleepTimerCountDown?.cancel();
+        _sleepAfterSongEnd = false;
+        _sleepAfterDuration = null;
       } else if (event <= Duration.zero) {
         player.stop();
-        _sleepAfterSongEnd = false;
         _sleepTimerState.add(null);
       }
     });

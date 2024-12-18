@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/app/player/components/player_menu_sheet.dart';
+import 'package:tubesync/app/player/player_menu_sheet.dart';
 import 'package:tubesync/extensions.dart';
 import 'package:tubesync/provider/player_provider.dart';
 

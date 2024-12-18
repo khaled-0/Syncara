@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tubesync/app/more/preferences/components/choice_dialog.dart';
 import 'package:tubesync/provider/player_provider.dart';
 
 class PlayerMenuSheet extends StatelessWidget {
@@ -43,38 +44,19 @@ class PlayerMenuSheet extends StatelessWidget {
   static Future<bool> setSleepTimerPopup(BuildContext context) async {
     final result = await showDialog<Duration?>(
       context: context,
-      builder: (context) => SimpleDialog(
-        title: const Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: 8,
-          children: [
-            Icon(Icons.bedtime_rounded, size: 32),
-            Text('Stop playing after'),
-          ],
-        ),
-        children: [
-          SimpleDialogOption(
-            onPressed: () => Navigator.pop(context, Duration.zero),
-            child: const Text('Never'),
-          ),
-          for (final i in [10, 20, 30, 40, 50])
-            SimpleDialogOption(
-              onPressed: () => Navigator.pop(context, Duration(minutes: i)),
-              child: Text('$i Minutes'),
-            ),
-          for (final i in [1, 2])
-            SimpleDialogOption(
-              onPressed: () => Navigator.pop(context, Duration(hours: i)),
-              child: Text('$i Hours'),
-            ),
-          SimpleDialogOption(
-            onPressed: () => Navigator.pop(
-              context,
-              const Duration(seconds: -1),
-            ),
-            child: const Text('End of media'),
-          ),
-        ],
+      builder: (context) => ChoiceDialog<Duration>(
+        title: "Stop playing after",
+        icon: const Icon(Icons.bedtime_rounded, size: 38),
+        options: {
+          "Never": Duration.zero,
+          for (final i in [10, 20, 30, 40, 50]) ...{
+            "$i Minutes": Duration(minutes: i),
+          },
+          for (final i in [1, 2]) ...{
+            "$i Hours": Duration(hours: i),
+          },
+          "End of media": const Duration(seconds: -1),
+        },
       ),
     );
 

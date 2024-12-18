@@ -11,7 +11,7 @@ class Artwork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
       child: ValueListenableBuilder(
         valueListenable: context.read<PlayerProvider>().nowPlaying,
         builder: (context, media, child) => StreamBuilder(
