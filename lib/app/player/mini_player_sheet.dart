@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
+import 'package:tubesync/app/player/components/sleep_time_indicator.dart';
 import 'package:tubesync/app/player/large_player_sheet.dart';
 import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/media.dart';
@@ -166,22 +167,14 @@ class MiniPlayerSheet extends StatelessWidget {
     return StreamBuilder(
       stream: context.read<PlayerProvider>().sleepTimerCountdown,
       initialData: context.read<PlayerProvider>().sleepTimer,
-      builder: (context, snapshot) {
-        if (snapshot.data == null) {
-          return CircleAvatar(
-            radius: 24,
-            backgroundImage: NetworkToFileImage(
-              url: media.thumbnail.medium,
-              file: MediaClient().thumbnailFile(media.thumbnail.medium),
-            ),
-          );
-        }
-        //TODO: Some Top To Bottom Indicator BG
-        return const CircleAvatar(
-          radius: 24,
-          child: Icon(Icons.bedtime_rounded, size: 24),
-        );
-      },
+      builder: (context, snapshot) => CircleAvatar(
+        radius: 24,
+        backgroundImage: NetworkToFileImage(
+          url: media.thumbnail.medium,
+          file: MediaClient().thumbnailFile(media.thumbnail.medium),
+        ),
+        child: const SleepTimeIndicator.static(),
+      ),
     );
   }
 
