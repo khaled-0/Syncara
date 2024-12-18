@@ -5,6 +5,7 @@ import 'package:tubesync/app/player/components/artwork.dart';
 import 'package:tubesync/app/player/components/lyrics.dart';
 import 'package:tubesync/app/player/components/player_menu_sheet.dart';
 import 'package:tubesync/app/player/components/seekbar.dart';
+import 'package:tubesync/app/player/components/sleep_time_indicator.dart';
 import 'package:tubesync/app/player/player_queue_sheet.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/provider/player_provider.dart';
@@ -93,6 +94,16 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                 const Artwork(),
                 const Lyrics(),
                 const Center(child: Text("Soon")),
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 6),
+            child: Row(
+              spacing: 16,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SleepTimeIndicator(),
               ],
             ),
           ),

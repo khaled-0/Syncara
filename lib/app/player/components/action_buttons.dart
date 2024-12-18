@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/app/player/components/player_menu_sheet.dart';
-import 'package:tubesync/extensions.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:tubesync/provider/player_provider.dart';
 
@@ -14,25 +12,13 @@ class ActionButtons extends StatelessWidget {
     return StreamBuilder(
       stream: context.read<PlayerProvider>().player.playerStateStream,
       initialData: context.read<PlayerProvider>().player.playerState,
-      builder: (context, playerState) => Stack(
-        alignment: Alignment.center,
+      builder: (context, playerState) => Row(
+        mainAxisSize: MainAxisSize.min,
+        spacing: 18,
         children: [
-          Positioned(
-            right: 12,
-            child: _sleepTimerIndicator(context),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 18,
-              children: [
-                _previousButton(context),
-                _playPauseButton(context, playerState),
-                _nextButton(context),
-              ],
-            ),
-          ),
+          _previousButton(context),
+          _playPauseButton(context, playerState),
+          _nextButton(context),
         ],
       ),
     );
@@ -88,25 +74,6 @@ class ActionButtons extends StatelessWidget {
       child: const Padding(
         padding: EdgeInsets.all(12),
         child: CircularProgressIndicator(strokeWidth: 2),
-      ),
-    );
-  }
-
-  Widget _sleepTimerIndicator(BuildContext context) {
-    return AnimatedSize(
-      duration: Durations.short3,
-      child: StreamBuilder(
-        stream: context.read<PlayerProvider>().sleepTimerCountdown,
-        initialData: context.read<PlayerProvider>().sleepTimer,
-        builder: (context, snapshot) {
-          final sleepTimer = snapshot.data;
-          if (sleepTimer == null) return const SizedBox();
-          return FilledButton.tonalIcon(
-            onPressed: () => PlayerMenuSheet.setSleepTimerPopup(context),
-            icon: const Icon(Icons.bedtime_rounded),
-            label: Text(sleepTimer.formatHHMM()),
-          );
-        },
       ),
     );
   }
