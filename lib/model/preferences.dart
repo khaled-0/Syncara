@@ -15,6 +15,10 @@ enum Preference {
   // Media Notification
   notifShowShuffle,
   notifShowRepeat,
+  // Player Customization
+  miniPlayerSecondaryButton,
+  // Downloader
+  maxParallelDownload
 }
 
 @Collection()

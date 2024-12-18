@@ -35,7 +35,7 @@ void main() async {
     false,
   )!;
 
-  await DownloaderService.init();
+  await DownloaderService.init(isarDB);
   await MediaService.init();
   await MediaClient.init();
 

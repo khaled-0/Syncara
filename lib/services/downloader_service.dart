@@ -2,10 +2,12 @@ import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:isar/isar.dart';
 import 'package:tubesync/app/more/downloads/active_downloads_screen.dart';
 import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/main.dart';
 import 'package:tubesync/model/media.dart';
+import 'package:tubesync/model/preferences.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class DownloaderService {
@@ -18,11 +20,12 @@ class DownloaderService {
 
   /// Singleton -->
   /// Must call before runApp
-  static Future<void> init() async {
+  static Future<void> init(Isar isar) async {
+    final max = isar.preferences.getValue(Preference.maxParallelDownload, 3);
     await FileDownloader().configure(
       globalConfig: [
         // Limit concurrent downloads
-        (Config.holdingQueue, (3, 3, 3)),
+        (Config.holdingQueue, (max, max, max)),
         // >100mb space available
         (Config.checkAvailableSpace, 100),
         // Use background service when possible

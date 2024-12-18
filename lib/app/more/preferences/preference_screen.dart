@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
+import 'package:tubesync/app/more/preferences/components/choice_dialog.dart';
 import 'package:tubesync/model/preferences.dart';
 
 class PreferenceScreen extends StatelessWidget {
@@ -60,6 +61,35 @@ class PreferenceScreen extends StatelessWidget {
               secondary: const Icon(Icons.repeat_rounded),
               title: const Text("Show repeat button"),
               subtitle: const Text("May not work on all devices/platforms"),
+            ),
+          ),
+          _title(context, "Downloader"),
+          StreamBuilder(
+            stream: preferences(context).watch(
+              Preference.maxParallelDownload,
+            ),
+            builder: (context, value) => ListTile(
+              leading: const Icon(Icons.multiple_stop_rounded),
+              title: const Text("Maximum parallel downloads"),
+              subtitle: Text("${value.data?.get<int>() ?? 3} at a time"),
+              onTap: () => showDialog<int?>(
+                context: context,
+                builder: (_) => ChoiceDialog<int>(
+                  title: "Maximum parallel downloads",
+                  subtitle: "Restart app to take effect",
+                  icon: const Icon(Icons.multiple_stop_rounded, size: 38),
+                  selected: value.data?.get<int>() ?? 3,
+                  options: {
+                    for (final i in [1, 2, 3, 4, 5, 6, 7, 8]) ...{"$i": i}
+                  },
+                ),
+              ).then((v) {
+                if (!context.mounted || v == null) return;
+                preferences(context).setValue(
+                  Preference.maxParallelDownload,
+                  v,
+                );
+              }),
             ),
           ),
         ],
