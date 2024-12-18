@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/player/components/action_buttons.dart';
 import 'package:tubesync/app/player/components/artwork.dart';
 import 'package:tubesync/app/player/components/lyrics.dart';
@@ -109,9 +110,19 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
           ),
           const SeekBar(),
           const SizedBox(height: 12),
-          const ActionButtons(),
-          const SizedBox(height: 36),
-          queueView(context),
+          if (AppTheme.isDesktop)
+            Row(
+              children: [
+                const SizedBox(width: 8),
+                const ActionButtons(),
+                Expanded(child: queueView(context)),
+              ],
+            )
+          else ...{
+            const ActionButtons(),
+            const SizedBox(height: 36),
+            queueView(context),
+          },
           const SizedBox(height: 18),
         ],
       ),
