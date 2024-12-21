@@ -1,10 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 @Entity()
-class LyricMetadata with EquatableMixin {
+class LyricMetadata {
   @Id()
   int objectId = 0;
   @Index()
@@ -35,10 +34,15 @@ class LyricMetadata with EquatableMixin {
   }
 
   @override
-  bool get stringify => true;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LyricMetadata &&
+          runtimeType == other.runtimeType &&
+          mediaID == other.mediaID &&
+          langCode == other.langCode;
 
   @override
-  List<Object?> get props => [mediaID, lang, langCode];
+  int get hashCode => mediaID.hashCode ^ langCode.hashCode;
 }
 
 class LastPlayedMedia {
@@ -60,4 +64,15 @@ class LastPlayedMedia {
         "playlistId": playlistId,
         "mediaId": mediaId,
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LastPlayedMedia &&
+          runtimeType == other.runtimeType &&
+          playlistId == other.playlistId &&
+          mediaId == other.mediaId;
+
+  @override
+  int get hashCode => playlistId.hashCode ^ mediaId.hashCode;
 }

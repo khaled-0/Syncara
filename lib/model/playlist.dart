@@ -1,9 +1,8 @@
-import 'package:equatable/equatable.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 @Entity()
-class Playlist with EquatableMixin {
+class Playlist {
   @Id()
   int objectId = 0;
 
@@ -47,8 +46,10 @@ class Playlist with EquatableMixin {
       );
 
   @override
-  bool get stringify => true;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Playlist && runtimeType == other.runtimeType && id == other.id;
 
   @override
-  List<Object?> get props => [id];
+  int get hashCode => id.hashCode;
 }
