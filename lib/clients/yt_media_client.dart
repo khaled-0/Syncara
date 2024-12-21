@@ -14,7 +14,7 @@ class YTMediaClient implements BaseMediaClient {
       (data) async {
         final ytClient = data[0] as yt.StreamClient;
         final videoManifest = await ytClient.getManifest(data[1]);
-        return videoManifest.audioOnly.withHighestBitrate().url;
+        return videoManifest.audio.withHighestBitrate().url;
       },
       [_ytClient.streamsClient, media.id],
     );

@@ -62,7 +62,7 @@ class DownloaderService {
         (data) => (data[0] as yt.StreamClient).getManifest(data[1]),
         [_ytClient, media.id],
       );
-      final url = manifest.audioOnly.withHighestBitrate().url.toString();
+      final url = manifest.audio.withHighestBitrate().url.toString();
 
       final task = DownloadTask(
         url: url,
@@ -94,7 +94,7 @@ class DownloaderService {
           (data) => (data[0] as yt.StreamClient).getManifest(data[1]),
           [_ytClient, media.id],
         );
-        final url = manifest.audioOnly.withHighestBitrate().url.toString();
+        final url = manifest.audio.withHighestBitrate().url.toString();
 
         if (_abortQueueing) break;
 
