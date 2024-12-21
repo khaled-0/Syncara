@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 0.1.5+6
+version: 0.1.6+7
 
 environment:
   sdk: ^3.5.3
@@ -35,8 +35,8 @@ dependencies:
   # Youtube / Network Client
   youtube_explode_dart:
     git: https://github.com/Hexer10/youtube_explode_dart.git
-  background_downloader: ^8.8.0
-  internet_connection_checker_plus: ^2.5.2
+  background_downloader: ^8.8.1
+  internet_connection_checker_plus: ^2.6.0
 
   # Data Management (Isar is too big in fs <3mb> Use ObjectBox/SqLite+Drift?)
   provider: ^6.1.2
@@ -78,7 +78,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^2.4.13
+  build_runner: ^2.4.14
   json_serializable: ^6.9.0
   flutter_launcher_icons: ^0.14.2
 

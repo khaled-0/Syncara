@@ -83,7 +83,7 @@
   </developer>
 
   <releases>
-    <release version="0.1.5" date="2024-12-01">
+    <release version="0.1.6" date="2024-12-22">
       <description>Read the full changelog at Github</description>
       <url>https://github.com/khaled-0/TubeSync/releases</url>
     </release>
