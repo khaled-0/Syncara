@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/provider/library_provider.dart';
 import 'package:tubesync/provider/playlist_provider.dart';
@@ -8,9 +8,9 @@ import 'package:tubesync/services/media_service.dart';
 
 class LibraryMenuSheet extends StatelessWidget {
   final Playlist playlist;
-  final Isar isar;
+  final Store store;
 
-  const LibraryMenuSheet(this.isar, this.playlist, {super.key});
+  const LibraryMenuSheet(this.store, this.playlist, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class LibraryMenuSheet extends StatelessWidget {
             ListTile(
               onTap: () {
                 MediaService().enqueue(
-                  PlaylistProvider(isar, playlist, sync: false),
+                  PlaylistProvider(store, playlist, sync: false),
                 );
                 Navigator.pop(context);
               },

@@ -38,9 +38,9 @@ class PlaylistHeader extends StatelessWidget {
                       width: double.maxFinite,
                       errorBuilder: (_, __, ___) => const SizedBox(height: 120),
                       image: NetworkToFileImage(
-                        url: playlist(context).thumbnail.high,
+                        url: playlist(context).thumbnailMax,
                         file: MediaClient().thumbnailFile(
-                          playlist(context).thumbnail.high,
+                          playlist(context).thumbnailMax,
                         ),
                       ),
                       fit: BoxFit.cover,

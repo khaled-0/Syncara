@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
-import 'package:isar/isar.dart';
-import 'package:tubesync/model/common.dart';
+import 'package:objectbox/objectbox.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
-part 'media.g.dart';
-
-@Collection(ignore: {"props", "stringify"})
-// TODO Cache download in DB and update asynchronously
+@Entity()
 class Media with EquatableMixin {
   @Id()
+  int objectId = 0;
+
+  @Index()
+  @Unique(onConflict: ConflictStrategy.replace)
   final String id;
   final String title, author;
 
@@ -16,12 +16,13 @@ class Media with EquatableMixin {
 
   final int? durationMs;
 
-  final Thumbnails thumbnail;
+  final String thumbnailStd;
+  final String thumbnailMax;
 
-  @ignore
+  @Transient()
+  // TODO Cache download in DB and update asynchronously
   bool? downloaded;
 
-  @ignore
   Duration? get duration =>
       durationMs == null ? null : Duration(milliseconds: durationMs!);
 
@@ -31,7 +32,8 @@ class Media with EquatableMixin {
     this.author,
     this.description,
     this.durationMs,
-    this.thumbnail,
+    this.thumbnailStd,
+    this.thumbnailMax,
   );
 
   factory Media.fromYTVideo(yt.Video video) => Media(
@@ -40,7 +42,8 @@ class Media with EquatableMixin {
         video.author,
         video.description,
         video.duration?.inMilliseconds,
-        Thumbnails.fromYTThumbnails(video.thumbnails),
+        video.thumbnails.mediumResUrl,
+        video.thumbnails.maxResUrl,
       );
 
   @override

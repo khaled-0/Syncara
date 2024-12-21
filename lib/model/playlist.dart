@@ -1,19 +1,21 @@
 import 'package:equatable/equatable.dart';
-import 'package:isar/isar.dart';
-import 'package:tubesync/model/common.dart';
+import 'package:objectbox/objectbox.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
-part 'playlist.g.dart';
-
-@Collection(ignore: {"props", "stringify"})
+@Entity()
 class Playlist with EquatableMixin {
   @Id()
+  int objectId = 0;
+
+  @Index()
+  @Unique(onConflict: ConflictStrategy.replace)
   final String id;
   final String title, author;
 
   final String? description;
 
-  final Thumbnails thumbnail;
+  final String thumbnailStd;
+  final String thumbnailMax;
   final int videoCount;
 
   final List<String> videoIds;
@@ -22,7 +24,8 @@ class Playlist with EquatableMixin {
     this.id,
     this.title,
     this.author,
-    this.thumbnail,
+    this.thumbnailStd,
+    this.thumbnailMax,
     this.videoCount,
     this.description,
     this.videoIds,
@@ -36,7 +39,8 @@ class Playlist with EquatableMixin {
         playlist.id.value,
         playlist.title,
         playlist.author,
-        Thumbnails.fromYTThumbnails(playlist.thumbnails),
+        playlist.thumbnails.mediumResUrl,
+        playlist.thumbnails.maxResUrl,
         playlist.videoCount ?? -1,
         playlist.description.isNotEmpty ? playlist.description : null,
         videoIds ?? List.empty(growable: true),

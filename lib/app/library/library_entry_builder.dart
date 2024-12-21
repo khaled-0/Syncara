@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/library/library_menu_sheet.dart';
 import 'package:tubesync/clients/media_client.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/provider/library_provider.dart';
 
@@ -47,8 +47,9 @@ class LibraryEntryBuilder extends StatelessWidget {
                 );
               },
               image: NetworkToFileImage(
-                url: playlist.thumbnail.medium,
-                file: MediaClient().thumbnailFile(playlist.thumbnail.medium),
+                url: playlist.thumbnailStd,
+                file: MediaClient()
+                    .thumbnailFile(playlist.thumbnailStd),
               ),
               fit: BoxFit.cover,
             ),
@@ -71,7 +72,7 @@ class LibraryEntryBuilder extends StatelessWidget {
             backgroundColor: Colors.transparent,
             builder: (_) => ChangeNotifierProvider.value(
               value: context.read<LibraryProvider>(),
-              child: LibraryMenuSheet(context.read<Isar>(), playlist),
+              child: LibraryMenuSheet(context.read<Store>(), playlist),
             ),
           ),
           icon: const Icon(Icons.more_vert_rounded, size: 18),

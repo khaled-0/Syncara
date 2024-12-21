@@ -28,15 +28,15 @@ class Artwork extends StatelessWidget {
                     angle: angle.toPrecision(5),
                     child: CircleAvatar(
                       foregroundImage: NetworkToFileImage(
-                        url: media.thumbnail.max,
+                        url: media.thumbnailMax,
                         file: MediaClient().thumbnailFile(
-                          media.thumbnail.max,
+                          media.thumbnailMax,
                         ),
                       ),
                       backgroundImage: NetworkToFileImage(
-                        url: media.thumbnail.medium,
+                        url: media.thumbnailStd,
                         file: MediaClient().thumbnailFile(
-                          media.thumbnail.medium,
+                          media.thumbnailStd,
                         ),
                       ),
                     ),

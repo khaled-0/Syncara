@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/more/about_screen.dart';
 import 'package:tubesync/app/more/downloads/active_downloads_screen.dart';
 import 'package:tubesync/app/more/preferences/preference_screen.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 
 class MoreTab extends StatelessWidget {
   MoreTab({super.key});
@@ -61,7 +61,7 @@ class MoreTab extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (_) => Provider.value(
-                value: context.read<Isar>(),
+                value: context.read<Store>(),
                 child: const PreferenceScreen(),
               ),
             ),

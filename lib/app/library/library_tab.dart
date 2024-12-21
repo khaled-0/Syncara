@@ -1,12 +1,12 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/library/empty_library_view.dart';
 import 'package:tubesync/app/library/import_playlist_dialog.dart';
 import 'package:tubesync/app/library/library_entry_builder.dart';
 import 'package:tubesync/app/playlist/playlist_tab.dart';
 import 'package:tubesync/model/common.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 import 'package:tubesync/model/preferences.dart';
 import 'package:tubesync/provider/library_provider.dart';
 import 'package:tubesync/provider/playlist_provider.dart';
@@ -51,7 +51,7 @@ class LibraryTab extends StatelessWidget {
                         return ChangeNotifierProvider<PlaylistProvider>(
                           child: const PlaylistTab(),
                           create: (_) => PlaylistProvider(
-                            context.read<Isar>(),
+                            context.read<Store>(),
                             playlist,
                           ),
                         );
@@ -69,8 +69,8 @@ class LibraryTab extends StatelessWidget {
         builder: (_, state) {
           if (!MediaService().isPlayerActive) {
             final hasResumeData = context
-                .read<Isar>()
-                .preferences
+                .read<Store>()
+                .box<Preferences>()
                 .valueExists(Preference.lastPlayed);
 
             return Column(
@@ -136,13 +136,13 @@ class LibraryTab extends StatelessWidget {
   void resumePlayback(BuildContext context) {
     try {
       final resumeData = context
-          .read<Isar>()
-          .preferences
+          .read<Store>()
+          .box<Preferences>()
           .getValue<LastPlayedMedia>(Preference.lastPlayed, null);
 
       final library = context.read<LibraryProvider>().entries;
       final playlist = PlaylistProvider(
-        context.read<Isar>(),
+        context.read<Store>(),
         library.firstWhere((e) => e.id == resumeData!.playlistId),
       );
 
@@ -156,7 +156,10 @@ class LibraryTab extends StatelessWidget {
         playlist: playlist,
       );
     } catch (_) {
-      context.read<Isar>().preferences.remove(Preference.lastPlayed);
+      context
+          .read<Store>()
+          .box<Preferences>()
+          .removeValue(Preference.lastPlayed);
       MediaService().playbackState.add(
             MediaService().playbackState.value.copyWith(),
           );

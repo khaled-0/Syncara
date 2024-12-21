@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
@@ -7,6 +6,7 @@ import 'package:tubesync/app/player/components/sleep_time_indicator.dart';
 import 'package:tubesync/app/player/large_player_sheet.dart';
 import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/media.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 import 'package:tubesync/model/preferences.dart';
 import 'package:tubesync/provider/player_provider.dart';
 
@@ -168,8 +168,8 @@ class MiniPlayerSheet extends StatelessWidget {
       builder: (context, snapshot) => CircleAvatar(
         radius: 24,
         backgroundImage: NetworkToFileImage(
-          url: media.thumbnail.medium,
-          file: MediaClient().thumbnailFile(media.thumbnail.medium),
+          url: media.thumbnailStd,
+          file: MediaClient().thumbnailFile(media.thumbnailStd),
         ),
         child: const SleepTimeIndicator.static(),
       ),
@@ -177,7 +177,7 @@ class MiniPlayerSheet extends StatelessWidget {
   }
 
   Widget? _secondaryAction(BuildContext context) {
-    final action = context.read<Isar>().preferences.getValue<int>(
+    final action = context.read<Store>().box<Preferences>().getValue<int>(
           Preference.miniPlayerSecondaryAction,
           MiniPlayerSecondaryActions.Close.index,
         )!;
@@ -209,7 +209,7 @@ class MiniPlayerSheet extends StatelessWidget {
       barrierColor: adaptiveSheetBarrierColor,
       builder: (_) => MultiProvider(
         providers: [
-          Provider.value(value: context.read<Isar>()),
+          Provider.value(value: context.read<Store>()),
           ChangeNotifierProvider<PlayerProvider>.value(
             value: context.read<PlayerProvider>(),
           ),

@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:tubesync/app/app_theme.dart';
@@ -11,6 +10,7 @@ import 'package:tubesync/app/library/import_playlist_dialog.dart';
 import 'package:tubesync/app/library/library_tab.dart';
 import 'package:tubesync/app/more/more_tab.dart';
 import 'package:tubesync/clients/in_app_update_client.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 import 'package:tubesync/model/preferences.dart';
 import 'package:tubesync/provider/library_provider.dart';
 
@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
           ),
           Provider<GlobalKey<ScaffoldState>>(create: (_) => GlobalKey()),
           ChangeNotifierProvider<LibraryProvider>(
-            create: (_) => LibraryProvider(context.read<Isar>()),
+            create: (_) => LibraryProvider(context.read<Store>()),
           ),
         ],
         builder: (context, child) {
@@ -79,7 +79,7 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   final homeNavigator = GlobalKey<NavigatorState>();
   StreamSubscription? shareHandler;
-  late final prefs = context.read<Isar>().preferences;
+  late final prefs = context.read<Store>().box<Preferences>();
 
   @override
   void initState() {

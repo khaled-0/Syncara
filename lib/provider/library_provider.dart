@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
-import 'package:isar/isar.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/provider/playlist_provider.dart';
 import 'package:tubesync/services/downloader_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class LibraryProvider extends ChangeNotifier {
-  final Isar isar;
+  final Store store;
   final _ytClient = yt.YoutubeExplode().playlists;
   final List<Playlist> entries = List.empty(growable: true);
 
-  LibraryProvider(this.isar) {
-    entries.addAll(isar.playlists.where().findAll());
+  LibraryProvider(this.store) {
+    entries.addAll(store.box<Playlist>().getAll());
     notifyListeners();
     refresh();
   }
@@ -28,8 +28,9 @@ class LibraryProvider extends ChangeNotifier {
 
     entries.add(Playlist.fromYTPlaylist(playlist));
     // Preload the playlist for faster initial load time
-    await PlaylistProvider(isar, entries.last, sync: false).refresh();
-    isar.writeAsyncWith(entries.last, (db, data) => db.playlists.put(data));
+    await PlaylistProvider(store, entries.last, sync: false).refresh();
+
+    store.box<Playlist>().put(entries.last);
     notifyListeners();
   }
 
@@ -52,15 +53,17 @@ class LibraryProvider extends ChangeNotifier {
         // TODO Error
       }
     }
-    isar.writeAsyncWith(entries, (db, data) => db.playlists.putAll(data));
+    store.box<Playlist>().putMany(entries);
     notifyListeners();
   }
 
   void delete(Playlist playlist) {
     entries.removeWhere((element) => element.id == playlist.id);
-    isar.writeAsync(
-      (isar) => isar.playlists.where().idEqualTo(playlist.id).deleteFirst(),
-    );
+    store
+        .box<Playlist>()
+        .query(Playlist_.id.equals(playlist.id))
+        .build()
+        .removeAsync();
     notifyListeners();
   }
 

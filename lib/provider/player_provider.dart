@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:isar/isar.dart';
 import 'package:just_audio/just_audio.dart';
 // ignore: depend_on_referenced_packages Just for Types. Doesn't matter
 import 'package:rxdart/rxdart.dart' show BehaviorSubject;
 import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/common.dart';
 import 'package:tubesync/model/media.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/model/preferences.dart';
 import 'package:tubesync/provider/playlist_provider.dart';
@@ -16,7 +16,7 @@ import 'package:tubesync/services/media_service.dart';
 
 class PlayerProvider extends ChangeNotifier {
   final player = AudioPlayer();
-  final Isar _isar;
+  final Store _store;
 
   final List<Playlist> _playlistInfo = List.empty(growable: true);
   final List<Media> _playlist = List.empty(growable: true);
@@ -45,13 +45,14 @@ class PlayerProvider extends ChangeNotifier {
   Duration? get sleepTimer => _sleepAfterDuration;
 
   // We can't use the AudioPlayer based one because nextTrack isn't called
-  late LoopMode _loopMode = LoopMode.values[_isar.preferences
+  late LoopMode _loopMode = LoopMode.values[_store
+      .box<Preferences>()
       .getValue<int>(Preference.loopMode, LoopMode.all.index)!];
 
   LoopMode get loopMode => _loopMode;
 
   PlayerProvider(
-    this._isar,
+    this._store,
     PlaylistProvider provider, {
     Media? start,
 
@@ -125,10 +126,10 @@ class PlayerProvider extends ChangeNotifier {
       if (_sleepAfterSongEnd) setSleepTimer(afterSong: _sleepAfterSongEnd);
 
       final thumbnail = MediaClient().thumbnailFile(
-        nowPlaying.value.thumbnail.medium,
+        nowPlaying.value.thumbnailStd,
       );
 
-      var artUri = Uri.parse(nowPlaying.value.thumbnail.medium);
+      var artUri = Uri.parse(nowPlaying.value.thumbnailStd);
       if (thumbnail.existsSync()) artUri = thumbnail.uri;
 
       // Post service notification update
@@ -177,13 +178,13 @@ class PlayerProvider extends ChangeNotifier {
 
   /// Store the currently playing media for resuming later
   void storeNowPlaying() {
-    _isar.preferences.setValue<LastPlayedMedia>(
-      Preference.lastPlayed,
-      LastPlayedMedia(
-        mediaId: nowPlaying.value.id,
-        playlistId: nowPlayingPlaylist.id,
-      ),
-    );
+    _store.box<Preferences>().setValue<LastPlayedMedia>(
+          Preference.lastPlayed,
+          LastPlayedMedia(
+            mediaId: nowPlaying.value.id,
+            playlistId: nowPlayingPlaylist.id,
+          ),
+        );
   }
 
   bool get hasPrevious {
@@ -204,7 +205,9 @@ class PlayerProvider extends ChangeNotifier {
       controls: mediaControls,
       systemActions: mediaActions,
     ));
-    _isar.preferences.setValue<int>(Preference.loopMode, _loopMode.index);
+    _store
+        .box<Preferences>()
+        .setValue<int>(Preference.loopMode, _loopMode.index);
     notifyListeners();
   }
 
@@ -321,7 +324,9 @@ class PlayerProvider extends ChangeNotifier {
   Set<MediaAction> get mediaActions => {if (!buffering) MediaAction.seek};
 
   List<MediaControl> get mediaControls => [
-        if (_isar.preferences.getValue(Preference.notifShowShuffle, true)!)
+        if (_store
+            .box<Preferences>()
+            .getValue(Preference.notifShowShuffle, true)!)
           const MediaControl(
             androidIcon: "drawable/shuffle_24px",
             label: "Shuffle",
@@ -333,7 +338,9 @@ class PlayerProvider extends ChangeNotifier {
           if (player.playing) MediaControl.pause else MediaControl.play
         },
         if (hasNext) MediaControl.skipToNext,
-        if (_isar.preferences.getValue(Preference.notifShowRepeat, true)!)
+        if (_store
+            .box<Preferences>()
+            .getValue(Preference.notifShowRepeat, true)!)
           MediaControl(
             androidIcon: switch (_loopMode) {
               LoopMode.off => "drawable/repeat_off_24px",
