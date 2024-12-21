@@ -16,7 +16,7 @@ enum Preference {
   notifShowShuffle,
   notifShowRepeat,
   // Player Customization
-  miniPlayerSecondaryButton,
+  miniPlayerSecondaryAction,
   // Downloader
   maxParallelDownload
 }

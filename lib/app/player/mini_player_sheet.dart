@@ -7,6 +7,7 @@ import 'package:tubesync/app/player/components/sleep_time_indicator.dart';
 import 'package:tubesync/app/player/large_player_sheet.dart';
 import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/media.dart';
+import 'package:tubesync/model/preferences.dart';
 import 'package:tubesync/provider/player_provider.dart';
 
 class MiniPlayerSheet extends StatelessWidget {
@@ -132,12 +133,9 @@ class MiniPlayerSheet extends StatelessWidget {
   Widget actions(BuildContext context) {
     return Selector<PlayerProvider, bool>(
       selector: (_, provider) => provider.buffering,
-      child: IconButton(
-        onPressed: () => Navigator.pop(context),
-        icon: const Icon(Icons.close_rounded),
-      ),
-      builder: (context, buffering, closeButton) {
-        if (buffering) return closeButton!;
+      child: _secondaryAction(context),
+      builder: (context, buffering, extraAction) {
+        if (buffering) return extraAction ?? const SizedBox();
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -156,7 +154,7 @@ class MiniPlayerSheet extends StatelessWidget {
                 );
               },
             ),
-            closeButton!
+            if (extraAction != null) extraAction,
           ],
         );
       },
@@ -176,6 +174,30 @@ class MiniPlayerSheet extends StatelessWidget {
         child: const SleepTimeIndicator.static(),
       ),
     );
+  }
+
+  Widget? _secondaryAction(BuildContext context) {
+    final action = context.read<Isar>().preferences.getValue<int>(
+          Preference.miniPlayerSecondaryAction,
+          MiniPlayerSecondaryActions.Close.index,
+        )!;
+
+    switch (MiniPlayerSecondaryActions.values[action]) {
+      case MiniPlayerSecondaryActions.Close:
+        return IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.close_rounded),
+        );
+      case MiniPlayerSecondaryActions.Shuffle:
+        return IconButton(
+          onPressed: () => context.read<PlayerProvider>().shuffle(
+                preserveCurrentIndex: false,
+              ),
+          icon: const Icon(Icons.shuffle_rounded),
+        );
+      case MiniPlayerSecondaryActions.None:
+        return null;
+    }
   }
 
   void openPlayerSheet(BuildContext context) {
@@ -211,3 +233,6 @@ class MiniPlayerSheet extends StatelessWidget {
     return "${playlist[0].title} and ${playlist.length - 1} more";
   }
 }
+
+// ignore: constant_identifier_names
+enum MiniPlayerSecondaryActions { Close, Shuffle, None }

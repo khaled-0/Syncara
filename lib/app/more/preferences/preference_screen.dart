@@ -5,6 +5,7 @@ import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/more/preferences/components/choice_dialog.dart';
+import 'package:tubesync/app/player/mini_player_sheet.dart';
 import 'package:tubesync/model/preferences.dart';
 
 class PreferenceScreen extends StatelessWidget {
@@ -62,6 +63,41 @@ class PreferenceScreen extends StatelessWidget {
               title: const Text("Show repeat button"),
               subtitle: const Text("May not work on all devices/platforms"),
             ),
+          ),
+          _title(context, "Player"),
+          StreamBuilder(
+            stream: preferences(context).watch(
+              Preference.miniPlayerSecondaryAction,
+            ),
+            builder: (context, value) {
+              final val = value.data?.get<int>() ??
+                  MiniPlayerSecondaryActions.Close.index;
+              final selected = MiniPlayerSecondaryActions.values[val];
+              return ListTile(
+                leading: const Icon(Icons.smart_button_rounded),
+                title: const Text("Mini player secondary action"),
+                subtitle: Text(selected.name),
+                onTap: () => showDialog<MiniPlayerSecondaryActions?>(
+                  context: context,
+                  builder: (_) => ChoiceDialog<MiniPlayerSecondaryActions>(
+                    title: "Mini player secondary action",
+                    icon: const Icon(Icons.smart_button_rounded, size: 38),
+                    selected: selected,
+                    options: {
+                      for (final i in MiniPlayerSecondaryActions.values) ...{
+                        i.name: i
+                      }
+                    },
+                  ),
+                ).then((v) {
+                  if (!context.mounted || v == null) return;
+                  preferences(context).setValue(
+                    Preference.miniPlayerSecondaryAction,
+                    v.index,
+                  );
+                }),
+              );
+            },
           ),
           _title(context, "Downloader"),
           StreamBuilder(
