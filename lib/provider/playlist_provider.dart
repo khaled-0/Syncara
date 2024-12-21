@@ -1,20 +1,21 @@
 import 'package:flutter/foundation.dart';
-import 'package:isar/isar.dart';
 import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/media.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 import 'package:tubesync/model/playlist.dart';
 import 'package:tubesync/services/downloader_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class PlaylistProvider extends ChangeNotifier {
-  final Isar isar;
+  final Store store;
   final _ytClient = yt.YoutubeExplode().playlists;
   final Playlist playlist;
   final List<Media> medias = List.empty(growable: true);
 
-  PlaylistProvider(this.isar, this.playlist, {bool sync = true}) {
+  PlaylistProvider(this.store, this.playlist, {bool sync = true}) {
     for (final id in playlist.videoIds) {
-      final media = isar.medias.where().idEqualTo(id).findFirst();
+      final media =
+          store.box<Media>().query(Media_.id.equals(id)).build().findFirst();
       if (media != null) medias.add(media);
     }
     updateDownloadStatus();
@@ -47,8 +48,8 @@ class PlaylistProvider extends ChangeNotifier {
       playlist.videoIds.addAll(medias.map((m) => m.id));
 
       // Save to DB
-      isar.writeAsyncWith(playlist, (db, data) => db.playlists.put(data));
-      isar.writeAsyncWith(medias, (db, data) => db.medias.putAll(data));
+      store.box<Playlist>().put(playlist);
+      store.box<Media>().putMany(medias);
       updateDownloadStatus();
       notifyListeners();
     } catch (_) {

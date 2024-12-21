@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:isar/isar.dart';
+import 'package:objectbox/objectbox.dart';
 import 'package:tubesync/model/common.dart';
+import 'package:tubesync/model/objectbox.g.dart' as obj;
 
-part 'preferences.g.dart';
-
+// TODO Embed type and defaultValue
 enum Preference {
   // Appearance
   materialYou,
@@ -23,9 +23,13 @@ enum Preference {
   inAppUpdate,
 }
 
-@Collection()
+@Entity()
 class Preferences {
   @Id()
+  int objectId = 0;
+
+  @Index()
+  @Unique(onConflict: ConflictStrategy.replace)
   final String key;
 
   String? stringValue;
@@ -73,23 +77,28 @@ class Preferences {
   }
 }
 
-extension PreferenceExtension on IsarCollection<String, Preferences> {
+extension PreferenceExtension on Box<Preferences> {
   void setValue<T>(Preference key, T value) {
     final preference = Preferences(key.name)..set(value);
-    isar.write((db) => db.preferences.put(preference));
+    put(preference);
   }
 
-  void remove(Preference key) => isar.write(
-        (isar) => isar.preferences.where().keyEqualTo(key.name).deleteFirst(),
-      );
+  void removeValue(Preference key) =>
+      query(obj.Preferences_.key.equals(key.name)).build().remove();
 
   bool valueExists(Preference key) =>
-      !isar.preferences.where().keyEqualTo(key.name).isEmpty();
+      query(obj.Preferences_.key.equals(key.name)).build().count() != 0;
 
   T? getValue<T>(Preference key, T? defaultValue) {
-    return get(key.name)?.get<T>() ?? defaultValue;
+    return query(obj.Preferences_.key.equals(key.name))
+            .build()
+            .findFirst()
+            ?.get() ??
+        defaultValue;
   }
 
-  Stream<Preferences?> watch(Preference key) =>
-      watchObject(key.name, fireImmediately: true);
+  Stream<Query<Preferences>> watch(Preference key) =>
+      query(obj.Preferences_.key.equals(key.name)).watch(
+        triggerImmediately: true,
+      );
 }

@@ -41,10 +41,9 @@ dependencies:
 
   # Data Management (Isar is too big in fs <3mb> Use ObjectBox/SqLite+Drift?)
   provider: ^6.1.2
-  isar: ^4.0.0-dev.14
-  isar_flutter_libs: ^4.0.0-dev.14
-  json_annotation: ^4.9.0
-  equatable: ^2.0.7
+  objectbox: ^4.0.3
+  objectbox_flutter_libs: ^4.0.3
+  equatable: ^2.0.7 # Remove This TODO
 
   # Audio Player / Service
   just_audio: ^0.9.42
@@ -80,7 +79,7 @@ dev_dependencies:
     sdk: flutter
 
   build_runner: ^2.4.14
-  json_serializable: ^6.9.0
+  objectbox_generator: ^4.0.3
   flutter_launcher_icons: ^0.14.2
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -131,3 +130,7 @@ flutter:
           weight: 500
         - asset: assets/fonts/WantedSansStd-Regular.ttf
           weight: 400
+
+objectbox:
+  # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).
+  output_dir: model

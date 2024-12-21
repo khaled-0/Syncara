@@ -1,14 +1,12 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/home/home_screen.dart';
 import 'package:tubesync/clients/media_client.dart';
-import 'package:tubesync/model/media.dart';
-import 'package:tubesync/model/playlist.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 import 'package:tubesync/model/preferences.dart';
 import 'package:tubesync/services/downloader_service.dart';
 import 'package:tubesync/services/media_service.dart';
@@ -25,17 +23,16 @@ void main() async {
   }
 
   // DB Initialization
-  final isarDB = Isar.open(
-    schemas: [PreferencesSchema, PlaylistSchema, MediaSchema],
+  final objectDB = await openStore(
     directory: (await getApplicationSupportDirectory()).path,
   );
 
-  AppTheme.dynamicColors.value = isarDB.preferences.getValue<bool>(
-    Preference.materialYou,
-    false,
-  )!;
+  AppTheme.dynamicColors.value = objectDB.box<Preferences>().getValue(
+        Preference.materialYou,
+        true,
+      )!;
 
-  await DownloaderService.init(isarDB);
+  await DownloaderService.init(objectDB);
   await MediaService.init();
   await MediaClient.init();
 
@@ -77,8 +74,8 @@ void main() async {
               home: home!,
             );
           },
-          child: Provider<Isar>(
-            create: (context) => isarDB,
+          child: Provider<Store>(
+            create: (context) => objectDB,
             child: const HomeScreen(),
           ),
         ),

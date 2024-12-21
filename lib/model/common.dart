@@ -1,39 +1,18 @@
 import 'package:equatable/equatable.dart';
-import 'package:isar/isar.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:objectbox/objectbox.dart';
 import 'package:tubesync/model/media.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
-part 'common.g.dart';
-
-@Embedded(ignore: {"props", "stringify"})
-class Thumbnails with EquatableMixin {
-  /// low ,high has vertical black borders
-  /// max might not always be available
-  final String low, medium, high, max;
-
-  Thumbnails(this.low, this.medium, this.high, this.max);
-
-  factory Thumbnails.fromYTThumbnails(yt.ThumbnailSet thumbs) => Thumbnails(
-        thumbs.lowResUrl,
-        thumbs.mediumResUrl,
-        thumbs.highResUrl,
-        thumbs.maxResUrl,
-      );
-
-  @override
-  bool get stringify => true;
-
-  @override
-  List<Object?> get props => [low, medium, high, max];
-}
-
-@Embedded(ignore: {"props", "stringify"})
+@Entity()
 class LyricMetadata with EquatableMixin {
+  @Id()
+  int objectId = 0;
+  @Index()
+  @Unique(onConflict: ConflictStrategy.replace)
   final String mediaID;
   final String lang, langCode;
 
-  @ignore
+  @Transient()
   final yt.ClosedCaptionTrackInfo? ytCCObj;
 
   LyricMetadata(
@@ -62,8 +41,7 @@ class LyricMetadata with EquatableMixin {
   List<Object?> get props => [mediaID, lang, langCode];
 }
 
-@JsonSerializable()
-class LastPlayedMedia with EquatableMixin {
+class LastPlayedMedia {
   final String playlistId;
   final String mediaId;
 
@@ -73,13 +51,13 @@ class LastPlayedMedia with EquatableMixin {
   });
 
   factory LastPlayedMedia.fromJson(Map<String, dynamic> json) =>
-      _$LastPlayedMediaFromJson(json);
+      LastPlayedMedia(
+        playlistId: json["playlistId"] as String,
+        mediaId: json["mediaId"] as String,
+      );
 
-  Map<String, dynamic> toJson() => _$LastPlayedMediaToJson(this);
-
-  @override
-  bool get stringify => true;
-
-  @override
-  List<Object?> get props => [playlistId, mediaId];
+  Map<String, dynamic> toJson() => {
+        "playlistId": playlistId,
+        "mediaId": mediaId,
+      };
 }

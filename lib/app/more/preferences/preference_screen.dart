@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import 'package:objectbox/objectbox.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/more/preferences/components/choice_dialog.dart';
@@ -39,7 +39,7 @@ class PreferenceScreen extends StatelessWidget {
               Preference.notifShowShuffle,
             ),
             builder: (c, value) => SwitchListTile(
-              value: value.data?.get<bool>() != false,
+              value: value.data?.findFirst()?.get<bool>() != false,
               onChanged: (value) => preferences(c).setValue(
                 Preference.notifShowShuffle,
                 value,
@@ -54,7 +54,7 @@ class PreferenceScreen extends StatelessWidget {
               Preference.notifShowRepeat,
             ),
             builder: (c, value) => SwitchListTile(
-              value: value.data?.get<bool>() != false,
+              value: value.data?.findFirst()?.get<bool>() != false,
               onChanged: (value) => preferences(c).setValue(
                 Preference.notifShowRepeat,
                 value,
@@ -70,7 +70,7 @@ class PreferenceScreen extends StatelessWidget {
               Preference.miniPlayerSecondaryAction,
             ),
             builder: (context, value) {
-              final val = value.data?.get<int>() ??
+              final val = value.data?.findFirst()?.get<int>() ??
                   MiniPlayerSecondaryActions.Close.index;
               final selected = MiniPlayerSecondaryActions.values[val];
               return ListTile(
@@ -107,14 +107,15 @@ class PreferenceScreen extends StatelessWidget {
             builder: (context, value) => ListTile(
               leading: const Icon(Icons.multiple_stop_rounded),
               title: const Text("Maximum parallel downloads"),
-              subtitle: Text("${value.data?.get<int>() ?? 3} at a time"),
+              subtitle:
+                  Text("${value.data?.findFirst()?.get() ?? 3} at a time"),
               onTap: () => showDialog<int?>(
                 context: context,
                 builder: (_) => ChoiceDialog<int>(
                   title: "Maximum parallel downloads",
                   subtitle: "Restart app to take effect",
                   icon: const Icon(Icons.multiple_stop_rounded, size: 38),
-                  selected: value.data?.get<int>() ?? 3,
+                  selected: value.data?.findFirst()?.get<int>() ?? 3,
                   options: {
                     for (final i in [1, 2, 3, 4, 5, 6, 7, 8]) ...{"$i": i}
                   },
@@ -134,7 +135,7 @@ class PreferenceScreen extends StatelessWidget {
               Preference.inAppUpdate,
             ),
             builder: (c, value) => SwitchListTile(
-              value: value.data?.get<bool>() != false,
+              value: value.data?.findFirst()?.get<bool>() != false,
               onChanged: (value) => preferences(c).setValue(
                 Preference.inAppUpdate,
                 value,
@@ -149,8 +150,8 @@ class PreferenceScreen extends StatelessWidget {
     );
   }
 
-  IsarCollection<String, Preferences> preferences(BuildContext c) =>
-      c.read<Isar>().preferences;
+  Box<Preferences> preferences(BuildContext c) =>
+      c.read<Store>().box<Preferences>();
 
   Widget _title(BuildContext context, String text) {
     return Padding(

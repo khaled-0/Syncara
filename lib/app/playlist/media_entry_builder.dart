@@ -51,8 +51,9 @@ class MediaEntryBuilder extends StatelessWidget {
                 );
               },
               image: NetworkToFileImage(
-                url: media.thumbnail.medium,
-                file: MediaClient().thumbnailFile(media.thumbnail.medium),
+                url: media.thumbnailStd,
+                file:
+                    MediaClient().thumbnailFile(media.thumbnailStd),
               ),
               fit: BoxFit.cover,
             ),

@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/player/components/action_buttons.dart';
 import 'package:tubesync/clients/media_client.dart';
 import 'package:tubesync/model/common.dart';
 import 'package:tubesync/model/media.dart';
+import 'package:tubesync/model/objectbox.g.dart';
 import 'package:tubesync/model/preferences.dart';
 import 'package:tubesync/provider/player_provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -30,7 +30,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
   bool paused = false;
 
   late String preferredLanguage =
-      context.read<Isar>().preferences.getValue<String>(
+      context.read<Store>().box<Preferences>().getValue<String>(
             Preference.subsLang,
             PlatformDispatcher.instance.locale.languageCode,
           )!;
@@ -197,7 +197,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
     if (selection != null && selection.langCode != preferredLanguage) {
       setState(() => preferredLanguage = selection.langCode);
       if (mounted) {
-        context.read<Isar>().preferences.setValue(
+        context.read<Store>().box<Preferences>().setValue(
               Preference.subsLang,
               preferredLanguage,
             );
@@ -220,7 +220,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
         reverseTransitionDuration: Durations.short2,
         pageBuilder: (_, __, ___) => MultiProvider(
           providers: [
-            Provider.value(value: context.read<Isar>()),
+            Provider.value(value: context.read<Store>()),
             ChangeNotifierProvider.value(value: playerProvider),
           ],
           child: ChangeNotifierProvider.value(
