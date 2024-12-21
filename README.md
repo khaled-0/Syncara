@@ -39,27 +39,42 @@ Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 
 ## Download
 
-TubeSync for all platform are primarily released on Github.
+TubeSync for all platform are primarily released on Github. Tap on your device icon to directly download.
 
  <p align="center">
   <a href="https://github.com/khaled-0/TubeSync/releases/latest">
-    <img width="200" src="./docs/badges/get-it-on-github.png" alt="Get it on GitHub"/>
+    <img height="48" src="./docs/badges/get-it-on-github.png" alt="Get it on GitHub"/>
+  </a> 
+   <a href="https://github.com/khaled-0/TubeSync/releases/latest/download/app-release.apk">
+    <img height="48" src="./docs/badges/apk-square.png" alt="Android"/>
+  </a>  
+  <a href="https://github.com/khaled-0/TubeSync/releases/latest/download/tubesync_ios_unsigned.ipa">
+    <img height="48" src="./docs/badges/ios-square.png" alt="IOS"/>
+  </a>  
+  <a href="https://github.com/khaled-0/TubeSync/releases/latest/download/tubesync_linux.zip">
+    <img height="48" src="./docs/badges/linux-square.png" alt="Linux"/>
   </a>
+  <a href="https://github.com/khaled-0/TubeSync/releases/latest/download/tubesync_macos.zip">
+    <img height="48" src="./docs/badges/mac-square.png" alt="MacOS"/>
+  </a> 
 </p>
 
 ## Also available on your favourite app stores
 
 ### Android
 
-<p align="center">
+ <p align="center">
   <a href="https://apt.izzysoft.de/fdroid/index/apk/tubesync.app">
-    <img width="32%" src="./docs/badges/get-it-on-izzy.png" alt="IzzyOnDroid"/>
+    <img height="60" src="./docs/badges/get-it-on-izzy.png" alt="IzzyOnDroid"/>
   </a>
-   <a href="https://www.openapk.net/tubesync/tubesync.app/">
-    <img width="32%" src="https://www.openapk.net/images/openapk-badge.png" alt="OpenAPK"/>
+  <a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22tubesync.app%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fkhaled-0%2FTubeSync%22%2C%22author%22%3A%22Khaled%22%2C%22name%22%3A%22TubeSync%22%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%7D%22%7D">
+    <img height="60" src="./docs/badges/badge_obtainium.png" alt="Obtainium"/>
+  </a>
+  <a href="https://www.openapk.net/tubesync/tubesync.app/">
+    <img height="60" src="./docs/badges/openapk-badge.png" alt="OpenAPK"/>
   </a>
   <a href="https://www.androidfreeware.net/download-tubesync-apk.html">
-    <img width="32%" src="./docs/badges/android-freeware.png" alt="AndroidFreeWare"/>
+    <img height="60" src="./docs/badges/android-freeware.png" alt="AndroidFreeWare"/>
   </a>
 </p>
 
@@ -67,7 +82,7 @@ TubeSync for all platform are primarily released on Github.
 
 <p align="center">
   <a href="https://flathub.org/apps/io.github.khaled_0.TubeSync">
-    <img width="30%" src="./docs/badges/flathub.png" alt="Flathub"/>
+    <img height="60" src="./docs/badges/flathub.png" alt="Flathub"/>
   </a>
 </p>
 

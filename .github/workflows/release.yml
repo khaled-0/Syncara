@@ -168,6 +168,12 @@ jobs:
           mv build/macos/Build/Products/Release/*.app ./
           zip -r tubesync_macos.zip *.app
 
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: tubesync_macos.zip
+
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
