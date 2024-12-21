@@ -85,7 +85,10 @@ class DownloaderService {
     _abortQueueing = false;
     for (final media in medias) {
       try {
+        // Ignore already enqueued/downloaded
         if (MediaClient().isDownloaded(media)) continue;
+        final record = await FileDownloader().database.recordForId(media.id);
+        if (record != null) continue;
 
         final manifest = await compute(
           (data) => (data[0] as yt.StreamClient).getManifest(data[1]),
@@ -96,6 +99,7 @@ class DownloaderService {
         if (_abortQueueing) break;
 
         FileDownloader().enqueue(DownloadTask(
+          taskId: media.id,
           url: url,
           displayName: media.title,
           directory: MediaClient().downloadsDir,

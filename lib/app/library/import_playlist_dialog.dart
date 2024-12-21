@@ -60,7 +60,7 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: input,
-                autofocus: true,
+                autofocus: widget.url == null,
                 maxLines: 5,
                 minLines: 1,
                 decoration: const InputDecoration(
