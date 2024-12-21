@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:package_info_plus/package_info_plus.dart";
+import "package:tubesync/clients/in_app_update_client.dart";
 import "package:url_launcher/url_launcher_string.dart";
 
 class AboutScreen extends StatelessWidget {
@@ -23,6 +24,7 @@ class AboutScreen extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
+                spacing: 24,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
@@ -30,27 +32,45 @@ class AboutScreen extends StatelessWidget {
                     color: Theme.of(context).colorScheme.primary,
                     height: 80,
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    "TubeSync",
-                    style: Theme.of(context).textTheme.headlineMedium,
+                  Column(
+                    spacing: 12,
+                    children: [
+                      Text(
+                        "TubeSync",
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      Text(
+                        "v${snapshot.requireData.version}",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      FilledButton(
+                        onPressed: () {
+                          InAppUpdateClient.checkFromGitHub().then((value) {
+                            if (!context.mounted) return;
+                            if (value == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("No new updates."),
+                                ),
+                              );
+                              return;
+                            }
+                            InAppUpdateClient.showUpdateDialog(context, value);
+                          });
+                        },
+                        child: const Text("Check For Update"),
+                      )
+                    ],
                   ),
-                  Text(
-                    "v${snapshot.requireData.version}",
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 24),
                   const Text(
                     "Licenced under the GNU General Public Licence v3.0",
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 24),
                   TextButton.icon(
                     onPressed: () => showLicensePage(context: context),
                     icon: const Icon(Icons.chrome_reader_mode_rounded),
                     label: const Text("Open Source Licences"),
                   ),
-                  const SizedBox(height: 24),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

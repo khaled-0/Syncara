@@ -128,6 +128,22 @@ class PreferenceScreen extends StatelessWidget {
               }),
             ),
           ),
+          _title(context, "Others"),
+          StreamBuilder(
+            stream: preferences(context).watch(
+              Preference.inAppUpdate,
+            ),
+            builder: (c, value) => SwitchListTile(
+              value: value.data?.get<bool>() != false,
+              onChanged: (value) => preferences(c).setValue(
+                Preference.inAppUpdate,
+                value,
+              ),
+              secondary: const Icon(Icons.shuffle_rounded),
+              title: const Text("Check app updates"),
+              subtitle: const Text("Notify when new version is available"),
+            ),
+          ),
         ],
       ),
     );

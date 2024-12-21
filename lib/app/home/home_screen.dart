@@ -10,6 +10,8 @@ import 'package:tubesync/app/app_theme.dart';
 import 'package:tubesync/app/library/import_playlist_dialog.dart';
 import 'package:tubesync/app/library/library_tab.dart';
 import 'package:tubesync/app/more/more_tab.dart';
+import 'package:tubesync/clients/in_app_update_client.dart';
+import 'package:tubesync/model/preferences.dart';
 import 'package:tubesync/provider/library_provider.dart';
 
 import 'home_app_bar.dart';
@@ -77,18 +79,29 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   final homeNavigator = GlobalKey<NavigatorState>();
   StreamSubscription? shareHandler;
+  late final prefs = context.read<Isar>().preferences;
 
   @override
   void initState() {
     super.initState();
+    // TODO: Add IOS Support
     if (Platform.isAndroid) {
-      shareHandler = ReceiveSharingIntent.instance.getMediaStream().listen(
-            handleSharedData,
-          );
+      shareHandler = ReceiveSharingIntent.instance
+          .getMediaStream()
+          .listen(handleSharedData);
+
       ReceiveSharingIntent.instance
           .getInitialMedia()
           .then(handleSharedData)
           .whenComplete(ReceiveSharingIntent.instance.reset);
+    }
+
+    // Check for update
+    if (prefs.getValue(Preference.inAppUpdate, true)!) {
+      InAppUpdateClient.checkFromGitHub().then((changes) {
+        if (!mounted || changes == null) return;
+        InAppUpdateClient.showUpdateDialog(context, changes);
+      }).catchError((_) {});
     }
   }
 

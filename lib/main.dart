@@ -85,6 +85,7 @@ void main() async {
       ),
     ),
   );
+
   // Ensure permissions
   Future.wait([
     Permission.notification.isDenied,

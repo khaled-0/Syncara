@@ -18,7 +18,9 @@ enum Preference {
   // Player Customization
   miniPlayerSecondaryAction,
   // Downloader
-  maxParallelDownload
+  maxParallelDownload,
+  // Others
+  inAppUpdate,
 }
 
 @Collection()
