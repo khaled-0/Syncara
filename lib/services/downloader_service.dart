@@ -21,10 +21,7 @@ class DownloaderService {
   /// Singleton -->
   /// Must call before runApp
   static Future<void> init(Store store) async {
-    final max = store.box<Preferences>().getValue(
-          Preference.maxParallelDownload,
-          3,
-        );
+    final max = store.box<Preferences>().value(Preference.maxParallelDownload);
 
     await FileDownloader().configure(
       globalConfig: [

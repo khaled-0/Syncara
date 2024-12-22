@@ -36,6 +36,7 @@ class ChoiceDialog<T> extends StatelessWidget {
           shrinkWrap: true,
           itemCount: keys.length,
           itemBuilder: (context, i) => RadioListTile(
+            dense: true,
             value: options[keys[i]],
             groupValue: selected,
             onChanged: (v) => Navigator.pop(context, v),

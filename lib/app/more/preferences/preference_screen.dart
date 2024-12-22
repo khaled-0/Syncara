@@ -23,10 +23,10 @@ class PreferenceScreen extends StatelessWidget {
             ValueListenableBuilder(
               valueListenable: AppTheme.dynamicColors,
               builder: (_, value, __) => SwitchListTile(
-                value: value == true,
+                value: value != false,
                 onChanged: (value) {
                   AppTheme.dynamicColors.value = value;
-                  preferences(context).setValue(Preference.materialYou, value);
+                  preferences(context).set(Preference.materialYou, value);
                 },
                 secondary: const Icon(Icons.palette_rounded),
                 title: const Text("Material You"),
@@ -39,8 +39,8 @@ class PreferenceScreen extends StatelessWidget {
               Preference.notifShowShuffle,
             ),
             builder: (c, value) => SwitchListTile(
-              value: value.data?.findFirst()?.get<bool>() != false,
-              onChanged: (value) => preferences(c).setValue(
+              value: value.data?.value(Preference.notifShowShuffle) != false,
+              onChanged: (value) => preferences(c).set(
                 Preference.notifShowShuffle,
                 value,
               ),
@@ -54,8 +54,8 @@ class PreferenceScreen extends StatelessWidget {
               Preference.notifShowRepeat,
             ),
             builder: (c, value) => SwitchListTile(
-              value: value.data?.findFirst()?.get<bool>() != false,
-              onChanged: (value) => preferences(c).setValue(
+              value: value.data?.value(Preference.notifShowRepeat) != false,
+              onChanged: (value) => preferences(c).set(
                 Preference.notifShowRepeat,
                 value,
               ),
@@ -70,9 +70,9 @@ class PreferenceScreen extends StatelessWidget {
               Preference.miniPlayerSecondaryAction,
             ),
             builder: (context, value) {
-              final val = value.data?.findFirst()?.get<int>() ??
-                  MiniPlayerSecondaryActions.Close.index;
-              final selected = MiniPlayerSecondaryActions.values[val];
+              int? i = value.data?.value(Preference.miniPlayerSecondaryAction);
+              i ??= Preference.miniPlayerSecondaryAction.defaultValue;
+              final selected = MiniPlayerSecondaryActions.values[i];
               return ListTile(
                 leading: const Icon(Icons.smart_button_rounded),
                 title: const Text("Mini player secondary action"),
@@ -91,7 +91,7 @@ class PreferenceScreen extends StatelessWidget {
                   ),
                 ).then((v) {
                   if (!context.mounted || v == null) return;
-                  preferences(context).setValue(
+                  preferences(context).set(
                     Preference.miniPlayerSecondaryAction,
                     v.index,
                   );
@@ -100,29 +100,30 @@ class PreferenceScreen extends StatelessWidget {
             },
           ),
           _title(context, "Downloader"),
-          StreamBuilder(
+          StreamBuilder<Query<Preferences>>(
             stream: preferences(context).watch(
               Preference.maxParallelDownload,
             ),
             builder: (context, value) => ListTile(
               leading: const Icon(Icons.multiple_stop_rounded),
               title: const Text("Maximum parallel downloads"),
-              subtitle:
-                  Text("${value.data?.findFirst()?.get() ?? 3} at a time"),
+              subtitle: Text("${value.data?.value(
+                Preference.maxParallelDownload,
+              )} at a time"),
               onTap: () => showDialog<int?>(
                 context: context,
                 builder: (_) => ChoiceDialog<int>(
                   title: "Maximum parallel downloads",
                   subtitle: "Restart app to take effect",
                   icon: const Icon(Icons.multiple_stop_rounded, size: 38),
-                  selected: value.data?.findFirst()?.get<int>() ?? 3,
+                  selected: value.data?.value(Preference.maxParallelDownload),
                   options: {
                     for (final i in [1, 2, 3, 4, 5, 6, 7, 8]) ...{"$i": i}
                   },
                 ),
               ).then((v) {
                 if (!context.mounted || v == null) return;
-                preferences(context).setValue(
+                preferences(context).set(
                   Preference.maxParallelDownload,
                   v,
                 );
@@ -135,8 +136,8 @@ class PreferenceScreen extends StatelessWidget {
               Preference.inAppUpdate,
             ),
             builder: (c, value) => SwitchListTile(
-              value: value.data?.findFirst()?.get<bool>() != false,
-              onChanged: (value) => preferences(c).setValue(
+              value: value.data?.value(Preference.inAppUpdate) != false,
+              onChanged: (value) => preferences(c).set(
                 Preference.inAppUpdate,
                 value,
               ),

@@ -45,9 +45,8 @@ class PlayerProvider extends ChangeNotifier {
   Duration? get sleepTimer => _sleepAfterDuration;
 
   // We can't use the AudioPlayer based one because nextTrack isn't called
-  late LoopMode _loopMode = LoopMode.values[_store
-      .box<Preferences>()
-      .getValue<int>(Preference.loopMode, LoopMode.all.index)!];
+  late LoopMode _loopMode = LoopMode
+      .values[_store.box<Preferences>().value<int>(Preference.loopMode)];
 
   LoopMode get loopMode => _loopMode;
 
@@ -178,7 +177,7 @@ class PlayerProvider extends ChangeNotifier {
 
   /// Store the currently playing media for resuming later
   void storeNowPlaying() {
-    _store.box<Preferences>().setValue<LastPlayedMedia>(
+    _store.box<Preferences>().set<LastPlayedMedia>(
           Preference.lastPlayed,
           LastPlayedMedia(
             mediaId: nowPlaying.value.id,
@@ -205,9 +204,7 @@ class PlayerProvider extends ChangeNotifier {
       controls: mediaControls,
       systemActions: mediaActions,
     ));
-    _store
-        .box<Preferences>()
-        .setValue<int>(Preference.loopMode, _loopMode.index);
+    _store.box<Preferences>().set<int>(Preference.loopMode, _loopMode.index);
     notifyListeners();
   }
 
@@ -324,9 +321,7 @@ class PlayerProvider extends ChangeNotifier {
   Set<MediaAction> get mediaActions => {if (!buffering) MediaAction.seek};
 
   List<MediaControl> get mediaControls => [
-        if (_store
-            .box<Preferences>()
-            .getValue(Preference.notifShowShuffle, true)!)
+        if (_store.box<Preferences>().value(Preference.notifShowShuffle))
           const MediaControl(
             androidIcon: "drawable/shuffle_24px",
             label: "Shuffle",
@@ -338,9 +333,7 @@ class PlayerProvider extends ChangeNotifier {
           if (player.playing) MediaControl.pause else MediaControl.play
         },
         if (hasNext) MediaControl.skipToNext,
-        if (_store
-            .box<Preferences>()
-            .getValue(Preference.notifShowRepeat, true)!)
+        if (_store.box<Preferences>().value(Preference.notifShowRepeat))
           MediaControl(
             androidIcon: switch (_loopMode) {
               LoopMode.off => "drawable/repeat_off_24px",

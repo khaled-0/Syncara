@@ -97,7 +97,7 @@ class _HomeTabState extends State<HomeTab> {
     }
 
     // Check for update
-    if (prefs.getValue(Preference.inAppUpdate, true)!) {
+    if (prefs.value<bool>(Preference.inAppUpdate)) {
       InAppUpdateClient.checkFromGitHub().then((changes) {
         if (!mounted || changes == null) return;
         InAppUpdateClient.showUpdateDialog(context, changes);
