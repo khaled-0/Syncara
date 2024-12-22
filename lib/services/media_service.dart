@@ -20,7 +20,7 @@ class MediaService extends BaseAudioHandler {
     _instance = await AudioService.init(
       builder: () => MediaService._(),
       config: const AudioServiceConfig(
-        androidNotificationChannelName: 'TubeSync',
+        androidNotificationChannelName: 'MyuSync',
         androidNotificationChannelId: 'io.github.khaled_0.TubeSync',
         androidNotificationIcon: 'drawable/ic_launcher_monochrome',
         preloadArtwork: true,

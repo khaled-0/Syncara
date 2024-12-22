@@ -25,7 +25,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         titleSpacing: 0,
-        title: const Text("TubeSync"),
+        title: const Text("MyuSync"),
         actions: [
           if (!AppTheme.isDesktop) ...{
             const Avatar(),

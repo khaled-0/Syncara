@@ -42,7 +42,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
           ),
         ),
         title: const DragToMoveArea(
-          child: Text("TubeSync"),
+          child: Text("MyuSync"),
         ),
         centerTitle: true,
         actions: [

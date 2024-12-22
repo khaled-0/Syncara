@@ -36,7 +36,7 @@ class AboutScreen extends StatelessWidget {
                     spacing: 12,
                     children: [
                       Text(
-                        "TubeSync",
+                        "MyuSync",
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Text(
@@ -67,7 +67,7 @@ class AboutScreen extends StatelessWidget {
                     children: [
                       TextButton.icon(
                         onPressed: () => launchUrlString(
-                          "https://github.com/khaled-0/TubeSync",
+                          "https://github.com/khaled-0/MyuSync",
                         ),
                         icon: const Icon(Icons.code_rounded),
                         label: const Text("GitHub"),

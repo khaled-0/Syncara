@@ -7,7 +7,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class InAppUpdateClient {
-  static const repo = "khaled-0/TubeSync";
+  static const repo = "khaled-0/MyuSync";
   @visibleForTesting
   static final nightlyRegex = RegExp(r"-([a-z0-9]{7})");
 
