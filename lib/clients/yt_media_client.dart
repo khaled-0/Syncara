@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:tubesync/clients/media_client.dart';
-import 'package:tubesync/model/common.dart';
-import 'package:tubesync/model/media.dart';
+import 'package:myusync/clients/media_client.dart';
+import 'package:myusync/model/common.dart';
+import 'package:myusync/model/media.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class YTMediaClient implements BaseMediaClient {

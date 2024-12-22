@@ -1,5 +1,5 @@
 import 'package:objectbox/objectbox.dart';
-import 'package:tubesync/model/media.dart';
+import 'package:myusync/model/media.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 @Entity()

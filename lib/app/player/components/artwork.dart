@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/clients/media_client.dart';
-import 'package:tubesync/extensions.dart';
-import 'package:tubesync/provider/player_provider.dart';
+import 'package:myusync/clients/media_client.dart';
+import 'package:myusync/extensions.dart';
+import 'package:myusync/provider/player_provider.dart';
 
 class Artwork extends StatelessWidget {
   const Artwork({super.key});

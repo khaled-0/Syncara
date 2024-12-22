@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/app/more/downloads/active_downloads_screen.dart';
-import 'package:tubesync/clients/media_client.dart';
-import 'package:tubesync/model/media.dart';
-import 'package:tubesync/provider/playlist_provider.dart';
-import 'package:tubesync/services/downloader_service.dart';
+import 'package:myusync/app/more/downloads/active_downloads_screen.dart';
+import 'package:myusync/clients/media_client.dart';
+import 'package:myusync/model/media.dart';
+import 'package:myusync/provider/playlist_provider.dart';
+import 'package:myusync/services/downloader_service.dart';
 
 class MediaMenuSheet extends StatelessWidget {
   final Media media;

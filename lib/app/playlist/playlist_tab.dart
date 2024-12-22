@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/app/app_theme.dart';
-import 'package:tubesync/app/player/mini_player_sheet.dart';
-import 'package:tubesync/app/playlist/media_entry_builder.dart';
-import 'package:tubesync/app/playlist/playlist_header.dart';
-import 'package:tubesync/model/media.dart';
-import 'package:tubesync/model/objectbox.g.dart';
-import 'package:tubesync/provider/player_provider.dart';
-import 'package:tubesync/provider/playlist_provider.dart';
+import 'package:myusync/app/app_theme.dart';
+import 'package:myusync/app/player/mini_player_sheet.dart';
+import 'package:myusync/app/playlist/media_entry_builder.dart';
+import 'package:myusync/app/playlist/playlist_header.dart';
+import 'package:myusync/model/media.dart';
+import 'package:myusync/model/objectbox.g.dart';
+import 'package:myusync/provider/player_provider.dart';
+import 'package:myusync/provider/playlist_provider.dart';
 
 class PlaylistTab extends StatelessWidget {
   const PlaylistTab({super.key});

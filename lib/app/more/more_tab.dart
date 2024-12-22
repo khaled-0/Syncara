@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/app/more/about_screen.dart';
-import 'package:tubesync/app/more/downloads/active_downloads_screen.dart';
-import 'package:tubesync/app/more/preferences/preference_screen.dart';
-import 'package:tubesync/model/objectbox.g.dart';
+import 'package:myusync/app/more/about_screen.dart';
+import 'package:myusync/app/more/downloads/active_downloads_screen.dart';
+import 'package:myusync/app/more/preferences/preference_screen.dart';
+import 'package:myusync/model/objectbox.g.dart';
 
 class MoreTab extends StatelessWidget {
   MoreTab({super.key});

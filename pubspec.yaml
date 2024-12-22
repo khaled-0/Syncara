@@ -1,4 +1,4 @@
-name: tubesync
+name: myusync
 description: "Sync YouTube playlists offline. Because YT Music sucks"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -99,7 +99,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/icons/tubesync_mono.webp
+    - assets/icons/myusync_mono.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
