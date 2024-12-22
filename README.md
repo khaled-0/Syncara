@@ -1,6 +1,6 @@
 <img src="./docs/banner.png" width="100%" alt="Banner">
 
-# TubeSync
+# MyuSync
 
 Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 
@@ -39,22 +39,22 @@ Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 
 ## Download
 
-TubeSync for all platform are primarily released on Github. Tap on your device icon to directly download.
+MyuSync for all platform are primarily released on Github. Tap on your device icon to directly download.
 
  <p align="center">
-  <a href="https://github.com/khaled-0/TubeSync/releases/latest">
+  <a href="https://github.com/khaled-0/MyuSync/releases/latest">
     <img height="48" src="./docs/badges/get-it-on-github.png" alt="Get it on GitHub"/>
   </a> 
-   <a href="https://github.com/khaled-0/TubeSync/releases/latest/download/app-release.apk">
+   <a href="https://github.com/khaled-0/MyuSync/releases/latest/download/app-release.apk">
     <img height="48" src="./docs/badges/apk-square.png" alt="Android"/>
   </a>  
-  <a href="https://github.com/khaled-0/TubeSync/releases/latest/download/tubesync_ios_unsigned.ipa">
+  <a href="https://github.com/khaled-0/MyuSync/releases/latest/download/tubesync_ios_unsigned.ipa">
     <img height="48" src="./docs/badges/ios-square.png" alt="IOS"/>
   </a>  
-  <a href="https://github.com/khaled-0/TubeSync/releases/latest/download/tubesync_linux.zip">
+  <a href="https://github.com/khaled-0/MyuSync/releases/latest/download/tubesync_linux.zip">
     <img height="48" src="./docs/badges/linux-square.png" alt="Linux"/>
   </a>
-  <a href="https://github.com/khaled-0/TubeSync/releases/latest/download/tubesync_macos.zip">
+  <a href="https://github.com/khaled-0/MyuSync/releases/latest/download/tubesync_macos.zip">
     <img height="48" src="./docs/badges/mac-square.png" alt="MacOS"/>
   </a> 
 </p>
@@ -88,14 +88,14 @@ TubeSync for all platform are primarily released on Github. Tap on your device i
 
 ### iOS and MacOS
 
-**IOS:** Unsigned (.ipa) builds are available. [Download (IOS) from here](https://github.com/khaled-0/TubeSync/releases/latest/download/tubesync_unsigned.ipa). <br>
+**IOS:** Unsigned (.ipa) builds are available. [Download (IOS) from here](https://github.com/khaled-0/MyuSync/releases/latest/download/tubesync_unsigned.ipa). <br>
 **Note:** Use [Sideloadly](https://sideloadly.io/) to install it.
 Here's a [Video tutorial by @ilyassesalama](https://www.youtube.com/watch?v=r91iJ6KRcUs)
 
-**MacOS**: Available directly as app (.app) [Download (MacOS) from here](https://github.com/khaled-0/TubeSync/releases/latest/download/tubesync_macos.zip)
+**MacOS**: Available directly as app (.app) [Download (MacOS) from here](https://github.com/khaled-0/MyuSync/releases/latest/download/tubesync_macos.zip)
 
 <br /> 
 Alternatively, you can try the nightly (unstable) build:
 
-- [Latest nightly build link](https://nightly.link/khaled-0/TubeSync/workflows/nightly/main)
-- [Actions page for nightly builds](https://github.com/khaled-0/TubeSync/actions)
+- [Latest nightly build link](https://nightly.link/khaled-0/MyuSync/workflows/nightly/main)
+- [Actions page for nightly builds](https://github.com/khaled-0/MyuSync/actions)
