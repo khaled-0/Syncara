@@ -37,8 +37,8 @@ jobs:
 
       - name: Decode Release Key
         run: |
-          echo "$TUBESYNC_JKS" > tubesync.b64
-          base64 --decode tubesync.b64 > tubesync.jks
+          echo "$TUBESYNC_JKS" > myusync.b64
+          base64 --decode myusync.b64 > myusync.jks
         env:
           TUBESYNC_JKS: ${{ secrets.TUBESYNC_JKS }}
 
@@ -56,7 +56,7 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tubesync_android_release
+          name: myusync_android_release
           path: build/app/outputs/flutter-apk/app-*.apk
           compression-level: 9
 
@@ -88,22 +88,22 @@ jobs:
       - name: Prepare bundle
         run: |
           cd build/linux/x64/release/bundle
-          zip -r tubesync_linux.zip .
+          zip -r myusync_linux.zip .
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: build/linux/x64/release/bundle/tubesync_linux.zip
+          files: build/linux/x64/release/bundle/myusync_linux.zip
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tubesync_linux_release
+          name: myusync_linux_release
           compression-level: 9
           path: |
             build/linux/x64/release/bundle/
-            !build/linux/x64/release/bundle/tubesync_linux.zip
+            !build/linux/x64/release/bundle/myusync_linux.zip
 
   build-ios:
     runs-on: macOS-latest
@@ -132,19 +132,19 @@ jobs:
         run: |
           mkdir Payload
           mv build/ios/iphoneos/Runner.app/ Payload
-          zip -qq -r -9 tubesync_ios_unsigned.ipa Payload
+          zip -qq -r -9 myusync_ios_unsigned.ipa Payload
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: tubesync_ios_unsigned.ipa
+          files: myusync_ios_unsigned.ipa
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tubesync_ios_release
-          path: tubesync_ios_unsigned.ipa
+          name: myusync_ios_release
+          path: myusync_ios_unsigned.ipa
           compression-level: 9
 
   build-mac:
@@ -170,17 +170,17 @@ jobs:
       - name: Prepare bundle
         run: |
           mv build/macos/Build/Products/Release/*.app ./
-          zip -r tubesync_macos.zip *.app
+          zip -r myusync_macos.zip *.app
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: tubesync_macos.zip
+          files: myusync_macos.zip
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tubesync_macos_release
+          name: myusync_macos_release
           compression-level: 9
-          path: tubesync_macos.zip
+          path: myusync_macos.zip
