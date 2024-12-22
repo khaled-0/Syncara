@@ -9,6 +9,19 @@ on:
       - "docs/**"
 
 jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - run: echo '### 🔬Test Results' >> $GITHUB_STEP_SUMMARY
+      - run: flutter test -r github >> $GITHUB_STEP_SUMMARY
+
   build-android:
     runs-on: ubuntu-latest
     steps:
