@@ -65,7 +65,7 @@ class DownloaderService {
       );
       final url = manifest.audio.withHighestBitrate().url.toString();
 
-      final task = DownloadTask(
+      final task = ParallelDownloadTask(
         url: url,
         displayName: media.title,
         directory: MediaClient().downloadsDir,
@@ -99,7 +99,7 @@ class DownloaderService {
 
         if (_abortQueueing) break;
 
-        FileDownloader().enqueue(DownloadTask(
+        FileDownloader().enqueue(ParallelDownloadTask(
           taskId: media.id,
           url: url,
           displayName: media.title,
