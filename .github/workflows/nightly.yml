@@ -51,6 +51,7 @@ jobs:
         with:
           name: tubesync_android_nightly
           path: build/app/outputs/flutter-apk/app-profile.apk
+          compression-level: 9
 
   build-linux:
     runs-on: ubuntu-latest
@@ -80,6 +81,7 @@ jobs:
         with:
           name: tubesync_linux_nightly
           path: build/linux/x64/release/bundle/
+          compression-level: 9
 
   build-ios:
     runs-on: macOS-latest
@@ -112,6 +114,7 @@ jobs:
         with:
           name: tubesync_ios_nightly
           path: tubesync_unsigned.ipa
+          compression-level: 9
 
   build-mac:
     runs-on: macOS-latest
@@ -143,3 +146,4 @@ jobs:
         with:
           name: tubesync_macos_nightly
           path: tubesync_macos.zip
+          compression-level: 9

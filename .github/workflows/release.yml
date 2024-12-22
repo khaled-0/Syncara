@@ -58,6 +58,7 @@ jobs:
         with:
           name: tubesync_android_release
           path: build/app/outputs/flutter-apk/app-*.apk
+          compression-level: 9
 
   build-linux:
     runs-on: ubuntu-latest
@@ -99,6 +100,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tubesync_linux_release
+          compression-level: 9
           path: |
             build/linux/x64/release/bundle/
             !build/linux/x64/release/bundle/tubesync_linux.zip
@@ -143,6 +145,8 @@ jobs:
         with:
           name: tubesync_ios_release
           path: tubesync_ios_unsigned.ipa
+          compression-level: 9
+
   build-mac:
     runs-on: macOS-latest
     steps:
@@ -178,4 +182,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tubesync_macos_release
+          compression-level: 9
           path: tubesync_macos.zip
