@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 class InAppUpdateClient {
   static const repo = "khaled-0/TubeSync";
   @visibleForTesting
-  static final nightlyRegex = RegExp(r"\+([a-z0-9]{7})");
+  static final nightlyRegex = RegExp(r"-([a-z0-9]{7})");
   static const _nightlyBadge = "[NIGHTLY]🦉";
 
   /// Returns changelog if update available. else null

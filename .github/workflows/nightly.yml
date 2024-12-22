@@ -20,7 +20,7 @@ jobs:
           cache: true
 
       - run: echo '### 🔬Test Results' >> $GITHUB_STEP_SUMMARY
-      - run: flutter test -r github >> $GITHUB_STEP_SUMMARY
+      - run: flutter pub get && flutter test -r github >> $GITHUB_STEP_SUMMARY
 
   build-android:
     runs-on: ubuntu-latest
@@ -31,6 +31,19 @@ jobs:
           channel: "stable"
           flutter-version-file: pubspec.yaml
           cache: true
+
+      - name: Attach Commit ID to Version
+        run: |
+          # Retrieve the current commit hash
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          # Retrieve the current version from pubspec.yaml
+          CURRENT_VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          # Combine the version and commit hash
+          NEW_VERSION=$(echo $CURRENT_VERSION | sed "s/+/-$COMMIT_HASH+/")
+          # Update the version in pubspec.yaml
+          sed -i "s/^version: .*/version: $NEW_VERSION/" pubspec.yaml
+          # Validate
+          cat pubspec.yaml | grep '^version:'
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -78,6 +91,20 @@ jobs:
 
       - run: flutter --version
 
+      - name: Attach Commit ID to Version
+        run: |
+          # Retrieve the current commit hash
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          # Retrieve the current version from pubspec.yaml
+          CURRENT_VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          # Combine the version and commit hash
+          NEW_VERSION=$(echo $CURRENT_VERSION | sed "s/+/-$COMMIT_HASH+/")
+          # Update the version in pubspec.yaml
+          sed -i "s/^version: .*/version: $NEW_VERSION/" pubspec.yaml
+          # Validate
+          cat pubspec.yaml | grep '^version:'
+
+
       - name: Install dependencies
         run: |
           sudo apt-get install -y clang cmake ninja-build pkg-config libmpv-dev libgtk-3-dev liblzma-dev libstdc++-12-dev
@@ -104,6 +131,19 @@ jobs:
         with:
           channel: "stable"
           cache: true
+
+      - name: Attach Commit ID to Version
+        run: |
+          # Retrieve the current commit hash
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          # Retrieve the current version from pubspec.yaml
+          CURRENT_VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          # Combine the version and commit hash
+          NEW_VERSION=$(echo $CURRENT_VERSION | sed "s/+/-$COMMIT_HASH+/")
+          # Update the version in pubspec.yaml
+          sed -i '' "s/^version: .*/version: $NEW_VERSION/" pubspec.yaml
+          # Validate
+          cat pubspec.yaml | grep '^version:'
 
       - run: flutter --version
 
@@ -137,6 +177,19 @@ jobs:
         with:
           channel: "stable"
           cache: true
+
+      - name: Attach Commit ID to Version
+        run: |
+          # Retrieve the current commit hash
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          # Retrieve the current version from pubspec.yaml
+          CURRENT_VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          # Combine the version and commit hash
+          NEW_VERSION=$(echo $CURRENT_VERSION | sed "s/+/-$COMMIT_HASH+/")
+          # Update the version in pubspec.yaml
+          sed -i '' "s/^version: .*/version: $NEW_VERSION/" pubspec.yaml
+          # Validate
+          cat pubspec.yaml | grep '^version:'
 
       - run: flutter --version
 
