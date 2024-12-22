@@ -18,7 +18,7 @@ class PreferenceScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
-          _title(context, "Appearance"),
+          if (!Platform.isIOS) _title(context, "Appearance"),
           if (!Platform.isIOS)
             ValueListenableBuilder(
               valueListenable: AppTheme.dynamicColors,

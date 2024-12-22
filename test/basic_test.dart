@@ -13,7 +13,10 @@ void main() {
   });
 
   test("NightlyUpdateChecker", () async {
-    expect(await InAppUpdateClient.checkNightlyUpdate("34fde1f"), isNotEmpty);
+    expect(
+      (await InAppUpdateClient.checkNightlyUpdate("90da5fe")).$1,
+      isNotEmpty,
+    );
   });
 
   test("NightlyChangeLog", () async {
