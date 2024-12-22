@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
 import 'package:provider/provider.dart';
@@ -29,11 +28,10 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
   late LyricFutureResult? cachedResult = widget.initialData;
   bool paused = false;
 
-  late String preferredLanguage =
-      context.read<Store>().box<Preferences>().getValue<String>(
-            Preference.subsLang,
-            PlatformDispatcher.instance.locale.languageCode,
-          )!;
+  late String preferredLanguage = context
+      .read<Store>()
+      .box<Preferences>()
+      .value<String>(Preference.subsLang);
 
   Future<LyricFutureResult> fetchLyrics(Media media) async {
     if (paused) throw "Fullscreen mode active";
@@ -197,7 +195,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
     if (selection != null && selection.langCode != preferredLanguage) {
       setState(() => preferredLanguage = selection.langCode);
       if (mounted) {
-        context.read<Store>().box<Preferences>().setValue(
+        context.read<Store>().box<Preferences>().set(
               Preference.subsLang,
               preferredLanguage,
             );

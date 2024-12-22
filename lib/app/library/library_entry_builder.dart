@@ -48,8 +48,9 @@ class LibraryEntryBuilder extends StatelessWidget {
               },
               image: NetworkToFileImage(
                 url: playlist.thumbnailStd,
-                file: MediaClient()
-                    .thumbnailFile(playlist.thumbnailStd),
+                file: MediaClient().thumbnailFile(
+                  playlist.thumbnailStd,
+                ),
               ),
               fit: BoxFit.cover,
             ),

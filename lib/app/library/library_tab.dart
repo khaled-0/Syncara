@@ -71,7 +71,7 @@ class LibraryTab extends StatelessWidget {
             final hasResumeData = context
                 .read<Store>()
                 .box<Preferences>()
-                .valueExists(Preference.lastPlayed);
+                .exists(Preference.lastPlayed);
 
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -134,20 +134,18 @@ class LibraryTab extends StatelessWidget {
   }
 
   void resumePlayback(BuildContext context) {
+    final prefs = context.read<Store>().box<Preferences>();
     try {
-      final resumeData = context
-          .read<Store>()
-          .box<Preferences>()
-          .getValue<LastPlayedMedia>(Preference.lastPlayed, null);
+      final resumeData = prefs.value<LastPlayedMedia>(Preference.lastPlayed);
 
       final library = context.read<LibraryProvider>().entries;
       final playlist = PlaylistProvider(
         context.read<Store>(),
-        library.firstWhere((e) => e.id == resumeData!.playlistId),
+        library.firstWhere((e) => e.id == resumeData.playlistId),
       );
 
       final media = playlist.medias.firstWhere(
-        (e) => e.id == resumeData!.mediaId,
+        (e) => e.id == resumeData.mediaId,
       );
 
       PlaylistTab.launchPlayer(
@@ -156,10 +154,7 @@ class LibraryTab extends StatelessWidget {
         playlist: playlist,
       );
     } catch (_) {
-      context
-          .read<Store>()
-          .box<Preferences>()
-          .removeValue(Preference.lastPlayed);
+      prefs.delete(Preference.lastPlayed);
       MediaService().playbackState.add(
             MediaService().playbackState.value.copyWith(),
           );

@@ -5,22 +5,26 @@ import 'package:tubesync/model/common.dart';
 import 'package:tubesync/model/objectbox.g.dart' as obj;
 
 // TODO Embed type and defaultValue
-enum Preference {
+enum Preference<T> {
   // Appearance
-  materialYou,
+  materialYou<bool>(true),
   // Auto Remember Stuff
-  lastPlayed,
-  subsLang,
-  loopMode,
+  lastPlayed<LastPlayedMedia?>(null),
+  subsLang<String>("en"),
+  loopMode<int>(0), // LoopMode.off
   // Media Notification
-  notifShowShuffle,
-  notifShowRepeat,
+  notifShowShuffle<bool>(true),
+  notifShowRepeat<bool>(true),
   // Player Customization
-  miniPlayerSecondaryAction,
+  miniPlayerSecondaryAction<int>(0), // MiniPlayerSecondaryActions.Close
   // Downloader
-  maxParallelDownload,
+  maxParallelDownload<int>(3),
   // Others
-  inAppUpdate,
+  inAppUpdate<bool>(true);
+
+  final T defaultValue;
+
+  const Preference(this.defaultValue);
 }
 
 @Entity()
@@ -41,7 +45,7 @@ class Preferences {
 
   Preferences(this.key);
 
-  void set(dynamic value) {
+  void put(dynamic value) {
     switch (value.runtimeType) {
       case const (String):
         stringValue = value;
@@ -78,27 +82,34 @@ class Preferences {
 }
 
 extension PreferenceExtension on Box<Preferences> {
-  void setValue<T>(Preference key, T value) {
-    final preference = Preferences(key.name)..set(value);
+  void set<T>(Preference key, T value) {
+    final preference = Preferences(key.name)..put(value);
     put(preference);
   }
 
-  void removeValue(Preference key) =>
+  void delete(Preference key) =>
       query(obj.Preferences_.key.equals(key.name)).build().remove();
 
-  bool valueExists(Preference key) =>
+  bool exists(Preference key) =>
       query(obj.Preferences_.key.equals(key.name)).build().count() != 0;
 
-  T? getValue<T>(Preference key, T? defaultValue) {
-    return query(obj.Preferences_.key.equals(key.name))
-            .build()
-            .findFirst()
-            ?.get() ??
-        defaultValue;
+  T value<T>(Preference key) {
+    return query(
+          obj.Preferences_.key.equals(key.name),
+        ).build().findFirst()?.get() ??
+        key.defaultValue;
   }
 
   Stream<Query<Preferences>> watch(Preference key) =>
       query(obj.Preferences_.key.equals(key.name)).watch(
         triggerImmediately: true,
       );
+}
+
+extension PreferenceQueryExtension on Query<Preferences> {
+  T value<T>(Preference key) {
+    final value = findFirst();
+    if (value != null) assert(value.key == key.name);
+    return value?.get() ?? key.defaultValue;
+  }
 }

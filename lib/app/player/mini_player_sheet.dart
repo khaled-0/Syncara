@@ -177,10 +177,10 @@ class MiniPlayerSheet extends StatelessWidget {
   }
 
   Widget? _secondaryAction(BuildContext context) {
-    final action = context.read<Store>().box<Preferences>().getValue<int>(
-          Preference.miniPlayerSecondaryAction,
-          MiniPlayerSecondaryActions.Close.index,
-        )!;
+    final action = context
+        .read<Store>()
+        .box<Preferences>()
+        .value<int>(Preference.miniPlayerSecondaryAction);
 
     switch (MiniPlayerSecondaryActions.values[action]) {
       case MiniPlayerSecondaryActions.Close:

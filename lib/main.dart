@@ -27,10 +27,9 @@ void main() async {
     directory: (await getApplicationSupportDirectory()).path,
   );
 
-  AppTheme.dynamicColors.value = objectDB.box<Preferences>().getValue(
+  AppTheme.dynamicColors.value = objectDB.box<Preferences>().value(
         Preference.materialYou,
-        true,
-      )!;
+      );
 
   await DownloaderService.init(objectDB);
   await MediaService.init();
