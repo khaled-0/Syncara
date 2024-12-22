@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/app/player/player_menu_sheet.dart';
-import 'package:tubesync/extensions.dart';
-import 'package:tubesync/provider/player_provider.dart';
+import 'package:myusync/app/player/player_menu_sheet.dart';
+import 'package:myusync/extensions.dart';
+import 'package:myusync/provider/player_provider.dart';
 
 class SleepTimeIndicator extends StatelessWidget {
   const SleepTimeIndicator({super.key}) : _static = false;

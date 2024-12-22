@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/app/player/components/queue_playlist_filter.dart';
-import 'package:tubesync/app/playlist/media_entry_builder.dart';
-import 'package:tubesync/model/media.dart';
-import 'package:tubesync/provider/player_provider.dart';
+import 'package:myusync/app/player/components/queue_playlist_filter.dart';
+import 'package:myusync/app/playlist/media_entry_builder.dart';
+import 'package:myusync/model/media.dart';
+import 'package:myusync/provider/player_provider.dart';
 
 class PlayerQueueSheet extends StatelessWidget {
   const PlayerQueueSheet({super.key});

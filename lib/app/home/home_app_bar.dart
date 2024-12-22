@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tubesync/app/app_theme.dart';
-import 'package:tubesync/app/home/avatar.dart';
+import 'package:myusync/app/app_theme.dart';
+import 'package:myusync/app/home/avatar.dart';
 import 'package:window_manager/window_manager.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {

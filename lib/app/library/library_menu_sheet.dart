@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/model/objectbox.g.dart';
-import 'package:tubesync/model/playlist.dart';
-import 'package:tubesync/provider/library_provider.dart';
-import 'package:tubesync/provider/playlist_provider.dart';
-import 'package:tubesync/services/media_service.dart';
+import 'package:myusync/model/objectbox.g.dart';
+import 'package:myusync/model/playlist.dart';
+import 'package:myusync/provider/library_provider.dart';
+import 'package:myusync/provider/playlist_provider.dart';
+import 'package:myusync/services/media_service.dart';
 
 class LibraryMenuSheet extends StatelessWidget {
   final Playlist playlist;

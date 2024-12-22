@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/app/more/preferences/components/choice_dialog.dart';
-import 'package:tubesync/provider/player_provider.dart';
+import 'package:myusync/app/more/preferences/components/choice_dialog.dart';
+import 'package:myusync/provider/player_provider.dart';
 
 class PlayerMenuSheet extends StatelessWidget {
   const PlayerMenuSheet({super.key});

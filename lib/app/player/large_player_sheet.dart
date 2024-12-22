@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tubesync/app/app_theme.dart';
-import 'package:tubesync/app/player/components/action_buttons.dart';
-import 'package:tubesync/app/player/components/artwork.dart';
-import 'package:tubesync/app/player/components/lyrics.dart';
-import 'package:tubesync/app/player/player_menu_sheet.dart';
-import 'package:tubesync/app/player/components/seekbar.dart';
-import 'package:tubesync/app/player/components/sleep_time_indicator.dart';
-import 'package:tubesync/app/player/player_queue_sheet.dart';
-import 'package:tubesync/model/media.dart';
-import 'package:tubesync/provider/player_provider.dart';
+import 'package:myusync/app/app_theme.dart';
+import 'package:myusync/app/player/components/action_buttons.dart';
+import 'package:myusync/app/player/components/artwork.dart';
+import 'package:myusync/app/player/components/lyrics.dart';
+import 'package:myusync/app/player/player_menu_sheet.dart';
+import 'package:myusync/app/player/components/seekbar.dart';
+import 'package:myusync/app/player/components/sleep_time_indicator.dart';
+import 'package:myusync/app/player/player_queue_sheet.dart';
+import 'package:myusync/model/media.dart';
+import 'package:myusync/provider/player_provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 class LargePlayerSheet extends StatefulWidget {

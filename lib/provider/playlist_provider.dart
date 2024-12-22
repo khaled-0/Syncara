@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:tubesync/clients/media_client.dart';
-import 'package:tubesync/model/media.dart';
-import 'package:tubesync/model/objectbox.g.dart';
-import 'package:tubesync/model/playlist.dart';
-import 'package:tubesync/services/downloader_service.dart';
+import 'package:myusync/clients/media_client.dart';
+import 'package:myusync/model/media.dart';
+import 'package:myusync/model/objectbox.g.dart';
+import 'package:myusync/model/playlist.dart';
+import 'package:myusync/services/downloader_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class PlaylistProvider extends ChangeNotifier {
