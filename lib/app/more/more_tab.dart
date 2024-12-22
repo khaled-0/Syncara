@@ -36,7 +36,7 @@ class MoreTab extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(80),
             child: Image.asset(
-              "assets/icons/tubesync_mono.webp",
+              "assets/icons/myusync_mono.webp",
               width: 80,
               height: 80,
               color: Theme.of(context).colorScheme.onPrimaryContainer,

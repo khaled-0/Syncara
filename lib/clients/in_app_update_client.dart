@@ -67,15 +67,15 @@ class InAppUpdateClient {
     final Map<String, dynamic> data = jsonDecode(response.body);
     final List<dynamic> workflowRuns = data['workflow_runs'];
 
-    if (workflowRuns.isEmpty) throw "No new update found!";
+    if (workflowRuns.isEmpty) throw "No updates found!";
     final Map<String, dynamic> firstRun = workflowRuns[0];
-    String latestCommit =
-        firstRun['head_commit']['id'].substring(0, commit.length);
+    final String commitHash = firstRun['head_commit']['id'];
+    String latestCommitShort = commitHash.substring(0, commit.length);
 
     // Has new update
-    if (commit.compareTo(latestCommit) >= 0) {
+    if (commit != latestCommitShort) {
       final String title = firstRun['display_title'];
-      return (title, latestCommit);
+      return (title, latestCommitShort);
     }
 
     throw "No new update found!";

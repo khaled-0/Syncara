@@ -28,7 +28,7 @@ class AboutScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    "assets/icons/tubesync_mono.webp",
+                    "assets/icons/myusync_mono.webp",
                     color: Theme.of(context).colorScheme.primary,
                     height: 80,
                   ),

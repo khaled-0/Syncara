@@ -18,7 +18,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: ColoredBox(
               color: Theme.of(context).colorScheme.onPrimaryContainer,
               child: Image.asset(
-                "assets/icons/tubesync_mono.webp",
+                "assets/icons/myusync_mono.webp",
                 color: Theme.of(context).colorScheme.primaryContainer,
               ),
             ),
