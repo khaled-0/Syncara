@@ -15,4 +15,13 @@ void main() {
   test("NightlyUpdateChecker", () async {
     expect(await InAppUpdateClient.checkNightlyUpdate("34fde1f"), isNotEmpty);
   });
+
+  test("NightlyChangeLog", () async {
+    expect(
+      await InAppUpdateClient.fetchNightlyChangelog("4513580", "506df1d"),
+      "- ci: Compress Uploaded Artifacts by 9x\n"
+      "- feat: Add Nightly Updates [Android] , Add Tests\n"
+      "- ci: Attach Commit Hash to All Nightly Platform Version",
+    );
+  });
 }

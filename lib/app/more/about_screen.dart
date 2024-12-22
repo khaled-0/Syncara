@@ -44,20 +44,11 @@ class AboutScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       FilledButton(
-                        onPressed: () {
-                          InAppUpdateClient.checkFromGitHub().then((value) {
-                            if (!context.mounted) return;
-                            if (value == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("No new updates."),
-                                ),
-                              );
-                              return;
-                            }
-                            InAppUpdateClient.showUpdateDialog(context, value);
-                          });
-                        },
+                        onPressed: () => InAppUpdateClient.checkAndNotify(
+                          context,
+                          onError: (e) => ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text(e))),
+                        ),
                         child: const Text("Check For Update"),
                       )
                     ],
