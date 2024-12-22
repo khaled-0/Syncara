@@ -57,7 +57,7 @@ class InAppUpdateClient {
   @visibleForTesting
   static Future<(String, String)> checkNightlyUpdate(String commit) async {
     final url = Uri.parse(
-      'https://api.github.com/repos/$repo/actions/runs'
+      'https://api.github.com/repos/$repo/actions/workflows/nightly.yml/runs'
       '?branch=main&status=success&per_page=1&exclude_pull_requests=true',
     );
 
