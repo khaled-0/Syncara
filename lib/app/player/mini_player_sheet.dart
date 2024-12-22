@@ -131,15 +131,14 @@ class MiniPlayerSheet extends StatelessWidget {
   }
 
   Widget actions(BuildContext context) {
-    return Selector<PlayerProvider, bool>(
-      selector: (_, provider) => provider.buffering,
-      child: _secondaryAction(context),
-      builder: (context, buffering, extraAction) {
-        if (buffering) return extraAction ?? const SizedBox();
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            StreamBuilder(
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Selector<PlayerProvider, bool>(
+          selector: (_, provider) => provider.buffering,
+          builder: (context, buffering, _) {
+            if (buffering) return const SizedBox();
+            return StreamBuilder(
               stream: context.read<PlayerProvider>().player.playerStateStream,
               builder: (context, state) {
                 if (state.data?.playing == true) {
@@ -153,11 +152,11 @@ class MiniPlayerSheet extends StatelessWidget {
                   icon: const Icon(Icons.play_arrow_rounded),
                 );
               },
-            ),
-            if (extraAction != null) extraAction,
-          ],
-        );
-      },
+            );
+          },
+        ),
+        _secondaryAction(context),
+      ],
     );
   }
 
@@ -176,7 +175,7 @@ class MiniPlayerSheet extends StatelessWidget {
     );
   }
 
-  Widget? _secondaryAction(BuildContext context) {
+  Widget _secondaryAction(BuildContext context) {
     final action = context
         .read<Store>()
         .box<Preferences>()
@@ -196,7 +195,7 @@ class MiniPlayerSheet extends StatelessWidget {
           icon: const Icon(Icons.shuffle_rounded),
         );
       case MiniPlayerSecondaryActions.None:
-        return null;
+        return const SizedBox();
     }
   }
 
