@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
-import 'package:myusync/app/library/library_menu_sheet.dart';
-import 'package:myusync/clients/media_client.dart';
-import 'package:myusync/model/objectbox.g.dart';
-import 'package:myusync/model/playlist.dart';
-import 'package:myusync/provider/library_provider.dart';
+import 'package:syncara/app/library/library_menu_sheet.dart';
+import 'package:syncara/clients/media_client.dart';
+import 'package:syncara/model/objectbox.g.dart';
+import 'package:syncara/model/playlist.dart';
+import 'package:syncara/provider/library_provider.dart';
 
 class LibraryEntryBuilder extends StatelessWidget {
   final Playlist playlist;

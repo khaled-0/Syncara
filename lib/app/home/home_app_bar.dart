@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myusync/app/app_theme.dart';
-import 'package:myusync/app/home/avatar.dart';
+import 'package:syncara/app/app_theme.dart';
+import 'package:syncara/app/home/avatar.dart';
 import 'package:window_manager/window_manager.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -18,14 +18,14 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: ColoredBox(
               color: Theme.of(context).colorScheme.onPrimaryContainer,
               child: Image.asset(
-                "assets/icons/myusync_mono.webp",
+                "assets/icons/syncara_mono.webp",
                 color: Theme.of(context).colorScheme.primaryContainer,
               ),
             ),
           ),
         ),
         titleSpacing: 0,
-        title: const Text("MyuSync"),
+        title: const Text("Syncara"),
         actions: [
           if (!AppTheme.isDesktop) ...{
             const Avatar(),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
-import 'package:myusync/model/media.dart';
-import 'package:myusync/provider/player_provider.dart';
+import 'package:syncara/model/media.dart';
+import 'package:syncara/provider/player_provider.dart';
 
 class ActionButtons extends StatelessWidget {
   const ActionButtons({super.key});

@@ -5,14 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 // ignore: depend_on_referenced_packages Just for Types. Doesn't matter
 import 'package:rxdart/rxdart.dart' show BehaviorSubject;
-import 'package:myusync/clients/media_client.dart';
-import 'package:myusync/model/common.dart';
-import 'package:myusync/model/media.dart';
-import 'package:myusync/model/objectbox.g.dart';
-import 'package:myusync/model/playlist.dart';
-import 'package:myusync/model/preferences.dart';
-import 'package:myusync/provider/playlist_provider.dart';
-import 'package:myusync/services/media_service.dart';
+import 'package:syncara/clients/media_client.dart';
+import 'package:syncara/model/common.dart';
+import 'package:syncara/model/media.dart';
+import 'package:syncara/model/objectbox.g.dart';
+import 'package:syncara/model/playlist.dart';
+import 'package:syncara/model/preferences.dart';
+import 'package:syncara/provider/playlist_provider.dart';
+import 'package:syncara/services/media_service.dart';
 
 class PlayerProvider extends ChangeNotifier {
   final player = AudioPlayer();

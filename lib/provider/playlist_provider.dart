@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:myusync/clients/media_client.dart';
-import 'package:myusync/model/media.dart';
-import 'package:myusync/model/objectbox.g.dart';
-import 'package:myusync/model/playlist.dart';
-import 'package:myusync/services/downloader_service.dart';
+import 'package:syncara/clients/media_client.dart';
+import 'package:syncara/model/media.dart';
+import 'package:syncara/model/objectbox.g.dart';
+import 'package:syncara/model/playlist.dart';
+import 'package:syncara/services/downloader_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class PlaylistProvider extends ChangeNotifier {

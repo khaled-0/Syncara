@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = MyuSync
+PRODUCT_NAME = Syncara
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = app.tubesync
+PRODUCT_BUNDLE_IDENTIFIER = app.syncara
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = An open-source GPLv3 software available for Android, iOS, MacOS, Linux and Windows(ugh).

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
-import 'package:myusync/app/app_theme.dart';
-import 'package:myusync/app/player/components/sleep_time_indicator.dart';
-import 'package:myusync/app/player/large_player_sheet.dart';
-import 'package:myusync/clients/media_client.dart';
-import 'package:myusync/model/media.dart';
-import 'package:myusync/model/objectbox.g.dart';
-import 'package:myusync/model/preferences.dart';
-import 'package:myusync/provider/player_provider.dart';
+import 'package:syncara/app/app_theme.dart';
+import 'package:syncara/app/player/components/sleep_time_indicator.dart';
+import 'package:syncara/app/player/large_player_sheet.dart';
+import 'package:syncara/clients/media_client.dart';
+import 'package:syncara/model/media.dart';
+import 'package:syncara/model/objectbox.g.dart';
+import 'package:syncara/model/preferences.dart';
+import 'package:syncara/provider/player_provider.dart';
 
 class MiniPlayerSheet extends StatelessWidget {
   const MiniPlayerSheet({super.key});

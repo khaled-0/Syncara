@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
 import 'package:provider/provider.dart';
-import 'package:myusync/app/app_theme.dart';
-import 'package:myusync/app/player/components/action_buttons.dart';
-import 'package:myusync/clients/media_client.dart';
-import 'package:myusync/model/common.dart';
-import 'package:myusync/model/media.dart';
-import 'package:myusync/model/objectbox.g.dart';
-import 'package:myusync/model/preferences.dart';
-import 'package:myusync/provider/player_provider.dart';
+import 'package:syncara/app/app_theme.dart';
+import 'package:syncara/app/player/components/action_buttons.dart';
+import 'package:syncara/clients/media_client.dart';
+import 'package:syncara/model/common.dart';
+import 'package:syncara/model/media.dart';
+import 'package:syncara/model/objectbox.g.dart';
+import 'package:syncara/model/preferences.dart';
+import 'package:syncara/provider/player_provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 typedef LyricFutureResult = (List<LyricMetadata>, LyricMetadata, List<String>);

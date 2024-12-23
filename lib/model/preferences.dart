@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:objectbox/objectbox.dart';
-import 'package:myusync/model/common.dart';
-import 'package:myusync/model/objectbox.g.dart' as obj;
+import 'package:syncara/model/common.dart';
+import 'package:syncara/model/objectbox.g.dart' as obj;
 
 // TODO Embed type and defaultValue
 enum Preference<T> {

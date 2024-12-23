@@ -2,10 +2,10 @@
 Version=1.0
 Type=Application
 
-Name=MyuSync
+Name=Syncara
 Comment=Sync YouTube playlists offline
 Categories=AudioVideo;Music;
 
 Icon=io.github.khaled_0.TubeSync
-Exec=tubesync
+Exec=syncara
 Terminal=false

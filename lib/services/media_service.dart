@@ -1,7 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio_media_kit/just_audio_media_kit.dart';
-import 'package:myusync/provider/player_provider.dart';
-import 'package:myusync/provider/playlist_provider.dart';
+import 'package:syncara/provider/player_provider.dart';
+import 'package:syncara/provider/playlist_provider.dart';
 
 class MediaService extends BaseAudioHandler {
   /// <-- Singleton
@@ -20,7 +20,7 @@ class MediaService extends BaseAudioHandler {
     _instance = await AudioService.init(
       builder: () => MediaService._(),
       config: const AudioServiceConfig(
-        androidNotificationChannelName: 'MyuSync',
+        androidNotificationChannelName: 'Syncara',
         androidNotificationChannelId: 'io.github.khaled_0.TubeSync',
         androidNotificationIcon: 'drawable/ic_launcher_monochrome',
         preloadArtwork: true,

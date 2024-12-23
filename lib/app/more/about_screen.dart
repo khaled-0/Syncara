@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:package_info_plus/package_info_plus.dart";
-import "package:myusync/clients/in_app_update_client.dart";
+import "package:syncara/clients/in_app_update_client.dart";
 import "package:url_launcher/url_launcher_string.dart";
 
 class AboutScreen extends StatelessWidget {
@@ -28,7 +28,7 @@ class AboutScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    "assets/icons/myusync_mono.webp",
+                    "assets/icons/syncara_mono.webp",
                     color: Theme.of(context).colorScheme.primary,
                     height: 80,
                   ),
@@ -36,7 +36,7 @@ class AboutScreen extends StatelessWidget {
                     spacing: 12,
                     children: [
                       Text(
-                        "MyuSync",
+                        "Syncara",
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Text(
@@ -67,7 +67,7 @@ class AboutScreen extends StatelessWidget {
                     children: [
                       TextButton.icon(
                         onPressed: () => launchUrlString(
-                          "https://github.com/khaled-0/MyuSync",
+                          "https://github.com/khaled-0/Syncara",
                         ),
                         icon: const Icon(Icons.code_rounded),
                         label: const Text("GitHub"),

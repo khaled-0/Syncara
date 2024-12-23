@@ -1,16 +1,16 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myusync/app/library/empty_library_view.dart';
-import 'package:myusync/app/library/import_playlist_dialog.dart';
-import 'package:myusync/app/library/library_entry_builder.dart';
-import 'package:myusync/app/playlist/playlist_tab.dart';
-import 'package:myusync/model/common.dart';
-import 'package:myusync/model/objectbox.g.dart';
-import 'package:myusync/model/preferences.dart';
-import 'package:myusync/provider/library_provider.dart';
-import 'package:myusync/provider/playlist_provider.dart';
-import 'package:myusync/services/media_service.dart';
+import 'package:syncara/app/library/empty_library_view.dart';
+import 'package:syncara/app/library/import_playlist_dialog.dart';
+import 'package:syncara/app/library/library_entry_builder.dart';
+import 'package:syncara/app/playlist/playlist_tab.dart';
+import 'package:syncara/model/common.dart';
+import 'package:syncara/model/objectbox.g.dart';
+import 'package:syncara/model/preferences.dart';
+import 'package:syncara/provider/library_provider.dart';
+import 'package:syncara/provider/playlist_provider.dart';
+import 'package:syncara/services/media_service.dart';
 
 class LibraryTab extends StatelessWidget {
   const LibraryTab({super.key});

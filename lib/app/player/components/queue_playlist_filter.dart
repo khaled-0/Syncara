@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myusync/model/playlist.dart';
-import 'package:myusync/provider/player_provider.dart';
+import 'package:syncara/model/playlist.dart';
+import 'package:syncara/provider/player_provider.dart';
 
 class QueuePlaylistFilter extends StatelessWidget {
   const QueuePlaylistFilter({super.key});

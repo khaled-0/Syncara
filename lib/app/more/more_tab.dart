@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myusync/app/more/about_screen.dart';
-import 'package:myusync/app/more/downloads/active_downloads_screen.dart';
-import 'package:myusync/app/more/preferences/preference_screen.dart';
-import 'package:myusync/model/objectbox.g.dart';
+import 'package:syncara/app/more/about_screen.dart';
+import 'package:syncara/app/more/downloads/active_downloads_screen.dart';
+import 'package:syncara/app/more/preferences/preference_screen.dart';
+import 'package:syncara/model/objectbox.g.dart';
 
 class MoreTab extends StatelessWidget {
   MoreTab({super.key});
@@ -36,7 +36,7 @@ class MoreTab extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(80),
             child: Image.asset(
-              "assets/icons/myusync_mono.webp",
+              "assets/icons/syncara_mono.webp",
               width: 80,
               height: 80,
               color: Theme.of(context).colorScheme.onPrimaryContainer,

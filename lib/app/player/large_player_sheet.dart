@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myusync/app/app_theme.dart';
-import 'package:myusync/app/player/components/action_buttons.dart';
-import 'package:myusync/app/player/components/artwork.dart';
-import 'package:myusync/app/player/components/lyrics.dart';
-import 'package:myusync/app/player/player_menu_sheet.dart';
-import 'package:myusync/app/player/components/seekbar.dart';
-import 'package:myusync/app/player/components/sleep_time_indicator.dart';
-import 'package:myusync/app/player/player_queue_sheet.dart';
-import 'package:myusync/model/media.dart';
-import 'package:myusync/provider/player_provider.dart';
+import 'package:syncara/app/app_theme.dart';
+import 'package:syncara/app/player/components/action_buttons.dart';
+import 'package:syncara/app/player/components/artwork.dart';
+import 'package:syncara/app/player/components/lyrics.dart';
+import 'package:syncara/app/player/player_menu_sheet.dart';
+import 'package:syncara/app/player/components/seekbar.dart';
+import 'package:syncara/app/player/components/sleep_time_indicator.dart';
+import 'package:syncara/app/player/player_queue_sheet.dart';
+import 'package:syncara/model/media.dart';
+import 'package:syncara/provider/player_provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 class LargePlayerSheet extends StatefulWidget {
@@ -42,7 +42,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
           ),
         ),
         title: const DragToMoveArea(
-          child: Text("MyuSync"),
+          child: Text("Syncara"),
         ),
         centerTitle: true,
         actions: [

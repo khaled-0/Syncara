@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:myusync/clients/yt_media_client.dart';
-import 'package:myusync/model/common.dart';
-import 'package:myusync/model/media.dart';
-import 'package:myusync/services/downloader_service.dart';
+import 'package:syncara/clients/yt_media_client.dart';
+import 'package:syncara/model/common.dart';
+import 'package:syncara/model/media.dart';
+import 'package:syncara/services/downloader_service.dart';
 
 abstract class BaseMediaClient {
   Future<AudioSource> getMediaSource(Media media);

@@ -1,6 +1,6 @@
 import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/material.dart';
-import 'package:myusync/extensions.dart';
+import 'package:syncara/extensions.dart';
 
 class DownloadEntryBuilder extends StatelessWidget {
   const DownloadEntryBuilder({

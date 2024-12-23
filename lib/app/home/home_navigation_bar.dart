@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myusync/app/app_theme.dart';
-import 'package:myusync/app/home/avatar.dart';
+import 'package:syncara/app/app_theme.dart';
+import 'package:syncara/app/home/avatar.dart';
 
 class HomeNavigationBar extends StatefulWidget {
   const HomeNavigationBar({super.key}) : _rail = false;

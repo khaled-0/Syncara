@@ -2,13 +2,13 @@
 <component type="desktop-application">
   <id>io.github.khaled_0.TubeSync</id>
 
-  <name>MyuSync</name>
+  <name>Syncara</name>
   <summary>Sync YouTube playlists offline</summary>
-  <url type="homepage">https://github.com/khaled-0/MyuSync/blob/main/README.md</url>
-  <url type="bugtracker">https://github.com/khaled-0/MyuSync/issues</url>
+  <url type="homepage">https://syncara.app</url>
+  <url type="bugtracker">https://github.com/khaled-0/Syncara/issues</url>
   <url type="donation">https://patreon.com/khaled_0</url>
-  <url type="vcs-browser">https://github.com/khaled-0/MyuSync/</url>
-  <url type="contribute">https://github.com/khaled-0/MyuSync/pulls</url>
+  <url type="vcs-browser">https://github.com/khaled-0/Syncara/</url>
+  <url type="contribute">https://github.com/khaled-0/Syncara/pulls</url>
 
   <branding>
     <color type="primary" scheme_preference="light">#abcdfe</color>
@@ -40,7 +40,7 @@
 
 
   <description>
-    <p>Tired of YouTube's limitations on offline playback? MyuSync lets you download your favorite
+    <p>Tired of YouTube's limitations on offline playback? Syncara lets you download your favorite
       playlists and listen to them anytime, anywhere. Enjoy your music and videos without an
       internet connection, perfect for long commutes, flights, or simply relaxing offline.</p>
     <p>Features:</p>
@@ -61,19 +61,19 @@
   <screenshots>
     <screenshot type="default">
       <image>
-        https://raw.githubusercontent.com/khaled-0/MyuSync/refs/heads/main/docs/screenshots/linux_3.png</image>
+        https://raw.githubusercontent.com/khaled-0/Syncara/refs/heads/main/docs/screenshots/linux_3.png</image>
     </screenshot>
     <screenshot>
       <image>
-        https://raw.githubusercontent.com/khaled-0/MyuSync/refs/heads/main/docs/screenshots/macos_1.png</image>
+        https://raw.githubusercontent.com/khaled-0/Syncara/refs/heads/main/docs/screenshots/macos_1.png</image>
     </screenshot>
     <screenshot>
       <image>
-        https://raw.githubusercontent.com/khaled-0/MyuSync/refs/heads/main/docs/screenshots/linux_2.png</image>
+        https://raw.githubusercontent.com/khaled-0/Syncara/refs/heads/main/docs/screenshots/linux_2.png</image>
     </screenshot>
     <screenshot>
       <image>
-        https://raw.githubusercontent.com/khaled-0/MyuSync/refs/heads/main/docs/screenshots/linux_1.png</image>
+        https://raw.githubusercontent.com/khaled-0/Syncara/refs/heads/main/docs/screenshots/linux_1.png</image>
     </screenshot>
   </screenshots>
 
@@ -85,7 +85,7 @@
   <releases>
     <release version="0.1.6" date="2024-12-22">
       <description>Read the full changelog at Github</description>
-      <url>https://github.com/khaled-0/MyuSync/releases</url>
+      <url>https://github.com/khaled-0/Syncara/releases</url>
     </release>
   </releases>
 </component>

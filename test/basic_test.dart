@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myusync/clients/in_app_update_client.dart';
+import 'package:syncara/clients/in_app_update_client.dart';
 
 void main() {
   test("NightlyVersionMatcher", () {

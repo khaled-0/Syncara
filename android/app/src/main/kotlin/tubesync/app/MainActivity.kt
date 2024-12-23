@@ -1,4 +1,4 @@
-package tubesync.app
+package syncara.app
 
 import android.content.Context
 import com.ryanheise.audioservice.AudioServicePlugin

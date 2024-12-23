@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:provider/provider.dart';
-import 'package:myusync/app/app_theme.dart';
-import 'package:myusync/app/more/preferences/components/choice_dialog.dart';
-import 'package:myusync/app/player/mini_player_sheet.dart';
-import 'package:myusync/model/preferences.dart';
+import 'package:syncara/app/app_theme.dart';
+import 'package:syncara/app/more/preferences/components/choice_dialog.dart';
+import 'package:syncara/app/player/mini_player_sheet.dart';
+import 'package:syncara/model/preferences.dart';
 
 class PreferenceScreen extends StatelessWidget {
   const PreferenceScreen({super.key});

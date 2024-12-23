@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myusync/app/more/downloads/download_entry_builder.dart';
-import 'package:myusync/main.dart';
-import 'package:myusync/services/downloader_service.dart';
+import 'package:syncara/app/more/downloads/download_entry_builder.dart';
+import 'package:syncara/main.dart';
+import 'package:syncara/services/downloader_service.dart';
 
 class ActiveDownloadsScreen extends StatefulWidget {
   const ActiveDownloadsScreen({super.key});

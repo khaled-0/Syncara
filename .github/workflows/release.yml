@@ -37,8 +37,8 @@ jobs:
 
       - name: Decode Release Key
         run: |
-          echo "$TUBESYNC_JKS" > myusync.b64
-          base64 --decode myusync.b64 > myusync.jks
+          echo "$TUBESYNC_JKS" > syncara.b64
+          base64 --decode syncara.b64 > syncara.jks
         env:
           TUBESYNC_JKS: ${{ secrets.TUBESYNC_JKS }}
 
@@ -56,7 +56,7 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: myusync_android_release
+          name: syncara_android_release
           path: build/app/outputs/flutter-apk/app-*.apk
           compression-level: 9
 
@@ -88,22 +88,22 @@ jobs:
       - name: Prepare bundle
         run: |
           cd build/linux/x64/release/bundle
-          zip -r myusync_linux.zip .
+          zip -r syncara_linux.zip .
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: build/linux/x64/release/bundle/myusync_linux.zip
+          files: build/linux/x64/release/bundle/syncara_linux.zip
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: myusync_linux_release
+          name: syncara_linux_release
           compression-level: 9
           path: |
             build/linux/x64/release/bundle/
-            !build/linux/x64/release/bundle/myusync_linux.zip
+            !build/linux/x64/release/bundle/syncara_linux.zip
 
   build-ios:
     runs-on: macOS-latest
@@ -132,19 +132,19 @@ jobs:
         run: |
           mkdir Payload
           mv build/ios/iphoneos/Runner.app/ Payload
-          zip -qq -r -9 myusync_ios_unsigned.ipa Payload
+          zip -qq -r -9 syncara_ios_unsigned.ipa Payload
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: myusync_ios_unsigned.ipa
+          files: syncara_ios_unsigned.ipa
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: myusync_ios_release
-          path: myusync_ios_unsigned.ipa
+          name: syncara_ios_release
+          path: syncara_ios_unsigned.ipa
           compression-level: 9
 
   build-mac:
@@ -170,17 +170,17 @@ jobs:
       - name: Prepare bundle
         run: |
           mv build/macos/Build/Products/Release/*.app ./
-          zip -r myusync_macos.zip *.app
+          zip -r syncara_macos.zip *.app
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: myusync_macos.zip
+          files: syncara_macos.zip
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: myusync_macos_release
+          name: syncara_macos_release
           compression-level: 9
-          path: myusync_macos.zip
+          path: syncara_macos.zip

@@ -1,6 +1,6 @@
 <img src="./docs/banner.png" width="100%" alt="Banner">
 
-# MyuSync
+# Syncara
 
 Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 
@@ -39,22 +39,22 @@ Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 
 ## Download
 
-MyuSync for all platform are primarily released on Github. Tap on your device icon to directly download.
+Syncara for all platform are primarily released on Github. Tap on your device icon to directly download.
 
  <p align="center">
-  <a href="https://github.com/khaled-0/MyuSync/releases/latest">
+  <a href="https://github.com/khaled-0/Syncara/releases/latest">
     <img height="48" src="./docs/badges/get-it-on-github.png" alt="Get it on GitHub"/>
   </a> 
-   <a href="https://github.com/khaled-0/MyuSync/releases/latest/download/app-release.apk">
+   <a href="https://github.com/khaled-0/Syncara/releases/latest/download/app-release.apk">
     <img height="48" src="./docs/badges/apk-square.png" alt="Android"/>
   </a>  
-  <a href="https://github.com/khaled-0/MyuSync/releases/latest/download/tubesync_ios_unsigned.ipa">
+  <a href="https://github.com/khaled-0/Syncara/releases/latest/download/syncara_ios_unsigned.ipa">
     <img height="48" src="./docs/badges/ios-square.png" alt="IOS"/>
   </a>  
-  <a href="https://github.com/khaled-0/MyuSync/releases/latest/download/tubesync_linux.zip">
+  <a href="https://github.com/khaled-0/Syncara/releases/latest/download/syncara_linux.zip">
     <img height="48" src="./docs/badges/linux-square.png" alt="Linux"/>
   </a>
-  <a href="https://github.com/khaled-0/MyuSync/releases/latest/download/tubesync_macos.zip">
+  <a href="https://github.com/khaled-0/Syncara/releases/latest/download/syncara_macos.zip">
     <img height="48" src="./docs/badges/mac-square.png" alt="MacOS"/>
   </a> 
 </p>
@@ -64,16 +64,16 @@ MyuSync for all platform are primarily released on Github. Tap on your device ic
 ### Android
 
  <p align="center">
-  <a href="https://apt.izzysoft.de/fdroid/index/apk/tubesync.app">
+  <a href="https://apt.izzysoft.de/fdroid/index/apk/syncara.app">
     <img height="60" src="./docs/badges/get-it-on-izzy.png" alt="IzzyOnDroid"/>
   </a>
-  <a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22tubesync.app%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fkhaled-0%2FTubeSync%22%2C%22author%22%3A%22Khaled%22%2C%22name%22%3A%22TubeSync%22%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%7D%22%7D">
+  <a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22syncara.app%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fkhaled-0%2FTubeSync%22%2C%22author%22%3A%22Khaled%22%2C%22name%22%3A%22TubeSync%22%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%7D%22%7D">
     <img height="60" src="./docs/badges/badge_obtainium.png" alt="Obtainium"/>
   </a>
-  <a href="https://www.openapk.net/tubesync/tubesync.app/">
+  <a href="https://www.openapk.net/syncara/syncara.app/">
     <img height="60" src="./docs/badges/openapk-badge.png" alt="OpenAPK"/>
   </a>
-  <a href="https://www.androidfreeware.net/download-tubesync-apk.html">
+  <a href="https://www.androidfreeware.net/download-syncara-apk.html">
     <img height="60" src="./docs/badges/android-freeware.png" alt="AndroidFreeWare"/>
   </a>
 </p>
@@ -88,14 +88,14 @@ MyuSync for all platform are primarily released on Github. Tap on your device ic
 
 ### iOS and MacOS
 
-**IOS:** Unsigned (.ipa) builds are available. [Download (IOS) from here](https://github.com/khaled-0/MyuSync/releases/latest/download/tubesync_unsigned.ipa). <br>
+**IOS:** Unsigned (.ipa) builds are available. [Download (IOS) from here](https://github.com/khaled-0/Syncara/releases/latest/download/syncara_unsigned.ipa). <br>
 **Note:** Use [Sideloadly](https://sideloadly.io/) to install it.
 Here's a [Video tutorial by @ilyassesalama](https://www.youtube.com/watch?v=r91iJ6KRcUs)
 
-**MacOS**: Available directly as app (.app) [Download (MacOS) from here](https://github.com/khaled-0/MyuSync/releases/latest/download/tubesync_macos.zip)
+**MacOS**: Available directly as app (.app) [Download (MacOS) from here](https://github.com/khaled-0/Syncara/releases/latest/download/syncara_macos.zip)
 
 <br /> 
 Alternatively, you can try the nightly (unstable) build:
 
-- [Latest nightly build link](https://nightly.link/khaled-0/MyuSync/workflows/nightly/main)
-- [Actions page for nightly builds](https://github.com/khaled-0/MyuSync/actions)
+- [Latest nightly build link](https://nightly.link/khaled-0/Syncara/workflows/nightly/main)
+- [Actions page for nightly builds](https://github.com/khaled-0/Syncara/actions)

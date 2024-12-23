@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "tubesync.app"
+    namespace = "syncara.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -27,7 +27,7 @@ android {
 
 
     defaultConfig {
-        applicationId = "tubesync.app"
+        applicationId = "syncara.app"
 
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
@@ -40,7 +40,7 @@ android {
         release {
             keyAlias = "tubesync"
             keyPassword = System.getenv("TUBESYNC_KEY_PASSWORD")
-            storeFile = file("../../myusync.jks")
+            storeFile = file("../../syncara.jks")
             storePassword = System.getenv("TUBESYNC_KEY_PASSWORD")
         }
     }
