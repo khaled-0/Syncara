@@ -41,8 +41,6 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          path: "./docs/"
 
       - name: Deploy to GitHub Pages
         id: deployment
