@@ -46,7 +46,7 @@ class PlayerMenuSheet extends StatelessWidget {
       context: context,
       builder: (context) => ChoiceDialog<Duration>(
         title: "Stop playing after",
-        icon: const Icon(Icons.bedtime_rounded, size: 38),
+        icon: const Icon(Icons.bedtime_rounded),
         options: {
           "Never": Duration.zero,
           for (final i in [10, 20, 30, 40, 50]) ...{

@@ -17,6 +17,7 @@ enum Preference<T> {
   notifShowRepeat<bool>(true),
   // Player Customization
   miniPlayerSecondaryAction<int>(0), // MiniPlayerSecondaryActions.Close
+  playerBottomAppBar<bool>(true),
   // Downloader
   maxParallelDownload<int>(3),
   // Others

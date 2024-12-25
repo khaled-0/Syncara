@@ -67,6 +67,21 @@ class PreferenceScreen extends StatelessWidget {
           _title(context, "Player"),
           StreamBuilder(
             stream: preferences(context).watch(
+              Preference.playerBottomAppBar,
+            ),
+            builder: (c, value) => SwitchListTile(
+              value: value.data?.value(Preference.playerBottomAppBar) != false,
+              onChanged: (value) => preferences(c).set(
+                Preference.playerBottomAppBar,
+                value,
+              ),
+              secondary: const Icon(Icons.repeat_rounded),
+              title: const Text("Large player toolbar on bottom"),
+              // subtitle: const Text("helps for one hand mode"),
+            ),
+          ),
+          StreamBuilder(
+            stream: preferences(context).watch(
               Preference.miniPlayerSecondaryAction,
             ),
             builder: (context, value) {
@@ -81,7 +96,7 @@ class PreferenceScreen extends StatelessWidget {
                   context: context,
                   builder: (_) => ChoiceDialog<MiniPlayerSecondaryActions>(
                     title: "Mini player secondary action",
-                    icon: const Icon(Icons.smart_button_rounded, size: 38),
+                    icon: const Icon(Icons.smart_button_rounded),
                     selected: selected,
                     options: {
                       for (final i in MiniPlayerSecondaryActions.values) ...{

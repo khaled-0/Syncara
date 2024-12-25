@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:objectbox/objectbox.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/player/components/action_buttons.dart';
 import 'package:syncara/app/player/components/artwork.dart';
 import 'package:syncara/app/player/components/lyrics.dart';
-import 'package:syncara/app/player/player_menu_sheet.dart';
 import 'package:syncara/app/player/components/seekbar.dart';
 import 'package:syncara/app/player/components/sleep_time_indicator.dart';
+import 'package:syncara/app/player/player_menu_sheet.dart';
 import 'package:syncara/app/player/player_queue_sheet.dart';
 import 'package:syncara/model/media.dart';
+import 'package:syncara/model/preferences.dart';
 import 'package:syncara/provider/player_provider.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -24,6 +26,10 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
   late final tabController = TabController(length: 3, vsync: this)
     ..addListener(() => setState(() {}));
 
+  Box<Preferences> get preferences {
+    return context.read<Store>().box<Preferences>();
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -33,34 +39,13 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const RotatedBox(
-            quarterTurns: -1, // Negative 90 Deg
-            child: Icon(Icons.arrow_back_ios_new_rounded),
-          ),
-        ),
-        title: const DragToMoveArea(
-          child: Text("Syncara"),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () => showModalBottomSheet(
-              context: context,
-              useSafeArea: true,
-              backgroundColor: Colors.transparent,
-              builder: (_) => ChangeNotifierProvider.value(
-                value: context.read<PlayerProvider>(),
-                child: const PlayerMenuSheet(),
-              ),
-            ),
-            icon: const Icon(Icons.more_vert_rounded),
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
+      appBar: preferences.value(Preference.playerBottomAppBar) ? null : appBar,
+      bottomNavigationBar: preferences.value(Preference.playerBottomAppBar)
+          ? Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: SizedBox(height: kToolbarHeight, child: appBar),
+            )
+          : null,
       body: Column(
         children: [
           const SizedBox(height: 16),
@@ -177,6 +162,37 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
     }
 
     return "${playlist[0].title} and ${playlist.length - 1} more";
+  }
+
+  AppBar get appBar {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.more_vert_rounded),
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          useSafeArea: true,
+          backgroundColor: Colors.transparent,
+          builder: (_) => ChangeNotifierProvider.value(
+            value: context.read<PlayerProvider>(),
+            child: const PlayerMenuSheet(),
+          ),
+        ),
+      ),
+      title: const DragToMoveArea(
+        child: Text("Syncara"),
+      ),
+      centerTitle: true,
+      actions: [
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const RotatedBox(
+            quarterTurns: -1, // Negative 90 Deg
+            child: Icon(Icons.arrow_back_ios_new_rounded),
+          ),
+        ),
+        const SizedBox(width: 8),
+      ],
+    );
   }
 
   void showPlayerQueue() {
