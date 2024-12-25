@@ -67,7 +67,7 @@ Syncara for all platform are primarily released on Github. Tap on your device ic
   <a href="https://apt.izzysoft.de/fdroid/index/apk/syncara.app">
     <img height="60" src="./docs/badges/get-it-on-izzy.png" alt="IzzyOnDroid"/>
   </a>
-  <a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22syncara.app%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fkhaled-0%2FTubeSync%22%2C%22author%22%3A%22Khaled%22%2C%22name%22%3A%22TubeSync%22%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%7D%22%7D">
+  <a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22syncara.app%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fkhaled-0%2FTubeSync%22%2C%22author%22%3A%22Khaled%22%2C%22name%22%3A%22Syncara%22%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%7D%22%7D">
     <img height="60" src="./docs/badges/badge_obtainium.png" alt="Obtainium"/>
   </a>
   <a href="https://www.openapk.net/syncara/syncara.app/">
@@ -99,3 +99,9 @@ Alternatively, you can try the nightly (unstable) build:
 
 - [Latest nightly build link](https://nightly.link/khaled-0/Syncara/workflows/nightly/main)
 - [Actions page for nightly builds](https://github.com/khaled-0/Syncara/actions)
+
+## Special Thanks
+
+- @ilyassesalama - For providing https://syncara.app
+
+- To all the open source devs for their wonderful libraries.
