@@ -18,11 +18,9 @@ class AppTheme {
   ThemeData get dark => _themeBuilder(Brightness.dark);
 
   ThemeData _themeBuilder(Brightness brightness) {
-    final theme = colorScheme?.harmonized() ??
-        ColorScheme.fromSeed(
-          seedColor: _color,
-          brightness: brightness,
-        );
+    final theme = colorScheme != null
+        ? _properDynamicColors(colorScheme!, brightness)
+        : ColorScheme.fromSeed(seedColor: _color, brightness: brightness);
 
     return ThemeData(
       colorScheme: theme,
@@ -81,6 +79,45 @@ class AppTheme {
   static bool get isDesktop {
     return Platform.isLinux || Platform.isWindows || Platform.isMacOS;
   }
+
+  ColorScheme _properDynamicColors(
+    ColorScheme scheme,
+    Brightness brightness,
+  ) {
+    final base = ColorScheme.fromSeed(
+      seedColor: scheme.primary,
+      brightness: brightness,
+    );
+    final lightAdditionalColours = _extractAdditionalColours(base);
+    final fixedScheme = _insertAdditionalColours(base, lightAdditionalColours);
+    return fixedScheme.harmonized();
+  }
+
+  List<Color> _extractAdditionalColours(ColorScheme scheme) => [
+        scheme.surface,
+        scheme.surfaceDim,
+        scheme.surfaceBright,
+        scheme.surfaceContainerLowest,
+        scheme.surfaceContainerLow,
+        scheme.surfaceContainer,
+        scheme.surfaceContainerHigh,
+        scheme.surfaceContainerHighest,
+      ];
+
+  ColorScheme _insertAdditionalColours(
+    ColorScheme scheme,
+    List<Color> additionalColours,
+  ) =>
+      scheme.copyWith(
+        surface: additionalColours[0],
+        surfaceDim: additionalColours[1],
+        surfaceBright: additionalColours[2],
+        surfaceContainerLowest: additionalColours[3],
+        surfaceContainerLow: additionalColours[4],
+        surfaceContainer: additionalColours[5],
+        surfaceContainerHigh: additionalColours[6],
+        surfaceContainerHighest: additionalColours[7],
+      );
 }
 
 /// A variant of the default circle thumb shape
