@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/more/downloads/active_downloads_screen.dart';
+import 'package:syncara/app/more/preferences/components/drag_handle.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/model/media.dart';
 import 'package:syncara/provider/playlist_provider.dart';
@@ -17,20 +18,7 @@ class MediaMenuSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          //Drag Handle
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 4,
-              width: kMinInteractiveDimension,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          ),
+          const DragHandle(),
           if (media.downloaded != true)
             ListTile(
               onTap: () {

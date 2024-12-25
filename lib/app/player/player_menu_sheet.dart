@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/more/preferences/components/choice_dialog.dart';
+import 'package:syncara/app/more/preferences/components/drag_handle.dart';
 import 'package:syncara/provider/player_provider.dart';
 
 class PlayerMenuSheet extends StatelessWidget {
@@ -12,21 +13,16 @@ class PlayerMenuSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          //Drag Handle
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 4,
-              width: kMinInteractiveDimension,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
+          const DragHandle(),
+          ListTile(
+            onTap: () {
+              setSleepTimerPopup(context).then((ok) {
+                if (ok && context.mounted) Navigator.pop(context);
+              });
+            },
+            leading: const Icon(Icons.bedtime_rounded),
+            title: const Text("Sleep Timer"),
           ),
-
           ListTile(
             onTap: () {
               setSleepTimerPopup(context).then((ok) {
