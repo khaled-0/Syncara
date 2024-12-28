@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/app_theme.dart';
-import 'package:syncara/app/player/components/sleep_time_indicator.dart';
+import 'package:syncara/app/player/components/player_state_indicator.dart';
 import 'package:syncara/app/player/large_player_sheet.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/model/media.dart';
@@ -61,22 +61,23 @@ class MiniPlayerSheet extends StatelessWidget {
               // Progress Indicator
               Selector<PlayerProvider, bool>(
                 selector: (_, provider) => provider.buffering,
-                builder: (_, buffering, progressIndicator) {
-                  if (!buffering) return progressIndicator!;
-                  return LinearProgressIndicator(
-                    minHeight: adaptiveIndicatorHeight,
-                  );
-                },
-                child: StreamBuilder<Duration>(
+                builder: (_, buffering, __) => StreamBuilder<Duration>(
                   stream: context.read<PlayerProvider>().player.positionStream,
                   builder: (context, snapshot) {
+                    double? progress;
                     final duration = nowPlaying.durationMs;
-                    var progress = (duration != null && snapshot.hasData)
-                        ? snapshot.requireData.inMilliseconds / duration
-                        : null;
-                    return LinearProgressIndicator(
-                      minHeight: adaptiveIndicatorHeight,
-                      value: progress,
+                    if (!buffering && duration != null && snapshot.hasData) {
+                      progress = snapshot.requireData.inMilliseconds / duration;
+                    }
+
+                    return StreamBuilder(
+                      stream: context.read<PlayerProvider>().player.speedStream,
+                      initialData: context.read<PlayerProvider>().player.speed,
+                      builder: (_, speed) => LinearProgressIndicator(
+                        minHeight: adaptiveIndicatorHeight,
+                        color: speed.data == 1.0 ? null : Colors.redAccent,
+                        value: progress,
+                      ),
                     );
                   },
                 ),
@@ -170,7 +171,7 @@ class MiniPlayerSheet extends StatelessWidget {
           url: media.thumbnailStd,
           file: MediaClient().thumbnailFile(media.thumbnailStd),
         ),
-        child: const SleepTimeIndicator.static(),
+        child: const PlayerStateIndicator.static(),
       ),
     );
   }

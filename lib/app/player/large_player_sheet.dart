@@ -6,7 +6,7 @@ import 'package:syncara/app/player/components/action_buttons.dart';
 import 'package:syncara/app/player/components/artwork.dart';
 import 'package:syncara/app/player/components/lyrics.dart';
 import 'package:syncara/app/player/components/seekbar.dart';
-import 'package:syncara/app/player/components/sleep_time_indicator.dart';
+import 'package:syncara/app/player/components/player_state_indicator.dart';
 import 'package:syncara/app/player/player_menu_sheet.dart';
 import 'package:syncara/app/player/player_queue_sheet.dart';
 import 'package:syncara/model/media.dart';
@@ -89,7 +89,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
               spacing: 16,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SleepTimeIndicator(),
+                PlayerStateIndicator(),
               ],
             ),
           ),

@@ -260,6 +260,10 @@ class PlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setPlaybackSpeed(double speed) {
+    player.setSpeed(speed);
+  }
+
   /// Passing null duration & afterSong will cancel the timer
   void setSleepTimer({Duration? duration, bool? afterSong}) {
     if (duration == null && afterSong == null) {

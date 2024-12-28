@@ -25,12 +25,12 @@ class PlayerMenuSheet extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              setSleepTimerPopup(context).then((ok) {
+              setSpeedPopup(context).then((ok) {
                 if (ok && context.mounted) Navigator.pop(context);
               });
             },
-            leading: const Icon(Icons.bedtime_rounded),
-            title: const Text("Sleep Timer"),
+            leading: const Icon(Icons.speed_rounded),
+            title: const Text("Playback Speed"),
           ),
         ],
       ),
@@ -71,5 +71,30 @@ class PlayerMenuSheet extends StatelessWidget {
         context.read<PlayerProvider>().setSleepTimer(duration: result);
         return true;
     }
+  }
+
+  static Future<bool> setSpeedPopup(BuildContext context) async {
+    final result = await showDialog<double?>(
+      context: context,
+      builder: (_) => ChoiceDialog<double>(
+        title: "Playback Speed",
+        selected: context.read<PlayerProvider>().player.speed,
+        icon: const Icon(Icons.speed_rounded),
+        options: {
+          for (final i in [0.25, 0.5, 0.75]) ...{
+            "${i}x": i,
+          },
+          "1x (Default)": 1,
+          for (final i in [1.25, 1.5, 1.75, 2.0]) ...{
+            "${i}x": i,
+          },
+        },
+      ),
+    );
+
+    if (!context.mounted || result == null) return false;
+
+    context.read<PlayerProvider>().setPlaybackSpeed(result);
+    return true;
   }
 }
