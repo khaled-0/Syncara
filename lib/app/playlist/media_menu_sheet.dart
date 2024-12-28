@@ -6,6 +6,7 @@ import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/model/media.dart';
 import 'package:syncara/provider/playlist_provider.dart';
 import 'package:syncara/services/downloader_service.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class MediaMenuSheet extends StatelessWidget {
   final Media media;
@@ -41,7 +42,15 @@ class MediaMenuSheet extends StatelessWidget {
               },
               leading: const Icon(Icons.delete_rounded),
               title: const Text("Delete"),
-            )
+            ),
+          ListTile(
+            onTap: () {
+              launchUrlString(media.externalURL);
+              Navigator.pop(context);
+            },
+            leading: const Icon(Icons.open_in_new_rounded),
+            title: const Text("Open in External App"),
+          ),
         ],
       ),
     );

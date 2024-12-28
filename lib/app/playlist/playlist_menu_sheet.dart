@@ -5,6 +5,7 @@ import 'package:syncara/app/more/preferences/components/drag_handle.dart';
 import 'package:syncara/provider/playlist_provider.dart';
 import 'package:syncara/services/downloader_service.dart';
 import 'package:syncara/services/media_service.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class PlaylistMenuSheet extends StatelessWidget {
   const PlaylistMenuSheet({super.key});
@@ -35,6 +36,16 @@ class PlaylistMenuSheet extends StatelessWidget {
             },
             leading: const Icon(Icons.download_rounded),
             title: const Text("Download All"),
+          ),
+          ListTile(
+            onTap: () {
+              launchUrlString(
+                context.read<PlaylistProvider>().playlist.externalURL,
+              );
+              Navigator.pop(context);
+            },
+            leading: const Icon(Icons.open_in_new_rounded),
+            title: const Text("Open in External App"),
           ),
         ],
       ),

@@ -22,6 +22,10 @@ class Media {
   // TODO Cache download in DB and update asynchronously
   bool? downloaded;
 
+  String get externalURL {
+    return "https://youtube.com/watch?v=$id";
+  }
+
   Duration? get duration =>
       durationMs == null ? null : Duration(milliseconds: durationMs!);
 

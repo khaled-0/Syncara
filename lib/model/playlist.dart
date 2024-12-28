@@ -19,6 +19,10 @@ class Playlist {
 
   final List<String> videoIds;
 
+  String get externalURL {
+    return "https://youtube.com/playlist?list=$id";
+  }
+
   Playlist(
     this.id,
     this.title,

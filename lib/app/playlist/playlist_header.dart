@@ -23,9 +23,9 @@ class PlaylistHeader extends StatelessWidget {
       elevation: 0,
       child: Padding(
         padding: EdgeInsets.all(adaptivePadding),
-        child: Column(
-          mainAxisSize: adaptiveMainAxisSize,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: ListView(
+          shrinkWrap: !AppTheme.isDesktop,
+          physics: adaptivePhysics,
           children: [
             Hero(
               tag: playlist(context).id,
@@ -71,6 +71,15 @@ class PlaylistHeader extends StatelessWidget {
                       bottom: 8,
                       child: playlistInfo(context),
                     ),
+                    if (playlist(context).description != null)
+                      Positioned(
+                        right: 8,
+                        bottom: 16,
+                        child: IconButton.filledTonal(
+                          onPressed: () => showDescription(context),
+                          icon: const Icon(Icons.menu_open_rounded),
+                        ),
+                      )
                   },
                 ],
               ),
@@ -100,7 +109,11 @@ class PlaylistHeader extends StatelessWidget {
                 ],
               ),
             SizedBox(height: adaptivePadding),
-            if (AppTheme.isDesktop) Row(children: actionButtons)
+            if (AppTheme.isDesktop) ...{
+              Row(children: actionButtons),
+              SizedBox(height: adaptivePadding),
+              Text(playlist(context).description ?? ""),
+            },
           ],
         ),
       ),
@@ -158,8 +171,8 @@ class PlaylistHeader extends StatelessWidget {
     ];
   }
 
-  MainAxisSize get adaptiveMainAxisSize {
-    return AppTheme.isDesktop ? MainAxisSize.max : MainAxisSize.min;
+  ScrollPhysics? get adaptivePhysics {
+    return AppTheme.isDesktop ? null : const NeverScrollableScrollPhysics();
   }
 
   double get adaptivePadding {
@@ -186,6 +199,24 @@ class PlaylistHeader extends StatelessWidget {
           maxLines: 1,
         ),
       ],
+    );
+  }
+
+  void showDescription(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text(playlist(context).title),
+        content: SingleChildScrollView(
+          child: Text(playlist(context).description!),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(c),
+            child: const Text("Dismiss"),
+          )
+        ],
+      ),
     );
   }
 

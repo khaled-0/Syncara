@@ -6,6 +6,7 @@ import 'package:syncara/model/playlist.dart';
 import 'package:syncara/provider/library_provider.dart';
 import 'package:syncara/provider/playlist_provider.dart';
 import 'package:syncara/services/media_service.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class LibraryMenuSheet extends StatelessWidget {
   final Playlist playlist;
@@ -38,6 +39,14 @@ class LibraryMenuSheet extends StatelessWidget {
             },
             leading: const Icon(Icons.delete_rounded),
             title: const Text("Delete"),
+          ),
+          ListTile(
+            onTap: () {
+              launchUrlString(playlist.externalURL);
+              Navigator.pop(context);
+            },
+            leading: const Icon(Icons.open_in_new_rounded),
+            title: const Text("Open in External App"),
           ),
         ],
       ),
