@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:html/parser.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/playlist.dart';
 import 'package:syncara/provider/playlist_provider.dart';
@@ -17,16 +18,18 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   Future<void> importPlaylist(String url) async {
-    var playlist = await _ytClient.get(url);
+    final playlist = await _ytClient.get(url);
     if (playlist.videoCount == 0) throw "Playlist is empty!";
 
     if (entries.contains(Playlist.fromYTPlaylist(playlist))) {
       throw "Playlist already exists!";
     }
 
-    playlist = await _playlistWithThumbnail(_ytClient, playlist);
+    final playlistWithThumb = await _playlistWithThumbnail(
+      Playlist.fromYTPlaylist(playlist),
+    );
 
-    entries.add(Playlist.fromYTPlaylist(playlist));
+    entries.add(playlistWithThumb);
     // Preload the playlist for faster initial load time
     await PlaylistProvider(store, entries.last, sync: false).refresh();
 
@@ -40,13 +43,13 @@ class LibraryProvider extends ChangeNotifier {
       try {
         final updatedPlaylist = await compute(
           (ytClient) async {
-            final update = await ytClient.get(playlist.id);
-            return await _playlistWithThumbnail(ytClient, update);
+            final pl = await ytClient.get(playlist.id);
+            return await _playlistWithThumbnail(Playlist.fromYTPlaylist(pl));
           },
           _ytClient,
         );
-        entries[index] = Playlist.fromYTPlaylist(
-          updatedPlaylist,
+
+        entries[index] = updatedPlaylist.copyWith(
           videoIds: entries[index].videoIds, // Pass previously cached videoIds
         );
       } catch (_) {
@@ -67,16 +70,23 @@ class LibraryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Workaround for playlist thumbnail (thumb of first vid)
-  // still no custom thumbnails tho
-  // Isolates require static methods
-  static Future<yt.Playlist> _playlistWithThumbnail(
-      yt.PlaylistClient ytClient, yt.Playlist playlist) async {
-    return playlist.copyWith(
-      thumbnails: yt.ThumbnailSet(
-        (await ytClient.getVideos(playlist.id).first).id.value,
-      ),
-    );
+  // Parse html page to retrieve custom thumbnails
+  static Future<Playlist> _playlistWithThumbnail(
+    Playlist playlist,
+  ) async {
+    try {
+      final response = await yt.YoutubeHttpClient().getString(
+        playlist.externalURL,
+      );
+      final img = parse(response).querySelectorAll("meta[property='og:image']");
+
+      final max = img.last.attributes["content"]!;
+      final std = (img.elementAtOrNull(1) ?? img.first).attributes["content"]!;
+
+      return playlist.copyWith(thumbnailStd: std, thumbnailMax: max);
+    } catch (_) {
+      return playlist;
+    }
   }
 
   bool _disposed = false;

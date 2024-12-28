@@ -49,6 +49,28 @@ class Playlist {
         videoIds ?? List.empty(growable: true),
       );
 
+  Playlist copyWith({
+    String? id,
+    String? title,
+    String? author,
+    String? thumbnailStd,
+    String? thumbnailMax,
+    int? videoCount,
+    String? description,
+    List<String>? videoIds,
+  }) {
+    return Playlist(
+      id ?? this.id,
+      title ?? this.title,
+      author ?? this.author,
+      thumbnailStd ?? this.thumbnailStd,
+      thumbnailMax ?? this.thumbnailMax,
+      videoCount ?? this.videoCount,
+      description ?? this.description,
+      videoIds ?? this.videoIds,
+    );
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
