@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:syncara/app/more/preferences/components/choice_dialog.dart';
 import 'package:syncara/app/player/components/queue_playlist_filter.dart';
 import 'package:syncara/app/playlist/media_entry_builder.dart';
+import 'package:syncara/model/common.dart';
 import 'package:syncara/model/media.dart';
 import 'package:syncara/provider/player_provider.dart';
 
@@ -95,6 +97,28 @@ class PlayerQueueSheet extends StatelessWidget {
           ),
         ),
       ),
+      IconButton(
+        onPressed: () => sortQueueSelector(context),
+        icon: const Icon(Icons.sort_rounded),
+      ),
     ];
+  }
+
+  Future<bool> sortQueueSelector(BuildContext context) async {
+    final result = await showDialog<SortOption?>(
+      context: context,
+      builder: (_) => ChoiceDialog<SortOption>(
+        title: "Sort Current Queue",
+        icon: const Icon(Icons.speed_rounded),
+        options: {
+          for (final option in SortOption.values) ...{option.name: option}
+        },
+      ),
+    );
+
+    if (!context.mounted || result == null) return false;
+
+    context.read<PlayerProvider>().sortQueue(result);
+    return true;
   }
 }

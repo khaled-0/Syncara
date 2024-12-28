@@ -76,3 +76,6 @@ class LastPlayedMedia {
   @override
   int get hashCode => playlistId.hashCode ^ mediaId.hashCode;
 }
+
+//ignore: constant_identifier_names
+enum SortOption { Ascending, Descending, Reverse, Author, Reset }

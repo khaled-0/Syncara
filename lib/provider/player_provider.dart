@@ -20,6 +20,7 @@ class PlayerProvider extends ChangeNotifier {
 
   final List<Playlist> _playlistInfo = List.empty(growable: true);
   final List<Media> _playlist = List.empty(growable: true);
+  final List<String> _originalPlaylistOrderIds = List.empty(growable: true);
 
   List<Playlist> get playlistInfo => List.of(_playlistInfo);
 
@@ -60,6 +61,7 @@ class PlayerProvider extends ChangeNotifier {
   }) {
     _playlistInfo.add(provider.playlist);
     _playlist.addAll(provider.medias);
+    _originalPlaylistOrderIds.addAll(_playlist.map((e) => e.id));
     prepare?.call(this);
     nowPlaying = ValueNotifier(start ?? _playlist.first);
     nowPlaying.addListener(beginPlay);
@@ -107,16 +109,18 @@ class PlayerProvider extends ChangeNotifier {
     if (_playlistInfo.contains(provider.playlist)) return;
 
     _playlistInfo.add(provider.playlist);
-    _playlist.addAll(provider.medias.where(
+    final uniqueMedias = provider.medias.where(
       (media) => !_playlist.contains(media),
-    ));
+    );
+    _playlist.addAll(uniqueMedias);
+    _originalPlaylistOrderIds.addAll(uniqueMedias.map((e) => e.id));
     notifyListeners();
   }
 
   Future<void> beginPlay() async {
     final media = nowPlaying.value;
     try {
-      // HACK: Quickly toggle _disposed flag so stop event doesn't get emitted by notificationState
+      // HACK: Quickly toggle _disposed flag so stop event doesn't get emitted by notificationState causing spam
       _buffering = true;
       _disposed = true;
       await player.stop();
@@ -236,12 +240,12 @@ class PlayerProvider extends ChangeNotifier {
 
   void jumpTo(int index) => nowPlaying.value = _playlist[index];
 
-  void reorderList(int oldIndex, int newIndex) {
+  void reorderList(int oldIndex, int newIndex, {bool notify = true}) {
     if (oldIndex < newIndex) newIndex -= 1;
 
     final item = _playlist.removeAt(oldIndex);
     _playlist.insert(newIndex, item);
-    notifyListeners();
+    if (notify) notifyListeners();
   }
 
   /// preserveCurrentIndex: Put currently playing song at first
@@ -262,6 +266,35 @@ class PlayerProvider extends ChangeNotifier {
 
   void setPlaybackSpeed(double speed) {
     player.setSpeed(speed);
+  }
+
+  void sortQueue(SortOption option) {
+    switch (option) {
+      case SortOption.Ascending:
+        _playlist.sort((a, b) => a.title.compareTo(b.title));
+        break;
+      case SortOption.Descending:
+        _playlist.sort((a, b) => b.title.compareTo(a.title));
+        break;
+      case SortOption.Reverse:
+        final reversed = _playlist.reversed.toList();
+        _playlist.clear();
+        _playlist.addAll(reversed);
+        break;
+
+      case SortOption.Author:
+        _playlist.sort((a, b) => a.author.compareTo(b.author));
+        break;
+
+      case SortOption.Reset:
+        for (final (index, id) in _originalPlaylistOrderIds.indexed) {
+          final old = _playlist.indexWhere((element) => element.id == id);
+          reorderList(old, index, notify: false);
+        }
+        break;
+    }
+
+    notifyListeners();
   }
 
   /// Passing null duration & afterSong will cancel the timer

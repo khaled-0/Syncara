@@ -35,13 +35,23 @@ class ChoiceDialog<T> extends StatelessWidget {
         child: ListView.builder(
           shrinkWrap: true,
           itemCount: keys.length,
-          itemBuilder: (context, i) => RadioListTile(
-            dense: true,
-            value: options[keys[i]],
-            groupValue: selected,
-            onChanged: (v) => Navigator.pop(context, v),
-            title: Text(keys[i]),
-          ),
+          itemBuilder: (context, i) {
+            final value = options[keys[i]];
+            if (selected == null) {
+              return ListTile(
+                dense: true,
+                onTap: () => Navigator.pop(context, value),
+                title: Text(keys[i]),
+              );
+            }
+            return RadioListTile(
+              dense: true,
+              value: value,
+              groupValue: selected,
+              onChanged: (v) => Navigator.pop(context, v),
+              title: Text(keys[i]),
+            );
+          },
         ),
       ),
       actions: [

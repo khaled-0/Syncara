@@ -4,8 +4,6 @@ import 'package:syncara/app/player/player_menu_sheet.dart';
 import 'package:syncara/extensions.dart';
 import 'package:syncara/provider/player_provider.dart';
 
-// https://github.com/material-components/material-components-android/blob/master/docs/components/Button.md#connected-button-group
-// TODO There's no flutter component. Push this upstream someday
 class PlayerStateIndicator extends StatelessWidget {
   const PlayerStateIndicator({super.key}) : _static = false;
 
