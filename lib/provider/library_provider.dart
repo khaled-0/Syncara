@@ -6,6 +6,7 @@ import 'package:syncara/provider/playlist_provider.dart';
 import 'package:syncara/services/downloader_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
+// TODO: Refactor to use yt_media_client
 class LibraryProvider extends ChangeNotifier {
   final Store store;
   final _ytClient = yt.YoutubeExplode().playlists;

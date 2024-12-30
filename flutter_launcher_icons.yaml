@@ -15,3 +15,7 @@ flutter_launcher_icons:
   macos:
     generate: true
     image_path: "assets/icons/syncara_mac.webp"
+
+  windows:
+    generate: true
+    icon_size: 48
