@@ -106,3 +106,6 @@ install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
 install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
   CONFIGURATIONS Profile;Release
   COMPONENT Runtime)
+
+# https://pub.dev/packages/just_audio_media_kit
+target_link_libraries(${BINARY_NAME} PRIVATE ${MIMALLOC_LIB})
