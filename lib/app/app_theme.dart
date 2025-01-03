@@ -5,22 +5,50 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+class ThemeConfig {
+  final bool dynamicColors;
+  final bool pitchBlack;
+
+  ThemeConfig({this.dynamicColors = true, this.pitchBlack = false});
+
+  ThemeConfig copyWith({
+    bool? dynamicColors,
+    bool? pitchBlack,
+  }) {
+    return ThemeConfig(
+      dynamicColors: dynamicColors ?? this.dynamicColors,
+      pitchBlack: pitchBlack ?? this.pitchBlack,
+    );
+  }
+}
+
 class AppTheme {
-  static ValueNotifier<bool> dynamicColors = ValueNotifier(false);
+  static final ValueNotifier<ThemeConfig> configNotifier = ValueNotifier(
+    ThemeConfig(),
+  );
 
   final Color _color = const Color(0xffF04C4E);
-  final ColorScheme? colorScheme;
+  final ColorScheme? _scheme;
 
-  AppTheme({this.colorScheme});
+  AppTheme({ColorScheme? colorScheme}) : _scheme = colorScheme;
 
   ThemeData get light => _themeBuilder(Brightness.light);
 
   ThemeData get dark => _themeBuilder(Brightness.dark);
 
   ThemeData _themeBuilder(Brightness brightness) {
-    final theme = colorScheme != null
-        ? _properDynamicColors(colorScheme!, brightness)
+    var theme = _scheme != null
+        ? _properDynamicColors(_scheme, brightness)
         : ColorScheme.fromSeed(seedColor: _color, brightness: brightness);
+
+    if (configNotifier.value.pitchBlack) {
+      theme = theme.copyWith(
+        surface: Colors.black,
+        surfaceContainer: Colors.black,
+        surfaceContainerHigh: Colors.black,
+        surfaceContainerLow: Colors.black,
+      );
+    }
 
     return ThemeData(
       colorScheme: theme,
@@ -118,6 +146,11 @@ class AppTheme {
         surfaceContainerHigh: additionalColours[6],
         surfaceContainerHighest: additionalColours[7],
       );
+
+  static ThemeConfig get config => AppTheme.configNotifier.value;
+
+  static void setConfig(ThemeConfig newConfig) =>
+      AppTheme.configNotifier.value = newConfig;
 }
 
 /// A variant of the default circle thumb shape

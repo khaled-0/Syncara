@@ -102,6 +102,16 @@ Alternatively, you can try the nightly (unstable) build:
 
 ## Special Thanks
 
-- @ilyassesalama - For providing https://syncara.app
+- [@ilyassesalama](https://github.com/ilyassesalama) - For providing https://syncara.app
 
 - To all the open source devs for their wonderful libraries.
+
+## Star History
+
+<a href="https://star-history.com/#khaled-0/Syncara&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=khaled-0/Syncara&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=khaled-0/Syncara&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=khaled-0/Syncara&type=Date" />
+ </picture>
+</a>

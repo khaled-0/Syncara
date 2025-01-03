@@ -18,14 +18,16 @@ class PreferenceScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
-          if (!Platform.isIOS) _title(context, "Appearance"),
+          if (Platform.isIOS) _title(context, "Appearance"),
           if (!Platform.isIOS)
             ValueListenableBuilder(
-              valueListenable: AppTheme.dynamicColors,
-              builder: (_, value, __) => SwitchListTile(
-                value: value != false,
+              valueListenable: AppTheme.configNotifier,
+              builder: (_, theme, __) => SwitchListTile(
+                value: theme.dynamicColors,
                 onChanged: (value) {
-                  AppTheme.dynamicColors.value = value;
+                  AppTheme.setConfig(
+                    AppTheme.config.copyWith(dynamicColors: value),
+                  );
                   preferences(context).set(Preference.materialYou, value);
                 },
                 secondary: const Icon(Icons.palette_rounded),
@@ -33,6 +35,21 @@ class PreferenceScreen extends StatelessWidget {
                 subtitle: const Text("Use dynamic colors when available"),
               ),
             ),
+          ValueListenableBuilder(
+            valueListenable: AppTheme.configNotifier,
+            builder: (_, theme, __) => SwitchListTile(
+              value: theme.pitchBlack,
+              onChanged: (value) {
+                AppTheme.setConfig(
+                  AppTheme.config.copyWith(pitchBlack: value),
+                );
+                preferences(context).set(Preference.pitchBlack, value);
+              },
+              secondary: const Icon(Icons.dark_mode_rounded),
+              title: const Text("AMOLED Dark"),
+              subtitle: const Text("Use pitch black surfaces on dark mode"),
+            ),
+          ),
           _title(context, "Notification"),
           StreamBuilder(
             stream: preferences(context).watch(

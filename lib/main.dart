@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,9 +29,10 @@ void main() async {
     directory: (await getApplicationSupportDirectory()).path,
   );
 
-  AppTheme.dynamicColors.value = objectDB.box<Preferences>().value(
-        Preference.materialYou,
-      );
+  AppTheme.configNotifier.value = ThemeConfig(
+    dynamicColors: objectDB.box<Preferences>().value(Preference.materialYou),
+    pitchBlack: objectDB.box<Preferences>().value(Preference.pitchBlack),
+  );
 
   await DownloaderService.init(objectDB);
   await MediaService.init();
@@ -55,9 +58,9 @@ void main() async {
       textDirection: TextDirection.ltr,
       child: DragToResizeArea(
         child: ValueListenableBuilder(
-          valueListenable: AppTheme.dynamicColors,
+          valueListenable: AppTheme.configNotifier,
           builder: (_, dynamicColor, home) {
-            if (dynamicColor == true) {
+            if (!Platform.isIOS && dynamicColor.dynamicColors) {
               return DynamicColorBuilder(
                 builder: (light, dark) => app(
                   light: AppTheme(colorScheme: light).light,

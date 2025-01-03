@@ -8,6 +8,7 @@ import 'package:syncara/model/objectbox.g.dart' as obj;
 enum Preference<T> {
   // Appearance
   materialYou<bool>(true),
+  pitchBlack<bool>(false),
   // Auto Remember Stuff
   lastPlayed<LastPlayedMedia?>(null),
   subsLang<String>("en"),
