@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Open%20Sans:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --md-sys-color-primary: rgb(180 208 135);
+  --md-sys-color-surface-tint: rgb(180 208 135);
+  --md-sys-color-on-primary: rgb(34 54 0);
+  --md-sys-color-primary-container: rgb(55 77 19);
+  --md-sys-color-on-primary-container: rgb(208 237 161);
+  --md-sys-color-secondary: rgb(193 202 172);
+  --md-sys-color-on-secondary: rgb(43 51 30);
+  --md-sys-color-secondary-container: rgb(65 74 50);
+  --md-sys-color-on-secondary-container: rgb(221 231 199);
+  --md-sys-color-tertiary: rgb(160 208 202);
+  --md-sys-color-on-tertiary: rgb(0 55 51);
+  --md-sys-color-tertiary-container: rgb(31 78 74);
+  --md-sys-color-on-tertiary-container: rgb(188 236 230);
+  --md-sys-color-error: rgb(255 180 171);
+  --md-sys-color-on-error: rgb(105 0 5);
+  --md-sys-color-error-container: rgb(147 0 10);
+  --md-sys-color-on-error-container: rgb(255 218 214);
+  --md-sys-color-background: rgb(18 20 14);
+  --md-sys-color-on-background: rgb(226 227 216);
+  --md-sys-color-surface: rgb(24, 28, 18);
+  --md-sys-color-on-surface: rgb(226 227 216);
+  --md-sys-color-surface-variant: rgb(69 72 61);
+  --md-sys-color-on-surface-variant: rgb(197 200 185);
+  --md-sys-color-outline: rgb(143 146 133);
+  --md-sys-color-outline-variant: rgb(69 72 61);
+  --md-sys-color-shadow: rgb(0 0 0);
+  --md-sys-color-scrim: rgb(0 0 0);
+  --md-sys-color-inverse-surface: rgb(239, 248, 235);
+  --md-sys-color-inverse-on-surface: rgb(47 49 42);
+  --md-sys-color-inverse-primary: rgb(78 102 41);
+  --md-sys-color-primary-fixed: rgb(208 237 161);
+  --md-sys-color-on-primary-fixed: rgb(18 31 0);
+  --md-sys-color-primary-fixed-dim: rgb(159, 185, 119);
+  --md-sys-color-on-primary-fixed-variant: rgb(55 77 19);
+  --md-sys-color-secondary-fixed: rgb(221 231 199);
+  --md-sys-color-on-secondary-fixed: rgb(22 30 10);
+  --md-sys-color-secondary-fixed-dim: rgb(193 202 172);
+  --md-sys-color-on-secondary-fixed-variant: rgb(65 74 50);
+  --md-sys-color-tertiary-fixed: rgb(188 236 230);
+  --md-sys-color-on-tertiary-fixed: rgb(0 32 30);
+  --md-sys-color-tertiary-fixed-dim: rgb(160 208 202);
+  --md-sys-color-on-tertiary-fixed-variant: rgb(31 78 74);
+  --md-sys-color-surface-dim: rgb(18 20 14);
+  --md-sys-color-surface-bright: rgb(56 58 50);
+  --md-sys-color-surface-container-lowest: rgb(13 15 9);
+  --md-sys-color-surface-container-low: rgb(26 28 22);
+  --md-sys-color-surface-container: rgb(30 32 25);
+  --md-sys-color-surface-container-high: rgb(41 43 35);
+  --md-sys-color-surface-container-highest: rgb(51 54 46);
+
+  --md-ref-typeface-brand: 'Open Sans';
+  --md-ref-typeface-plain: system-ui;
+}
+
+.root {
+  background: var(--md-sys-color-surface);
+}
+
+.title {
+  font-family: var(--md-ref-typeface-brand);
+  color: var(--md-sys-color-inverse-surface);
+
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.heading {
+  font-family: var(--md-ref-typeface-brand);
+  color: var(--md-sys-color-inverse-surface);
+
+  font-size: 1.8rem;
+  font-weight: 600;
+}
