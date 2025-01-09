@@ -167,7 +167,7 @@ if (bigScreen) {
         </h2>
 
         <div v-if="bigScreen" class="flex gap-8">
-          <img v-for="ss in screenshots" v-bind:key="ss.src" :src="ss.src"
+          <img v-for="ss in screenshots" v-bind:key="ss" :src="ss"
             class="h-[40vw] hover:scale-110 transform transition duration-300 rounded-2xl"
             alt="Syncara screenshot" />
         </div>
@@ -175,7 +175,7 @@ if (bigScreen) {
         <div v-else class="flex gap-8 ps-24 pe-24">
           <Carousel class="relative w-fit lg:hidden">
             <CarouselContent>
-              <CarouselItem v-for="ss in screenshots" v-bind:key="ss.src">
+              <CarouselItem v-for="ss in screenshots" v-bind:key="ss">
                 <img :src="ss" alt="Syncara screenshot" class="w-[60vw] rounded-2xl" />
               </CarouselItem>
             </CarouselContent>
