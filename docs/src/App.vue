@@ -77,7 +77,7 @@ if (bigScreen) {
             <img src="./assets/logo.svg" alt="Syncara logo" class="h-24 w-24 lg:h-32 lg:w-32 mb-2" />
             <h1 class="title text-3xl font-semibold">Syncara</h1>
             <h2 class="text-md lg:text-lg text-[var(--md-sys-color-on-surface-variant)] text-pretty mb-1">
-              v1.7.2
+              v0.1.7
             </h2>
             <p class="text-xl text-pretty text-center lg:text-start">
               Carry your playlists everywhere, even when offline
@@ -167,7 +167,7 @@ if (bigScreen) {
         </h2>
 
         <div v-if="bigScreen" class="flex gap-8">
-          <img v-for="ss in screenshots" v-bind:key="ss.src" :src="ss.src"
+          <img v-for="ss in screenshots" v-bind:key="ss" :src="ss"
             class="h-[40vw] hover:scale-110 transform transition duration-300 rounded-2xl"
             alt="Syncara screenshot" />
         </div>
@@ -175,7 +175,7 @@ if (bigScreen) {
         <div v-else class="flex gap-8 ps-24 pe-24">
           <Carousel class="relative w-fit lg:hidden">
             <CarouselContent>
-              <CarouselItem v-for="ss in screenshots" v-bind:key="ss.src">
+              <CarouselItem v-for="ss in screenshots" v-bind:key="ss">
                 <img :src="ss" alt="Syncara screenshot" class="w-[60vw] rounded-2xl" />
               </CarouselItem>
             </CarouselContent>
@@ -305,7 +305,7 @@ if (bigScreen) {
         </h2>
 
         <div class="flex gap-6 justify-center items-center content-center">
-          <a href="https://flathub.org/apps/details/syncara.app">
+          <a href="https://flathub.org/apps/io.github.khaled_0.TubeSync">
             <img src="https://raw.githubusercontent.com/khaled-0/Syncara/main/docs/badges/flathub.png" alt="Flathub"
               class="h-16" />
           </a>
