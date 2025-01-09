@@ -1,6 +1,6 @@
 <img src="./docs/banner.png" width="100%" alt="Banner">
 
-# Syncara
+# [Syncara](https://syncara.app/)
 
 Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 
@@ -88,7 +88,7 @@ Syncara for all platform are primarily released on Github. Tap on your device ic
 
 ### iOS and MacOS
 
-**IOS:** Unsigned (.ipa) builds are available. [Download (IOS) from here](https://github.com/khaled-0/Syncara/releases/latest/download/syncara_unsigned.ipa). <br>
+**IOS:** Unsigned (.ipa) builds are available. [Download (IOS) from here](https://github.com/khaled-0/Syncara/releases/latest/download/syncara_ios_unsigned.ipa). <br>
 **Note:** Use [Sideloadly](https://sideloadly.io/) to install it.
 Here's a [Video tutorial by @ilyassesalama](https://www.youtube.com/watch?v=r91iJ6KRcUs)
 
@@ -103,8 +103,9 @@ Alternatively, you can try the nightly (unstable) build:
 ## Special Thanks
 
 - [@ilyassesalama](https://github.com/ilyassesalama) - For providing https://syncara.app
-
+- [@PranavPurwar](https://github.com/PranavPurwar) - For building the homepage at https://syncara.app
 - To all the open source devs for their wonderful libraries.
+- And to the peoples involved with this project in various ways
 
 ## Star History
 
