@@ -67,7 +67,7 @@ if (bigScreen) {
             <img src="/logo.svg" alt="Syncara logo" class="h-24 w-24 lg:h-32 lg:w-32 mb-2" />
             <h1 class="title text-3xl font-semibold">Syncara</h1>
             <h2 class="text-md lg:text-lg text-[var(--md-sys-color-on-surface-variant)] text-pretty mb-1">
-              v1.7.2
+              v0.1.7
             </h2>
             <p class="text-xl text-pretty text-center lg:text-start">
               Carry your playlists everywhere, even when offline
