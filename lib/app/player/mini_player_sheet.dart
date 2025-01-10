@@ -49,42 +49,9 @@ class MiniPlayerSheet extends StatelessWidget {
         DismissDirection.startToEnd: 0.2,
         DismissDirection.endToStart: 0.2,
       },
-      child: ValueListenableBuilder(
-        key: const ValueKey("NowPlaying"),
-        valueListenable: context.read<PlayerProvider>().nowPlaying,
-        builder: (context, nowPlaying, _) {
-          return Column(
-            key: ValueKey(nowPlaying.hashCode),
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              mediaDetails(context, nowPlaying),
-              // Progress Indicator
-              Selector<PlayerProvider, bool>(
-                selector: (_, provider) => provider.buffering,
-                builder: (_, buffering, __) => StreamBuilder<Duration>(
-                  stream: context.read<PlayerProvider>().player.positionStream,
-                  builder: (context, snapshot) {
-                    double? progress;
-                    final duration = nowPlaying.durationMs;
-                    if (!buffering && duration != null && snapshot.hasData) {
-                      progress = snapshot.requireData.inMilliseconds / duration;
-                    }
-
-                    return StreamBuilder(
-                      stream: context.read<PlayerProvider>().player.speedStream,
-                      initialData: context.read<PlayerProvider>().player.speed,
-                      builder: (_, speed) => LinearProgressIndicator(
-                        minHeight: adaptiveIndicatorHeight,
-                        color: speed.data == 1.0 ? null : Colors.redAccent,
-                        value: progress,
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [mediaDetails(context), progressBar(context)],
       ),
     );
   }
@@ -93,41 +60,75 @@ class MiniPlayerSheet extends StatelessWidget {
     return AppTheme.isDesktop ? 3 : 1.5;
   }
 
-  Widget mediaDetails(BuildContext context, Media media) {
+  Widget mediaDetails(BuildContext context) {
     return ListTile(
       onTap: () => openPlayerSheet(context),
       contentPadding: const EdgeInsets.only(left: 8, right: 4),
-      leading: leading(context, media),
+      leading: leading(context),
       titleTextStyle: Theme.of(context).textTheme.bodyMedium,
-      title: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            media.title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            media.author,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-          Selector<PlayerProvider, List<Media>>(
-            selector: (_, provider) => provider.playlist,
-            builder: (context, playlist, _) => Text(
-              "${playlist.indexOf(media) + 1}/${playlist.length}"
-              " \u2022 ${playlistInfo(context)}",
+      title: ValueListenableBuilder(
+        valueListenable: context.read<PlayerProvider>().nowPlaying,
+        builder: (context, media, child) => Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              media.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              media.author,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodySmall,
             ),
-          ),
-        ],
+            Selector<PlayerProvider, List<Media>>(
+              selector: (_, provider) => provider.playlist,
+              builder: (context, playlist, _) => Text(
+                "${playlist.indexOf(media) + 1}/${playlist.length}"
+                " \u2022 ${playlistInfo(context)}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+          ],
+        ),
       ),
       //Player Actions
       trailing: actions(context),
+    );
+  }
+
+  Widget progressBar(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: context.read<PlayerProvider>().nowPlaying,
+      builder: (context, value, child) => Selector<PlayerProvider, bool>(
+        selector: (_, provider) => provider.buffering,
+        builder: (_, buffering, __) => StreamBuilder<Duration>(
+          stream: context.read<PlayerProvider>().player.positionStream,
+          builder: (context, snapshot) {
+            final nowPlaying = context.read<PlayerProvider>().nowPlaying;
+            final duration = nowPlaying.value.durationMs;
+
+            double? progress;
+            if (!buffering && duration != null && snapshot.hasData) {
+              progress = snapshot.requireData.inMilliseconds / duration;
+            }
+
+            return StreamBuilder(
+              stream: context.read<PlayerProvider>().player.speedStream,
+              initialData: context.read<PlayerProvider>().player.speed,
+              builder: (_, speed) => LinearProgressIndicator(
+                minHeight: adaptiveIndicatorHeight,
+                color: speed.data == 1.0 ? null : Colors.redAccent,
+                value: progress,
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -161,17 +162,20 @@ class MiniPlayerSheet extends StatelessWidget {
     );
   }
 
-  Widget leading(BuildContext context, Media media) {
-    return StreamBuilder(
-      stream: context.read<PlayerProvider>().sleepTimerCountdown,
-      initialData: context.read<PlayerProvider>().sleepTimer,
-      builder: (context, snapshot) => CircleAvatar(
-        radius: 24,
-        backgroundImage: NetworkToFileImage(
-          url: media.thumbnailStd,
-          file: MediaClient().thumbnailFile(media.thumbnailStd),
+  Widget leading(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: context.read<PlayerProvider>().nowPlaying,
+      builder: (context, media, _) => StreamBuilder(
+        stream: context.read<PlayerProvider>().sleepTimerCountdown,
+        initialData: context.read<PlayerProvider>().sleepTimer,
+        builder: (context, snapshot) => CircleAvatar(
+          radius: 24,
+          backgroundImage: NetworkToFileImage(
+            url: media.thumbnailStd,
+            file: MediaClient().thumbnailFile(media.thumbnailStd),
+          ),
+          child: const PlayerStateIndicator.static(),
         ),
-        child: const PlayerStateIndicator.static(),
       ),
     );
   }
