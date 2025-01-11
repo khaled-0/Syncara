@@ -40,7 +40,7 @@ class PlaylistHeader extends StatelessWidget {
                       image: NetworkToFileImage(
                         url: playlist(context).thumbnailMax,
                         file: MediaClient().thumbnailFile(
-                          playlist(context).thumbnailMax,
+                          playlist(context).thumbnailMax.split("?")[0],
                         ),
                       ),
                       fit: BoxFit.cover,

@@ -18,7 +18,7 @@ class PreferenceScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
-          if (Platform.isIOS) _title(context, "Appearance"),
+          _title(context, "Appearance"),
           if (!Platform.isIOS)
             ValueListenableBuilder(
               valueListenable: AppTheme.configNotifier,
@@ -173,7 +173,7 @@ class PreferenceScreen extends StatelessWidget {
                 Preference.inAppUpdate,
                 value,
               ),
-              secondary: const Icon(Icons.shuffle_rounded),
+              secondary: const Icon(Icons.update_rounded),
               title: const Text("Check app updates"),
               subtitle: const Text("Notify when new version is available"),
             ),

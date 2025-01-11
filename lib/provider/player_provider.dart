@@ -368,7 +368,10 @@ class PlayerProvider extends ChangeNotifier {
     if (!_disposed) super.notifyListeners();
   }
 
-  Set<MediaAction> get mediaActions => {if (!buffering) MediaAction.seek};
+  Set<MediaAction> get mediaActions => {
+        if (!buffering) MediaAction.seek,
+        MediaAction.stop,
+      };
 
   List<MediaControl> get mediaControls => [
         if (_store.box<Preferences>().value(Preference.notifShowShuffle))
@@ -394,6 +397,7 @@ class PlayerProvider extends ChangeNotifier {
             action: MediaAction.custom,
             customAction: const CustomMediaAction(name: "Repeat"),
           ),
+        MediaControl.stop,
       ];
 
   BehaviorSubject<PlaybackState>? get notificationState {
