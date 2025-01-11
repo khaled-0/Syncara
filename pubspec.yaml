@@ -60,6 +60,7 @@ dependencies:
   window_manager: ^0.4.3
   network_to_file_image: ^7.0.0
   flutter_lyric: ^2.0.4+6
+  loop_page_view: ^1.2.5
 
   # Common Utils
   path: ^1.9.0

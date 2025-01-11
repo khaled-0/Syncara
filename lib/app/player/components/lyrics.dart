@@ -14,8 +14,14 @@ import 'package:window_manager/window_manager.dart';
 typedef LyricFutureResult = (List<LyricMetadata>, LyricMetadata, List<String>);
 
 class Lyrics extends StatefulWidget {
-  const Lyrics({super.key, this.fullscreen = false, this.initialData});
+  const Lyrics({
+    super.key,
+    this.fullscreen = false,
+    this.initialData,
+    this.placeholderMode = false,
+  });
 
+  final bool placeholderMode;
   final bool fullscreen;
   final LyricFutureResult? initialData;
 
@@ -54,6 +60,13 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    if (widget.placeholderMode) {
+      return const Card.filled(
+        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      );
+    }
+
     return Card.filled(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       child: ValueListenableBuilder(

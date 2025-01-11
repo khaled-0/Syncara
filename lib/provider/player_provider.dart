@@ -27,6 +27,7 @@ class PlayerProvider extends ChangeNotifier {
   List<Media> get playlist => List.of(_playlist);
 
   // Keeping track of the currently playing media
+  // TODO Don't use seperate ValueNotifier
   late final ValueNotifier<Media> nowPlaying;
 
   // Buffering state because we fetch Uri on demand

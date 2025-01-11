@@ -3,18 +3,28 @@ import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/extensions.dart';
+import 'package:syncara/model/media.dart';
 import 'package:syncara/provider/player_provider.dart';
 
 class Artwork extends StatelessWidget {
-  const Artwork({super.key});
+  final Media? placeholderMedia;
+
+  const Artwork({super.key, this.placeholderMedia});
 
   @override
   Widget build(BuildContext context) {
+    if (placeholderMedia != null) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        child: _avatar(placeholderMedia!),
+      );
+    }
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       child: ValueListenableBuilder(
         valueListenable: context.read<PlayerProvider>().nowPlaying,
-        builder: (context, media, child) => StreamBuilder(
+        builder: (context, now, child) => StreamBuilder(
           stream: context.read<PlayerProvider>().player.positionStream,
           initialData: context.read<PlayerProvider>().player.position,
           builder: (context, position) {
@@ -26,20 +36,7 @@ class Artwork extends StatelessWidget {
                 Positioned.fill(
                   child: Transform.rotate(
                     angle: angle.toPrecision(5),
-                    child: CircleAvatar(
-                      foregroundImage: NetworkToFileImage(
-                        url: media.thumbnailMax,
-                        file: MediaClient().thumbnailFile(
-                          media.thumbnailMax,
-                        ),
-                      ),
-                      backgroundImage: NetworkToFileImage(
-                        url: media.thumbnailStd,
-                        file: MediaClient().thumbnailFile(
-                          media.thumbnailStd,
-                        ),
-                      ),
-                    ),
+                    child: _avatar(now),
                   ),
                 ),
                 Icon(
@@ -50,6 +47,23 @@ class Artwork extends StatelessWidget {
               ],
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _avatar(Media media) {
+    return CircleAvatar(
+      foregroundImage: NetworkToFileImage(
+        url: media.thumbnailMax,
+        file: MediaClient().thumbnailFile(
+          media.thumbnailMax,
+        ),
+      ),
+      backgroundImage: NetworkToFileImage(
+        url: media.thumbnailStd,
+        file: MediaClient().thumbnailFile(
+          media.thumbnailStd,
         ),
       ),
     );
