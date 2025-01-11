@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/model/media.dart';
 import 'package:syncara/provider/player_provider.dart';
 
@@ -16,11 +17,27 @@ class ActionButtons extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         spacing: 18,
         children: [
+          if (!AppTheme.isDesktop) rewindButton(context),
           _previousButton(context),
           _playPauseButton(context, playerState),
           _nextButton(context),
+          if (!AppTheme.isDesktop) forwardButton(context),
         ],
       ),
+    );
+  }
+
+  static Widget forwardButton(BuildContext context) {
+    return IconButton(
+      onPressed: context.read<PlayerProvider>().seekForward,
+      icon: const Icon(Icons.forward_10_rounded),
+    );
+  }
+
+  static Widget rewindButton(BuildContext context) {
+    return IconButton(
+      onPressed: context.read<PlayerProvider>().seekBackwards,
+      icon: const Icon(Icons.replay_10_rounded),
     );
   }
 

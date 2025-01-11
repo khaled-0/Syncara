@@ -9,6 +9,18 @@ extension DurationExtensions on Duration? {
     final hour = twoDigits(this!.inHours);
     return " ${hour == '00' ? '' : '$hour:'}$twoDigitMinutes:$twoDigitSeconds ";
   }
+
+  Duration? clampMin(Duration min) {
+    if (this == null) return null;
+    if (this! < min) return min;
+    return this;
+  }
+
+  Duration? clampMax(Duration max) {
+    if (this == null) return null;
+    if (this! > max) return max;
+    return this;
+  }
 }
 
 extension NumberExtension on num {

@@ -79,7 +79,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
                 ),
                 itemBuilder: (context, index) {
                   final media = playlist[index];
-                  return _playerBody(
+                  return _body(
                     context: context,
                     media: media,
                     current: media == nowPlaying,
@@ -93,7 +93,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
     );
   }
 
-  Widget _playerBody({
+  Widget _body({
     required BuildContext context,
     required Media media,
     required bool current,
@@ -140,8 +140,33 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
           padding: EdgeInsets.symmetric(vertical: 6),
           child: PlayerStateIndicator(),
         ),
-        if (current) const SeekBar(),
-        const SizedBox(height: 12),
+        AnimatedSize(
+          duration: Durations.medium3,
+          child: current
+              ? _bodyBottom(context, media)
+              : const SizedBox(height: 18),
+        ),
+      ],
+    );
+  }
+
+  Widget _bodyBottom(BuildContext context, Media media) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (AppTheme.isDesktop)
+          Row(
+            children: [
+              const SizedBox(width: 8),
+              ActionButtons.rewindButton(context),
+              const Expanded(child: SeekBar()),
+              ActionButtons.forwardButton(context),
+              const SizedBox(width: 8),
+            ],
+          )
+        else
+          const SeekBar(),
+        const SizedBox(height: 8),
         if (AppTheme.isDesktop)
           Row(
             children: [
@@ -152,10 +177,10 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
           )
         else ...{
           const ActionButtons(),
-          const SizedBox(height: 36),
+          const SizedBox(height: 28),
           queueView(context, media),
         },
-        const SizedBox(height: 18),
+        const SizedBox(height: 12),
       ],
     );
   }

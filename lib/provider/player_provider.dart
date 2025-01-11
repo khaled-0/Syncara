@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 // ignore: depend_on_referenced_packages Just for Types. Doesn't matter
 import 'package:rxdart/rxdart.dart' show BehaviorSubject;
 import 'package:syncara/clients/media_client.dart';
+import 'package:syncara/extensions.dart';
 import 'package:syncara/model/common.dart';
 import 'package:syncara/model/media.dart';
 import 'package:syncara/model/objectbox.g.dart';
@@ -336,6 +337,17 @@ class PlayerProvider extends ChangeNotifier {
       // Don't countdown if paused
       if (!buffering && player.playing) countDown(const Duration(seconds: 1));
     });
+  }
+
+  void seekForward() {
+    if (nowPlaying.value.duration == null) return;
+    final position = player.position + const Duration(seconds: 10);
+    player.seek(position.clampMax(nowPlaying.value.duration!));
+  }
+
+  void seekBackwards() {
+    final position = player.position - const Duration(seconds: 10);
+    player.seek(position.clampMin(Duration.zero));
   }
 
   bool _disposed = false;
