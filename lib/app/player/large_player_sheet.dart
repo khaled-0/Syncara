@@ -143,29 +143,9 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
         AnimatedSize(
           duration: Durations.medium3,
           child: current
-              ? _bodyBottom(context, media)
+              ? _seekBarView(context, media)
               : const SizedBox(height: 18),
         ),
-      ],
-    );
-  }
-
-  Widget _bodyBottom(BuildContext context, Media media) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (AppTheme.isDesktop)
-          Row(
-            children: [
-              const SizedBox(width: 8),
-              ActionButtons.rewindButton(context),
-              const Expanded(child: SeekBar()),
-              ActionButtons.forwardButton(context),
-              const SizedBox(width: 8),
-            ],
-          )
-        else
-          const SeekBar(),
         const SizedBox(height: 8),
         if (AppTheme.isDesktop)
           Row(
@@ -183,6 +163,22 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
         const SizedBox(height: 12),
       ],
     );
+  }
+
+  Widget _seekBarView(BuildContext context, Media media) {
+    if (AppTheme.isDesktop) {
+      return Row(
+        children: [
+          const SizedBox(width: 8),
+          ActionButtons.rewindButton(context),
+          const Expanded(child: SeekBar()),
+          ActionButtons.forwardButton(context),
+          const SizedBox(width: 8),
+        ],
+      );
+    }
+
+    return const SeekBar();
   }
 
   Widget queueView(BuildContext context, Media media) {
