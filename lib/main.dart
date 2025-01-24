@@ -35,7 +35,7 @@ void main() async {
   );
 
   await DownloaderService.init(objectDB);
-  await MediaService.init();
+  await MediaService.init(objectDB);
   await MediaClient.init();
 
   MaterialApp app({

@@ -5,6 +5,7 @@ import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/player/components/player_state_indicator.dart';
 import 'package:syncara/app/player/large_player_sheet.dart';
 import 'package:syncara/clients/media_client.dart';
+import 'package:syncara/model/common.dart';
 import 'package:syncara/model/media.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
@@ -186,20 +187,30 @@ class MiniPlayerSheet extends StatelessWidget {
         .box<Preferences>()
         .value<int>(Preference.miniPlayerSecondaryAction);
 
-    switch (MiniPlayerSecondaryActions.values[action]) {
-      case MiniPlayerSecondaryActions.Close:
+    switch (MiniPlayerExtraAction.values[action]) {
+      case MiniPlayerExtraAction.Close:
         return IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.close_rounded),
         );
-      case MiniPlayerSecondaryActions.Shuffle:
+      case MiniPlayerExtraAction.Shuffle:
         return IconButton(
           onPressed: () => context.read<PlayerProvider>().shuffle(
                 preserveCurrentIndex: false,
               ),
           icon: const Icon(Icons.shuffle_rounded),
         );
-      case MiniPlayerSecondaryActions.None:
+      case MiniPlayerExtraAction.SeekForward:
+        return IconButton(
+          onPressed: context.read<PlayerProvider>().seekForward,
+          icon: const Icon(Icons.forward_10_rounded),
+        );
+      case MiniPlayerExtraAction.SeekBackward:
+        return IconButton(
+          onPressed: context.read<PlayerProvider>().seekBackwards,
+          icon: const Icon(Icons.replay_10_rounded),
+        );
+      case MiniPlayerExtraAction.None:
         return const SizedBox();
     }
   }
@@ -237,6 +248,3 @@ class MiniPlayerSheet extends StatelessWidget {
     return "${playlist[0].title} and ${playlist.length - 1} more";
   }
 }
-
-// ignore: constant_identifier_names
-enum MiniPlayerSecondaryActions { Close, Shuffle, None }

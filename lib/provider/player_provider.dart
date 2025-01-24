@@ -90,6 +90,7 @@ class PlayerProvider extends ChangeNotifier {
     player.playerStateStream.listen(
       (state) => notificationState?.add(notificationState!.value.copyWith(
         playing: state.playing,
+        updatePosition: player.position,
         processingState: _buffering
             ? AudioProcessingState.loading
             : AudioProcessingState.values.byName(state.processingState.name),
@@ -375,7 +376,6 @@ class PlayerProvider extends ChangeNotifier {
 
   Set<MediaAction> get mediaActions => {
         if (!buffering) MediaAction.seek,
-        MediaAction.stop,
       };
 
   List<MediaControl> get mediaControls => [
@@ -402,8 +402,34 @@ class PlayerProvider extends ChangeNotifier {
             action: MediaAction.custom,
             customAction: const CustomMediaAction(name: "Repeat"),
           ),
-        MediaControl.stop,
+        if (_stopButtonCustom != null) _stopButtonCustom!,
       ];
+
+  MediaControl? get _stopButtonCustom {
+    final action = _store.box<Preferences>().value<int>(
+          Preference.notifCloseButtonAction,
+        );
+
+    return switch (NotificationCloseButton.values[action]) {
+      NotificationCloseButton.Close => MediaControl.stop,
+      NotificationCloseButton.Shuffle => const MediaControl(
+          androidIcon: "drawable/shuffle_24px",
+          label: "Shuffle",
+          action: MediaAction.stop,
+        ),
+      NotificationCloseButton.SeekForward => const MediaControl(
+          androidIcon: "drawable/audio_service_fast_forward",
+          label: "Shuffle",
+          action: MediaAction.stop,
+        ),
+      NotificationCloseButton.SeekBackward => const MediaControl(
+          androidIcon: "drawable/audio_service_fast_rewind",
+          label: "Shuffle",
+          action: MediaAction.stop,
+        ),
+      NotificationCloseButton.None => null,
+    };
+  }
 
   BehaviorSubject<PlaybackState>? get notificationState {
     if (_disposed) return null;

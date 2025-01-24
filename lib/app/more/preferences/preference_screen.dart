@@ -5,7 +5,7 @@ import 'package:objectbox/objectbox.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/more/preferences/components/choice_dialog.dart';
-import 'package:syncara/app/player/mini_player_sheet.dart';
+import 'package:syncara/model/common.dart';
 import 'package:syncara/model/preferences.dart';
 
 class PreferenceScreen extends StatelessWidget {
@@ -81,6 +81,40 @@ class PreferenceScreen extends StatelessWidget {
               subtitle: const Text("May not work on all devices/platforms"),
             ),
           ),
+          StreamBuilder(
+            stream: preferences(context).watch(
+              Preference.notifCloseButtonAction,
+            ),
+            builder: (context, value) {
+              int? i = value.data?.value(Preference.notifCloseButtonAction);
+              i ??= Preference.notifCloseButtonAction.defaultValue;
+              final selected = NotificationCloseButton.values[i];
+              return ListTile(
+                leading: const Icon(Icons.close_rounded),
+                title: const Text("Override close button"),
+                subtitle: Text(selected.name),
+                onTap: () => showDialog<NotificationCloseButton?>(
+                  context: context,
+                  builder: (_) => ChoiceDialog<NotificationCloseButton>(
+                    title: "Override close buttonn",
+                    icon: const Icon(Icons.close_rounded),
+                    selected: selected,
+                    options: {
+                      for (final i in NotificationCloseButton.values) ...{
+                        i.name: i
+                      }
+                    },
+                  ),
+                ).then((v) {
+                  if (!context.mounted || v == null) return;
+                  preferences(context).set(
+                    Preference.notifCloseButtonAction,
+                    v.index,
+                  );
+                }),
+              );
+            },
+          ),
           _title(context, "Player"),
           StreamBuilder(
             stream: preferences(context).watch(
@@ -92,7 +126,7 @@ class PreferenceScreen extends StatelessWidget {
                 Preference.playerBottomAppBar,
                 value,
               ),
-              secondary: const Icon(Icons.repeat_rounded),
+              secondary: const Icon(Icons.call_to_action_rounded),
               title: const Text("Large player toolbar on bottom"),
               // subtitle: const Text("helps for one hand mode"),
             ),
@@ -104,19 +138,19 @@ class PreferenceScreen extends StatelessWidget {
             builder: (context, value) {
               int? i = value.data?.value(Preference.miniPlayerSecondaryAction);
               i ??= Preference.miniPlayerSecondaryAction.defaultValue;
-              final selected = MiniPlayerSecondaryActions.values[i];
+              final selected = MiniPlayerExtraAction.values[i];
               return ListTile(
                 leading: const Icon(Icons.smart_button_rounded),
                 title: const Text("Mini player secondary action"),
                 subtitle: Text(selected.name),
-                onTap: () => showDialog<MiniPlayerSecondaryActions?>(
+                onTap: () => showDialog<MiniPlayerExtraAction?>(
                   context: context,
-                  builder: (_) => ChoiceDialog<MiniPlayerSecondaryActions>(
+                  builder: (_) => ChoiceDialog<MiniPlayerExtraAction>(
                     title: "Mini player secondary action",
                     icon: const Icon(Icons.smart_button_rounded),
                     selected: selected,
                     options: {
-                      for (final i in MiniPlayerSecondaryActions.values) ...{
+                      for (final i in MiniPlayerExtraAction.values) ...{
                         i.name: i
                       }
                     },

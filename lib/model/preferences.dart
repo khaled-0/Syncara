@@ -14,6 +14,7 @@ enum Preference<T> {
   subsLang<String>("en"),
   loopMode<int>(0), // LoopMode.off
   // Media Notification
+  notifCloseButtonAction<int>(0),
   notifShowShuffle<bool>(true),
   notifShowRepeat<bool>(true),
   // Player Customization

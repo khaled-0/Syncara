@@ -1,5 +1,8 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio_media_kit/just_audio_media_kit.dart';
+import 'package:objectbox/objectbox.dart';
+import 'package:syncara/model/common.dart';
+import 'package:syncara/model/preferences.dart';
 import 'package:syncara/provider/player_provider.dart';
 import 'package:syncara/provider/playlist_provider.dart';
 
@@ -14,9 +17,10 @@ class MediaService extends BaseAudioHandler {
   /// Singleton -->
 
   PlayerProvider? _playerProvider;
+  late final Store _store;
 
   /// Must call before runApp
-  static Future<void> init() async {
+  static Future<void> init(Store db) async {
     _instance = await AudioService.init(
       builder: () => MediaService._(),
       config: const AudioServiceConfig(
@@ -27,6 +31,7 @@ class MediaService extends BaseAudioHandler {
       ),
     );
 
+    _instance._store = db;
     JustAudioMediaKit.ensureInitialized(iOS: true, macOS: true, windows: true);
   }
 
@@ -57,7 +62,21 @@ class MediaService extends BaseAudioHandler {
   Future<void> pause() async => _playerProvider?.player.pause();
 
   @override
-  Future<void> stop() async => _playerProvider?.player.stop();
+  Future<void> stop() async {
+    final action = _store.box<Preferences>().value<int>(
+          Preference.notifCloseButtonAction,
+        );
+
+    return switch (NotificationCloseButton.values[action]) {
+      (NotificationCloseButton.Close || NotificationCloseButton.None) =>
+        _playerProvider?.player.stop(),
+      NotificationCloseButton.Shuffle => _playerProvider?.shuffle(
+          preserveCurrentIndex: false,
+        ),
+      NotificationCloseButton.SeekForward => _playerProvider?.seekForward(),
+      NotificationCloseButton.SeekBackward => _playerProvider?.seekBackwards(),
+    };
+  }
 
   @override
   Future<void> seek(Duration position) async {

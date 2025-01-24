@@ -79,3 +79,9 @@ class LastPlayedMedia {
 
 //ignore: constant_identifier_names
 enum SortOption { Ascending, Descending, Reverse, Author, Reset }
+
+//ignore: constant_identifier_names
+enum NotificationCloseButton { Close, Shuffle, SeekForward, SeekBackward, None }
+
+// ignore: constant_identifier_names
+enum MiniPlayerExtraAction { Close, Shuffle, SeekForward, SeekBackward, None }
