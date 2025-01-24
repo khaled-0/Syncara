@@ -77,20 +77,26 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
         builder: (context, nowPlaying, _) => FutureBuilder(
           future: fetchLyrics(nowPlaying),
           key: ValueKey(nowPlaying.hashCode.toString() + preferredLanguage),
-          builder: (context, result) => Stack(
-            children: [
-              Positioned.fill(child: _lyricsView(result)),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: AnimatedOpacity(
-                  duration: Durations.medium2,
-                  opacity: (!widget.fullscreen && result.hasError) ? 0 : 1,
-                  child: _lyricSelector(result),
+          builder: (context, result) => PopScope(
+            canPop: !widget.fullscreen,
+            onPopInvokedWithResult: (didPop, __) {
+              if (!didPop) toggleFullScreen(result.data);
+            },
+            child: Stack(
+              children: [
+                Positioned.fill(child: _lyricsView(result)),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: AnimatedOpacity(
+                    duration: Durations.medium2,
+                    opacity: (!widget.fullscreen && result.hasError) ? 0 : 1,
+                    child: _lyricSelector(result),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -297,7 +303,7 @@ class _ExpandedLyrics extends StatelessWidget {
               child: ValueListenableBuilder(
                 valueListenable: context.read<PlayerProvider>().nowPlaying,
                 builder: (_, value, __) => Padding(
-                  padding: const EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.only(top: 16, left: 6, right: 6),
                   child: Text(
                     value.title,
                     textAlign: TextAlign.center,
