@@ -76,9 +76,14 @@ class PlayerProvider extends ChangeNotifier {
     });
 
     player.bufferedPositionStream.listen(
+      (buffer) => notificationState?.add(notificationState!.value.copyWith(
+        bufferedPosition: buffer,
+      )),
+    );
+
+    player.positionStream.listen(
       (position) => notificationState?.add(notificationState!.value.copyWith(
-        updatePosition: player.position,
-        bufferedPosition: position,
+        updatePosition: position,
       )),
     );
 
