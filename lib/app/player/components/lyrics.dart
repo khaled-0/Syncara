@@ -18,10 +18,14 @@ class Lyrics extends StatefulWidget {
     super.key,
     this.fullscreen = false,
     this.initialData,
-    this.placeholderMode = false,
-  });
+  }) : _placeholderMode = false;
 
-  final bool placeholderMode;
+  const Lyrics.placeholder({super.key})
+      : _placeholderMode = true,
+        fullscreen = false,
+        initialData = null;
+
+  final bool _placeholderMode;
   final bool fullscreen;
   final LyricFutureResult? initialData;
 
@@ -59,14 +63,13 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
-    if (widget.placeholderMode) {
+    if (widget._placeholderMode) {
       return const Card.filled(
         margin: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       );
     }
 
+    super.build(context);
     return Card.filled(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       child: ValueListenableBuilder(

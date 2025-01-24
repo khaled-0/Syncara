@@ -131,7 +131,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
             controller: tabController,
             children: [
               Artwork(placeholderMedia: current ? null : media),
-              Lyrics(placeholderMode: !current),
+              if (current) const Lyrics() else const Lyrics.placeholder(),
               const Center(child: Text("Soon")),
             ],
           ),
