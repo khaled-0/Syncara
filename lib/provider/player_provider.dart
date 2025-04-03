@@ -375,7 +375,11 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   Set<MediaAction> get mediaActions => {
+        MediaAction.play,
+        MediaAction.pause,
         if (!buffering) MediaAction.seek,
+        MediaAction.skipToPrevious,
+        MediaAction.skipToNext,
       };
 
   List<MediaControl> get mediaControls => [
@@ -386,11 +390,32 @@ class PlayerProvider extends ChangeNotifier {
             action: MediaAction.custom,
             customAction: CustomMediaAction(name: "Shuffle"),
           ),
-        if (hasPrevious) MediaControl.skipToPrevious,
+        if (hasPrevious)
+          const MediaControl(
+            androidIcon: 'drawable/skip_previous_24px',
+            label: 'Previous',
+            action: MediaAction.skipToPrevious,
+          ),
         if (!buffering) ...{
-          if (player.playing) MediaControl.pause else MediaControl.play
+          if (player.playing)
+            const MediaControl(
+              androidIcon: 'drawable/pause_24px',
+              label: 'Pause',
+              action: MediaAction.pause,
+            )
+          else
+            const MediaControl(
+              androidIcon: 'drawable/play_arrow_24px',
+              label: 'Play',
+              action: MediaAction.play,
+            ),
         },
-        if (hasNext) MediaControl.skipToNext,
+        if (hasNext)
+          const MediaControl(
+            androidIcon: 'drawable/skip_next_24px',
+            label: 'Next',
+            action: MediaAction.skipToNext,
+          ),
         if (_store.box<Preferences>().value(Preference.notifShowRepeat))
           MediaControl(
             androidIcon: switch (_loopMode) {
@@ -418,12 +443,12 @@ class PlayerProvider extends ChangeNotifier {
           action: MediaAction.stop,
         ),
       NotificationCloseButton.SeekForward => const MediaControl(
-          androidIcon: "drawable/audio_service_fast_forward",
+          androidIcon: "drawable/fast_forward_24px",
           label: "Seek Forward",
           action: MediaAction.stop,
         ),
       NotificationCloseButton.SeekBackward => const MediaControl(
-          androidIcon: "drawable/audio_service_fast_rewind",
+          androidIcon: "drawable/fast_rewind_24px",
           label: "Seek Backward",
           action: MediaAction.stop,
         ),
