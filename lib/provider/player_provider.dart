@@ -436,7 +436,11 @@ class PlayerProvider extends ChangeNotifier {
         );
 
     return switch (NotificationCloseButton.values[action]) {
-      NotificationCloseButton.Close => MediaControl.stop,
+      NotificationCloseButton.Close => const MediaControl(
+          androidIcon: 'drawable/close_24px',
+          label: 'Close',
+          action: MediaAction.stop,
+        ),
       NotificationCloseButton.Shuffle => const MediaControl(
           androidIcon: "drawable/shuffle_24px",
           label: "Shuffle",
