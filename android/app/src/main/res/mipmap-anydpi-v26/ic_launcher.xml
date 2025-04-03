@@ -4,11 +4,11 @@
   <foreground>
       <inset
           android:drawable="@drawable/ic_launcher_foreground"
-          android:inset="30%" />
+          android:inset="15%" />
   </foreground>
   <monochrome>
       <inset
           android:drawable="@drawable/ic_launcher_monochrome"
-          android:inset="30%" />
+          android:inset="15%" />
   </monochrome>
 </adaptive-icon>

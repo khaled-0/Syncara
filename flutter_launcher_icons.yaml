@@ -4,8 +4,8 @@ flutter_launcher_icons:
 
   android: true
   adaptive_icon_foreground: "assets/icons/syncara.webp"
-  adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground_inset: 30
+  adaptive_icon_background: "#F04C4E"
+  adaptive_icon_foreground_inset: 15
   adaptive_icon_monochrome: "assets/icons/syncara_mono.webp"
 
   ios: true
