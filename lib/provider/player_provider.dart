@@ -419,12 +419,12 @@ class PlayerProvider extends ChangeNotifier {
         ),
       NotificationCloseButton.SeekForward => const MediaControl(
           androidIcon: "drawable/audio_service_fast_forward",
-          label: "Shuffle",
+          label: "Seek Forward",
           action: MediaAction.stop,
         ),
       NotificationCloseButton.SeekBackward => const MediaControl(
           androidIcon: "drawable/audio_service_fast_rewind",
-          label: "Shuffle",
+          label: "Seek Backward",
           action: MediaAction.stop,
         ),
       NotificationCloseButton.None => null,
