@@ -39,23 +39,20 @@ Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 
 ## Download
 
-Syncara for all platform are primarily released on Github. Tap on your device icon to directly download.
+Syncara for all platform are primarily released on Github. **Tap on your device icon to directly download.**
 
  <p align="center">
-  <a href="https://github.com/khaled-0/Syncara/releases/latest">
-    <img height="48" src="./docs/badges/get-it-on-github.png" alt="Get it on GitHub"/>
-  </a> 
    <a href="https://github.com/khaled-0/Syncara/releases/latest/download/app-release.apk">
-    <img height="48" src="./docs/badges/apk-square.png" alt="Android"/>
+    <img height="64" src="./docs/badges/apk-square.png" alt="Android"/>
   </a>  
   <a href="https://github.com/khaled-0/Syncara/releases/latest/download/syncara_ios_unsigned.ipa">
-    <img height="48" src="./docs/badges/ios-square.png" alt="IOS"/>
+    <img height="64" src="./docs/badges/ios-square.png" alt="IOS"/>
   </a>  
   <a href="https://github.com/khaled-0/Syncara/releases/latest/download/syncara_linux.zip">
-    <img height="48" src="./docs/badges/linux-square.png" alt="Linux"/>
+    <img height="64" src="./docs/badges/linux-square.png" alt="Linux"/>
   </a>
   <a href="https://github.com/khaled-0/Syncara/releases/latest/download/syncara_macos.zip">
-    <img height="48" src="./docs/badges/mac-square.png" alt="MacOS"/>
+    <img height="64" src="./docs/badges/mac-square.png" alt="MacOS"/>
   </a> 
 </p>
 
@@ -67,14 +64,11 @@ Syncara for all platform are primarily released on Github. Tap on your device ic
   <a href="https://apt.izzysoft.de/fdroid/index/apk/syncara.app">
     <img height="60" src="./docs/badges/get-it-on-izzy.png" alt="IzzyOnDroid"/>
   </a>
-  <a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22syncara.app%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fkhaled-0%2FTubeSync%22%2C%22author%22%3A%22Khaled%22%2C%22name%22%3A%22Syncara%22%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%7D%22%7D">
+  <a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22syncara.app%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fkhaled-0%2FSyncara%22%2C%22author%22%3A%22Khaled%22%2C%22name%22%3A%22Syncara%22%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%7D%22%7D">
     <img height="60" src="./docs/badges/badge_obtainium.png" alt="Obtainium"/>
   </a>
   <a href="https://www.openapk.net/syncara/syncara.app/">
     <img height="60" src="./docs/badges/openapk-badge.png" alt="OpenAPK"/>
-  </a>
-  <a href="https://www.androidfreeware.net/download-syncara-apk.html">
-    <img height="60" src="./docs/badges/android-freeware.png" alt="AndroidFreeWare"/>
   </a>
 </p>
 

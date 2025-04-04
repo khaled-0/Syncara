@@ -83,8 +83,10 @@
   </developer>
 
   <releases>
-    <release version="0.1.7" date="2024-12-25">
-      <description>Read the full changelog at Github</description>
+    <release version="0.1.8" date="2025-03-03">
+      <description>
+        <p>Read the full changelog at Github</p>
+      </description>
       <url>https://github.com/khaled-0/Syncara/releases</url>
     </release>
   </releases>
