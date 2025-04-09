@@ -57,7 +57,7 @@ class LibraryEntryBuilder extends StatelessWidget {
           ),
         ),
         title: Text(
-          playlist.title,
+          playlist.getTitle,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),

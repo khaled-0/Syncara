@@ -52,6 +52,7 @@ class LibraryProvider extends ChangeNotifier {
 
         entries[index] = updatedPlaylist.copyWith(
           videoIds: entries[index].videoIds, // Pass previously cached videoIds
+          customTitle: entries[index].customTitle, // User defined title
         );
       } catch (_) {
         // TODO Error
@@ -88,6 +89,21 @@ class LibraryProvider extends ChangeNotifier {
     } catch (_) {
       return playlist;
     }
+  }
+
+  /// Passing null will remove the name
+  void renamePlaylist(Playlist playlist, {String? name}) {
+    final index = entries.indexOf(playlist);
+    if (index == -1) throw Exception("$playlist not in library");
+
+    if (name == null) {
+      entries[index] = playlist.copyWithNull(customTitle: true);
+    } else {
+      entries[index] = playlist.copyWith(customTitle: name);
+    }
+
+    store.box<Playlist>().putMany(entries);
+    notifyListeners();
   }
 
   bool _disposed = false;

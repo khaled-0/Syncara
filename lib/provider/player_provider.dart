@@ -149,7 +149,7 @@ class PlayerProvider extends ChangeNotifier {
         title: nowPlaying.value.title,
         artist: nowPlaying.value.author,
         duration: nowPlaying.value.duration,
-        album: nowPlayingPlaylist.title,
+        album: nowPlayingPlaylist.getTitle,
         artUri: artUri,
       ));
 

@@ -222,10 +222,10 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
   String playlistInfo(BuildContext context) {
     final playlist = context.read<PlayerProvider>().playlistInfo;
     if (playlist.length == 1) {
-      return "${playlist[0].title} by ${playlist[0].author}";
+      return "${playlist[0].getTitle} by ${playlist[0].author}";
     }
 
-    return "${playlist[0].title} and ${playlist.length - 1} more";
+    return "${playlist[0].getTitle} and ${playlist.length - 1} more";
   }
 
   AppBar get appBar {
