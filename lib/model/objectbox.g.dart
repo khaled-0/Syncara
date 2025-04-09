@@ -75,7 +75,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(5, 7467807554909333142),
       name: 'Playlist',
-      lastPropertyId: const obx_int.IdUid(10, 8280104840695593580),
+      lastPropertyId: const obx_int.IdUid(11, 1741568516604972857),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -122,6 +122,11 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(10, 8280104840695593580),
             name: 'thumbnailMax',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(11, 1741568516604972857),
+            name: 'customTitle',
             type: 9,
             flags: 0)
       ],
@@ -373,7 +378,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
               object.videoIds.map(fbb.writeString).toList(growable: false));
           final thumbnailStdOffset = fbb.writeString(object.thumbnailStd);
           final thumbnailMaxOffset = fbb.writeString(object.thumbnailMax);
-          fbb.startTable(11);
+          final customTitleOffset = object.customTitle == null
+              ? null
+              : fbb.writeString(object.customTitle!);
+          fbb.startTable(12);
           fbb.addInt64(0, object.objectId);
           fbb.addOffset(1, idOffset);
           fbb.addOffset(2, titleOffset);
@@ -383,6 +391,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(7, videoIdsOffset);
           fbb.addOffset(8, thumbnailStdOffset);
           fbb.addOffset(9, thumbnailMaxOffset);
+          fbb.addOffset(10, customTitleOffset);
           fbb.finish(fbb.endTable());
           return object.objectId;
         },
@@ -410,15 +419,19 @@ obx_int.ModelDefinition getObjectBoxModel() {
                   fb.StringReader(asciiOptimization: true),
                   lazy: false)
               .vTableGet(buffer, rootOffset, 18, []);
+          final customTitleParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 24);
           final object = Playlist(
-              idParam,
-              titleParam,
-              authorParam,
-              thumbnailStdParam,
-              thumbnailMaxParam,
-              videoCountParam,
-              descriptionParam,
-              videoIdsParam)
+              id: idParam,
+              title: titleParam,
+              author: authorParam,
+              thumbnailStd: thumbnailStdParam,
+              thumbnailMax: thumbnailMaxParam,
+              videoCount: videoCountParam,
+              description: descriptionParam,
+              videoIds: videoIdsParam,
+              customTitle: customTitleParam)
             ..objectId =
                 const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
@@ -583,6 +596,10 @@ class Playlist_ {
   /// See [Playlist.thumbnailMax].
   static final thumbnailMax =
       obx.QueryStringProperty<Playlist>(_entities[1].properties[8]);
+
+  /// See [Playlist.customTitle].
+  static final customTitle =
+      obx.QueryStringProperty<Playlist>(_entities[1].properties[9]);
 }
 
 /// [LyricMetadata] entity fields to define ObjectBox queries.

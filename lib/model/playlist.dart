@@ -1,7 +1,11 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
+part 'playlist.g.dart';
+
 @Entity()
+@CopyWith(copyWithNull: true)
 class Playlist {
   @Id()
   int objectId = 0;
@@ -10,6 +14,9 @@ class Playlist {
   @Unique(onConflict: ConflictStrategy.replace)
   final String id;
   final String title, author;
+
+  /// User defined title
+  final String? customTitle;
 
   final String? description;
 
@@ -23,51 +30,35 @@ class Playlist {
     return "https://youtube.com/playlist?list=$id";
   }
 
-  Playlist(
-    this.id,
-    this.title,
-    this.author,
-    this.thumbnailStd,
-    this.thumbnailMax,
-    this.videoCount,
+  /// Read custom title if available
+  String get getTitle => customTitle ?? title;
+
+  Playlist({
+    required this.id,
+    required this.title,
+    required this.author,
+    required this.thumbnailStd,
+    required this.thumbnailMax,
+    required this.videoCount,
     this.description,
-    this.videoIds,
-  );
+    required this.videoIds,
+    this.customTitle,
+  });
 
   factory Playlist.fromYTPlaylist(
     yt.Playlist playlist, {
     List<String>? videoIds,
-  }) =>
-      Playlist(
-        playlist.id.value,
-        playlist.title,
-        playlist.author,
-        playlist.thumbnails.mediumResUrl,
-        playlist.thumbnails.maxResUrl,
-        playlist.videoCount ?? -1,
-        playlist.description.isNotEmpty ? playlist.description : null,
-        videoIds ?? List.empty(growable: true),
-      );
-
-  Playlist copyWith({
-    String? id,
-    String? title,
-    String? author,
-    String? thumbnailStd,
-    String? thumbnailMax,
-    int? videoCount,
-    String? description,
-    List<String>? videoIds,
   }) {
     return Playlist(
-      id ?? this.id,
-      title ?? this.title,
-      author ?? this.author,
-      thumbnailStd ?? this.thumbnailStd,
-      thumbnailMax ?? this.thumbnailMax,
-      videoCount ?? this.videoCount,
-      description ?? this.description,
-      videoIds ?? this.videoIds,
+      id: playlist.id.value,
+      title: playlist.title,
+      author: playlist.author,
+      thumbnailStd: playlist.thumbnails.mediumResUrl,
+      thumbnailMax: playlist.thumbnails.maxResUrl,
+      videoCount: playlist.videoCount ?? -1,
+      description:
+          playlist.description.isNotEmpty ? playlist.description : null,
+      videoIds: videoIds ?? List.empty(growable: true),
     );
   }
 
