@@ -56,7 +56,7 @@
     },
     {
       "id": "5:7467807554909333142",
-      "lastPropertyId": "10:8280104840695593580",
+      "lastPropertyId": "11:1741568516604972857",
       "name": "Playlist",
       "properties": [
         {
@@ -105,6 +105,11 @@
         {
           "id": "10:8280104840695593580",
           "name": "thumbnailMax",
+          "type": 9
+        },
+        {
+          "id": "11:1741568516604972857",
+          "name": "customTitle",
           "type": 9
         }
       ],
