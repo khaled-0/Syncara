@@ -25,7 +25,7 @@ class QueuePlaylistFilter extends StatelessWidget {
                   selected: true,
                   showCheckmark: false,
                   visualDensity: VisualDensity.compact,
-                  label: Text(playlists[index].title),
+                  label: Text(playlists[index].getTitle),
                   onSelected: (value) {
                     // TODO Filter
                   },
