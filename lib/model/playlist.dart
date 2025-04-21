@@ -52,7 +52,7 @@ class Playlist {
     return Playlist(
       id: playlist.id.value,
       title: playlist.title,
-      author: playlist.author,
+      author: playlist.author.isEmpty ? "Youtube" : playlist.author,
       thumbnailStd: playlist.thumbnails.mediumResUrl,
       thumbnailMax: playlist.thumbnails.maxResUrl,
       videoCount: playlist.videoCount ?? -1,
