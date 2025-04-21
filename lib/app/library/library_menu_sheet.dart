@@ -33,6 +33,11 @@ class LibraryMenuSheet extends StatelessWidget {
               title: const Text("Enqueue"),
             ),
           ListTile(
+            onTap: () => showRenamePlaylist(context),
+            leading: const Icon(Icons.drive_file_rename_outline_rounded),
+            title: const Text("Rename"),
+          ),
+          ListTile(
             onTap: () {
               context.read<LibraryProvider>().delete(playlist);
               Navigator.pop(context);
@@ -51,5 +56,45 @@ class LibraryMenuSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void showRenamePlaylist(BuildContext context) async {
+    final name = await showDialog<String?>(
+      context: context,
+      builder: (ctx) {
+        String name = playlist.customTitle ?? "";
+        return AlertDialog(
+          title: Text("Rename ${playlist.title}"),
+          icon: const Icon(Icons.drive_file_rename_outline_rounded),
+          content: TextFormField(
+            maxLines: 1,
+            initialValue: name,
+            decoration: const InputDecoration(
+              helperText: "Define a custom title for the playlist here",
+              helperMaxLines: 2,
+            ),
+            onChanged: (value) => name = value,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, null),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text("Clear"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, playlist.customTitle),
+              child: const Text("Cancel"),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx, name),
+              child: const Text("Save"),
+            )
+          ],
+        );
+      },
+    );
+    if (!context.mounted) return;
+    context.read<LibraryProvider>().renamePlaylist(playlist, name: name);
+    Navigator.pop(context);
   }
 }
