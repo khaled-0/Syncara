@@ -41,19 +41,19 @@ dependencies:
 
   # Data Management
   provider: ^6.1.4
-  objectbox: ^4.1.0
-  objectbox_flutter_libs: ^4.1.0
-  copy_with_extension: ^6.0.0
+  objectbox: ^4.2.0
+  objectbox_flutter_libs: ^4.2.0
+  copy_with_extension: ^6.0.1
 
   # Audio Player / Service
   just_audio: ^0.9.46
-  just_audio_media_kit: ^2.0.6
+  just_audio_media_kit: ^2.1.0
   media_kit_libs_ios_audio: ^1.1.4
   media_kit_libs_linux: ^1.2.1
   media_kit_libs_windows_audio: ^1.0.9
   media_kit_libs_macos_audio: ^1.1.4
   media_kit_native_event_loop: ^1.0.9
-  audio_service: ^0.18.17
+  audio_service: ^0.18.18
   audio_service_mpris: ^0.2.0
 
   # Visuals
@@ -68,7 +68,7 @@ dependencies:
   path_provider: ^2.1.5
   url_launcher: ^6.3.1
   permission_handler: ^11.4.0
-  html: ^0.15.5
+  html: ^0.15.5+1
 
   # Extras
   flutter_markdown: ^0.7.7
@@ -81,10 +81,10 @@ dev_dependencies:
     sdk: flutter
 
   build_runner: ^2.4.15
-  objectbox_generator: ^4.1.0
+  objectbox_generator: ^4.2.0
   flutter_launcher_icons: ^0.14.3
   msix: ^3.16.8
-  copy_with_extension_gen: ^6.0.0
+  copy_with_extension_gen: ^6.0.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
