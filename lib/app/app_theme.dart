@@ -60,7 +60,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
         ),
       ),
-      cardTheme: const CardTheme(
+      cardTheme: const CardThemeData(
         margin: EdgeInsets.all(8),
         clipBehavior: Clip.antiAlias,
       ),

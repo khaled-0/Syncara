@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:listen_sharing_intent/listen_sharing_intent.dart';
 import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/library/import_playlist_dialog.dart';
 import 'package:syncara/app/library/library_tab.dart';
