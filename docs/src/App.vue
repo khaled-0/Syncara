@@ -69,7 +69,7 @@ if (bigScreen) {
             <h2 class="text-md lg:text-lg text-[var(--md-sys-color-on-surface-variant)] text-pretty mb-1">
               v0.1.7
             </h2>
-            <p class="text-xl text-pretty text-center lg:text-start">
+            <p class="text-xl text-pretty text-center lg:text-start px-8 xl:px-0">
               Carry your playlists everywhere, even when offline
             </p>
 
