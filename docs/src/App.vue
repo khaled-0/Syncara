@@ -67,9 +67,9 @@ if (bigScreen) {
             <img src="/logo.svg" alt="Syncara logo" class="h-24 w-24 lg:h-32 lg:w-32 mb-2" />
             <h1 class="title text-3xl font-semibold">Syncara</h1>
             <h2 class="text-md lg:text-lg text-[var(--md-sys-color-on-surface-variant)] text-pretty mb-1">
-              v0.1.7
+              v0.1.8
             </h2>
-            <p class="text-xl text-pretty text-center lg:text-start px-8 xl:px-0">
+            <p class="text-xl text-pretty text-center lg:text-start px-6 lg:px-0">
               Carry your playlists everywhere, even when offline
             </p>
 
@@ -80,7 +80,7 @@ if (bigScreen) {
             </div>
           </div>
           <img fetchpriority="high" src='/1.jpg'
-            alt="Syncara screenshot" class="w-[60vw] lg:w-fit lg:h-[40vw] rounded-3xl" />
+            alt="Syncara screenshot" class="rounded-3xl h-[80svh]" />
         </div>
       </section>
 
@@ -280,10 +280,6 @@ if (bigScreen) {
             <img src='https://raw.githubusercontent.com/khaled-0/Syncara/main/docs/badges/openapk-badge.png'
               alt="OpenAPK" class="h-16" />
           </a>
-          <a href="https://www.androidfreeware.net/download-syncara-apk.html">
-            <img src='https://raw.githubusercontent.com/khaled-0/Syncara/main/docs/badges/android-freeware.png'
-              alt="Android Freeware" class="h-16" />
-          </a>
         </div>
 
         <h2 class="text-xl text-pretty font-medium mb-2 decoration-inherit underline underline-offset-4">
@@ -292,7 +288,7 @@ if (bigScreen) {
 
         <div class="flex gap-6 justify-center items-center content-center">
           <a href="https://flathub.org/apps/io.github.khaled_0.TubeSync">
-            <img src="https://raw.githubusercontent.com/khaled-0/Syncara/main/docs/badges/flathub.png" alt="Flathub"
+            <img src='https://raw.githubusercontent.com/khaled-0/Syncara/main/docs/badges/flathub.png' alt="Flathub"
               class="h-16" />
           </a>
         </div>
