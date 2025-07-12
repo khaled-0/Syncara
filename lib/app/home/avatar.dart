@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:syncara/app/auth/cookie_library.dart';
 
 class Avatar extends StatelessWidget {
   final double radius;
@@ -11,7 +12,7 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: onTap ?? () => showCookiePopup(context),
       borderRadius: BorderRadius.circular(radius),
       child: CircleAvatar(
         radius: radius,
@@ -32,5 +33,9 @@ class Avatar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showCookiePopup(BuildContext context) {
+    showDialog(context: context, builder: (context) => const CookieLibrary());
   }
 }

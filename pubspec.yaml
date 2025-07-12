@@ -44,6 +44,7 @@ dependencies:
 
   # Data Management
   provider: ^6.1.5
+  get_it: ^7.7.0
   objectbox: ^4.3.0
   objectbox_flutter_libs: ^4.3.0
   copy_with_extension: ^6.0.1

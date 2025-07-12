@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:syncara/clients/media_client.dart';
+import 'package:syncara/clients/yt_media_client.dart';
 import 'package:syncara/model/media.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/playlist.dart';
@@ -8,7 +9,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class PlaylistProvider extends ChangeNotifier {
   final Store store;
-  final _ytClient = yt.YoutubeExplode().playlists;
+  final _ytClient = YTMediaClient.client.playlists;
   final Playlist playlist;
   final List<Media> medias = List.empty(growable: true);
 
@@ -31,14 +32,11 @@ class PlaylistProvider extends ChangeNotifier {
         return;
       }
 
-      final vids = await compute(
-        (data) async {
-          final ytClient = data[0] as yt.PlaylistClient;
-          final videos = await ytClient.getVideos(data[1]).toList();
-          return videos.map(Media.fromYTVideo);
-        },
-        [_ytClient, playlist.id],
-      );
+      final vids = await compute((data) async {
+        final ytClient = data[0] as yt.PlaylistClient;
+        final videos = await ytClient.getVideos(data[1]).toList();
+        return videos.map(Media.fromYTVideo);
+      }, [_ytClient, playlist.id]);
 
       medias.clear();
       medias.addAll(vids);

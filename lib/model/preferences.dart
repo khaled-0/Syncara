@@ -22,6 +22,9 @@ enum Preference<T> {
   playerBottomAppBar<bool>(true),
   // Downloader
   maxParallelDownload<int>(3),
+  // Clients
+  cookies<String>(""),
+
   // Others
   inAppUpdate<bool>(true);
 

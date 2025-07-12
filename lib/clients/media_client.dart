@@ -42,9 +42,8 @@ class MediaClient implements BaseMediaClient {
 
   File mediaFile(Media media) => File(path.join(downloadsDir, media.id));
 
-  File thumbnailFile(String url) => File(
-        path.join(thumbnailsDir, url.hashCode.toString()),
-      );
+  File thumbnailFile(String url) =>
+      File(path.join(thumbnailsDir, url.hashCode.toString()));
 
   bool isDownloaded(Media media) => mediaFile(media).existsSync();
 

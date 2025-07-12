@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:syncara/clients/yt_media_client.dart';
 import 'package:syncara/provider/library_provider.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class ImportPlaylistDialog extends StatefulWidget {
   const ImportPlaylistDialog({super.key, this.url});
@@ -13,7 +13,7 @@ class ImportPlaylistDialog extends StatefulWidget {
 }
 
 class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
-  final ytClient = YoutubeExplode().playlists;
+  final ytClient = YTMediaClient.client.playlists;
   final TextEditingController input = TextEditingController();
   bool loading = false;
   String? error;

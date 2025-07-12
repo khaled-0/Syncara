@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:html/parser.dart';
+import 'package:syncara/clients/yt_media_client.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/playlist.dart';
 import 'package:syncara/provider/playlist_provider.dart';
@@ -9,7 +10,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 // TODO: Refactor to use yt_media_client
 class LibraryProvider extends ChangeNotifier {
   final Store store;
-  final _ytClient = yt.YoutubeExplode().playlists;
+  final _ytClient = YTMediaClient.client.playlists;
   final List<Playlist> entries = List.empty(growable: true);
 
   LibraryProvider(this.store) {
@@ -42,13 +43,10 @@ class LibraryProvider extends ChangeNotifier {
     if (!await DownloaderService.hasInternet) return;
     for (final (index, playlist) in entries.indexed) {
       try {
-        final updatedPlaylist = await compute(
-          (ytClient) async {
-            final pl = await ytClient.get(playlist.id);
-            return await _playlistWithThumbnail(Playlist.fromYTPlaylist(pl));
-          },
-          _ytClient,
-        );
+        final updatedPlaylist = await compute((ytClient) async {
+          final pl = await ytClient.get(playlist.id);
+          return await _playlistWithThumbnail(Playlist.fromYTPlaylist(pl));
+        }, _ytClient);
 
         entries[index] = updatedPlaylist.copyWith(
           videoIds: entries[index].videoIds, // Pass previously cached videoIds
@@ -73,9 +71,7 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   // Parse html page to retrieve custom thumbnails
-  static Future<Playlist> _playlistWithThumbnail(
-    Playlist playlist,
-  ) async {
+  static Future<Playlist> _playlistWithThumbnail(Playlist playlist) async {
     try {
       final response = await yt.YoutubeHttpClient().getString(
         playlist.externalURL,
