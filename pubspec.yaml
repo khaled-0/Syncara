@@ -38,9 +38,9 @@ dependencies:
       url: https://github.com/khaled-0/youtube_explode_dart.git
       ref: merge
 
-  background_downloader: ^9.2.2
+  background_downloader: ^9.2.3
   internet_connection_checker_plus: ^2.7.2
-  http: ^1.4.0
+  http: ^1.5.0
 
   # Data Management
   provider: ^6.1.5
@@ -60,8 +60,8 @@ dependencies:
   audio_service_mpris: ^0.2.0
 
   # Visuals
-  dynamic_color: ^1.7.0
-  window_manager: ^0.5.0
+  dynamic_color: ^1.8.1
+  window_manager: ^0.5.1
   network_to_file_image: ^7.0.0
   flutter_lyric: ^2.0.4+6
   loop_page_view: ^1.2.5
@@ -69,13 +69,13 @@ dependencies:
   # Common Utils
   path: ^1.9.1
   path_provider: ^2.1.5
-  url_launcher: ^6.3.1
-  permission_handler: ^12.0.0+1
+  url_launcher: ^6.3.2
+  permission_handler: ^12.0.1
   html: ^0.15.6
 
   # Extras
   flutter_markdown: ^0.7.7+1 # TODO: markdown_widget or flutter_markdown_plus
-  package_info_plus: ^8.3.0
+  package_info_plus: ^8.3.1
   webview_flutter: ^4.13.0
   listen_sharing_intent: ^1.9.2
 
@@ -83,10 +83,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^2.4.15
+  build_runner: ^2.5.4
   objectbox_generator: ^4.3.0
-  flutter_launcher_icons: ^0.14.3
-  msix: ^3.16.9
+  flutter_launcher_icons: ^0.14.4
+  msix: ^3.16.12
   copy_with_extension_gen: ^6.0.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
