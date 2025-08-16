@@ -36,7 +36,7 @@ class ActionButtons extends StatelessWidget {
 
   static Widget rewindButton(BuildContext context) {
     return IconButton(
-      onPressed: context.read<PlayerProvider>().seekBackwards,
+      onPressed: context.read<PlayerProvider>().seekBackward,
       icon: const Icon(Icons.replay_10_rounded),
     );
   }

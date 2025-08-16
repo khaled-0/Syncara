@@ -207,7 +207,7 @@ class MiniPlayerSheet extends StatelessWidget {
         );
       case MiniPlayerExtraAction.SeekBackward:
         return IconButton(
-          onPressed: context.read<PlayerProvider>().seekBackwards,
+          onPressed: context.read<PlayerProvider>().seekBackward,
           icon: const Icon(Icons.replay_10_rounded),
         );
       case MiniPlayerExtraAction.None:

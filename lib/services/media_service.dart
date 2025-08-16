@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/material.dart';
 import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:syncara/model/common.dart';
@@ -45,10 +46,12 @@ class MediaService extends BaseAudioHandler {
     if (_playerProvider != playerProvider) return;
 
     _playerProvider = null;
-    playbackState.add(playbackState.value.copyWith(
-      playing: false,
-      processingState: AudioProcessingState.idle,
-    ));
+    playbackState.add(
+      playbackState.value.copyWith(
+        playing: false,
+        processingState: AudioProcessingState.idle,
+      ),
+    );
   }
 
   void enqueue(PlaylistProvider playlist) => _playerProvider?.enqueue(playlist);
@@ -61,20 +64,34 @@ class MediaService extends BaseAudioHandler {
   @override
   Future<void> pause() async => _playerProvider?.player.pause();
 
+  Future<void> togglePlayPause() async {
+    if (_playerProvider?.player.playing == true) {
+      return _playerProvider?.player.pause();
+    } else {
+      return _playerProvider?.player.play();
+    }
+  }
+
+  @override
+  Future<void> seekBackward(_) async => _playerProvider?.seekBackward();
+
+  @override
+  Future<void> seekForward(_) async => _playerProvider?.seekForward();
+
   @override
   Future<void> stop() async {
     final action = _store.box<Preferences>().value<int>(
-          Preference.notifCloseButtonAction,
-        );
+      Preference.notifCloseButtonAction,
+    );
 
     return switch (NotificationCloseButton.values[action]) {
       (NotificationCloseButton.Close || NotificationCloseButton.None) =>
         _playerProvider?.player.stop(),
       NotificationCloseButton.Shuffle => _playerProvider?.shuffle(
-          preserveCurrentIndex: false,
-        ),
+        preserveCurrentIndex: false,
+      ),
       NotificationCloseButton.SeekForward => _playerProvider?.seekForward(),
-      NotificationCloseButton.SeekBackward => _playerProvider?.seekBackwards(),
+      NotificationCloseButton.SeekBackward => _playerProvider?.seekBackward(),
     };
   }
 
@@ -100,5 +117,31 @@ class MediaService extends BaseAudioHandler {
         _playerProvider?.toggleLoopMode();
         break;
     }
+  }
+}
+
+abstract class MediaIntent extends Intent {}
+
+class PlayPauseIntent extends MediaIntent {}
+
+class SeekBackIntent extends MediaIntent {}
+
+class SeekForwardIntent extends MediaIntent {}
+
+class PreviousMediaIntent extends MediaIntent {}
+
+class NextMediaIntent extends MediaIntent {}
+
+class PlaybackAction<T extends MediaIntent> extends Action {
+  @override
+  Object? invoke(Intent intent) {
+    return switch (T) {
+      const (PlayPauseIntent) => MediaService().togglePlayPause(),
+      const (SeekBackIntent) => MediaService().seekBackward(false),
+      const (SeekForwardIntent) => MediaService().seekForward(false),
+      const (PreviousMediaIntent) => MediaService().skipToPrevious(),
+      const (NextMediaIntent) => MediaService().skipToNext(),
+      _ => throw UnimplementedError(),
+    };
   }
 }

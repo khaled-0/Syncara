@@ -11,6 +11,15 @@ Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 - Fluid gesture navigations
 - Lyrics support
 - Cross Platform (Android, IOS, MacOS, Linux and Windows)
+- Keyboard Shortcuts
+
+| **Shortcut** | **Action**     | **Hint**         |
+|--------------|----------------|------------------|
+| ⬅️ **J**     | Seek Back      | Go back in media |
+| ▶️ **K**     | Play/Pause     | Toggle playback  |
+| ➡️ **L**     | Seek Forward   | Skip forward     |
+| ⏮️ **P**     | Previous Media | Previous track   |
+| ⏭️ **N**     | Next Media     | Next track       |
 
 ## Look & Feel
 
@@ -39,7 +48,8 @@ Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 
 ## Download
 
-Syncara for all platform are primarily released on Github. **Tap on your device icon to directly download.**
+Syncara for all platform are primarily released on Github. **Tap on your device icon to directly
+download.**
 
  <p align="center">
    <a href="https://github.com/khaled-0/Syncara/releases/latest/download/app-release.apk">
@@ -82,11 +92,13 @@ Syncara for all platform are primarily released on Github. **Tap on your device 
 
 ### iOS and MacOS
 
-**IOS:** Unsigned (.ipa) builds are available. [Download (IOS) from here](https://github.com/khaled-0/Syncara/releases/latest/download/syncara_ios_unsigned.ipa). <br>
+**IOS:** Unsigned (.ipa) builds are
+available. [Download (IOS) from here](https://github.com/khaled-0/Syncara/releases/latest/download/syncara_ios_unsigned.ipa). <br>
 **Note:** Use [Sideloadly](https://sideloadly.io/) to install it.
 Here's a [Video tutorial by @ilyassesalama](https://www.youtube.com/watch?v=r91iJ6KRcUs)
 
-**MacOS**: Available directly as app (.app) [Download (MacOS) from here](https://github.com/khaled-0/Syncara/releases/latest/download/syncara_macos.zip)
+**MacOS**: Available directly as app (
+.app) [Download (MacOS) from here](https://github.com/khaled-0/Syncara/releases/latest/download/syncara_macos.zip)
 
 <br /> 
 Alternatively, you can try the nightly (unstable) build:
@@ -97,7 +109,8 @@ Alternatively, you can try the nightly (unstable) build:
 ## Special Thanks
 
 - [@ilyassesalama](https://github.com/ilyassesalama) - For providing https://syncara.app
-- [@PranavPurwar](https://github.com/PranavPurwar) - For building the homepage at https://syncara.app
+- [@PranavPurwar](https://github.com/PranavPurwar) - For building the homepage
+  at https://syncara.app
 - To all the open source devs for their wonderful libraries.
 - And to the peoples involved with this project in various ways
 

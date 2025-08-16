@@ -351,7 +351,7 @@ class PlayerProvider extends ChangeNotifier {
     player.seek(position.clampMax(nowPlaying.value.duration!));
   }
 
-  void seekBackwards() {
+  void seekBackward() {
     final position = player.position - const Duration(seconds: 10);
     player.seek(position.clampMin(Duration.zero));
   }
