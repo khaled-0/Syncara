@@ -28,6 +28,7 @@ void main() async {
   // DB Initialization
   final objectDB = await openStore(
     directory: (await getApplicationSupportDirectory()).path,
+    macosApplicationGroup: "syncara.app",
   );
 
   AppTheme.configNotifier.value = ThemeConfig(
