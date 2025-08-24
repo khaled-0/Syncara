@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/home/avatar.dart';
+import 'package:syncara/extensions.dart';
 import 'package:window_manager/window_manager.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -25,7 +26,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         titleSpacing: 0,
-        title: const Text("Syncara"),
+        title: Text(context.l.appName),
         actions: [
           if (!AppTheme.isDesktop) ...{
             const Avatar(),
@@ -42,7 +43,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               icon: const Icon(Icons.close_rounded),
             ),
             const SizedBox(width: 12),
-          }
+          },
         ],
       ),
     );

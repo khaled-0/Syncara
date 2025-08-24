@@ -1,5 +1,9 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:syncara/l10n/app_localizations.dart';
+import 'package:syncara/l10n/app_localizations_en.dart';
+
 extension DurationExtensions on Duration? {
   String formatHHMM() {
     if (this == null) return "??:??";
@@ -51,4 +55,8 @@ extension NumberExtensions on num {
   double toPrecision(int precision) {
     return double.parse((this).toStringAsFixed(precision));
   }
+}
+
+extension LocalizationHelper on BuildContext {
+  AppLocalizations get l => AppLocalizations.of(this) ?? AppLocalizationsEn();
 }

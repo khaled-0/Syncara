@@ -15,6 +15,8 @@ import 'package:syncara/services/downloader_service.dart';
 import 'package:syncara/services/media_service.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'l10n/app_localizations.dart';
+
 final rootNavigator = GlobalKey<NavigatorState>();
 
 void main() async {
@@ -52,6 +54,8 @@ void main() async {
       darkTheme: dark,
       scrollBehavior: AppTheme.scrollBehavior,
       home: home,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       shortcuts: {
         ...WidgetsApp.defaultShortcuts,
         LogicalKeySet(LogicalKeyboardKey.keyJ): SeekBackIntent(),

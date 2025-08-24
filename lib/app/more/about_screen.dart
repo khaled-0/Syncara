@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:package_info_plus/package_info_plus.dart";
 import "package:syncara/clients/in_app_update_client.dart";
+import "package:syncara/extensions.dart";
 import "package:url_launcher/url_launcher_string.dart";
 
 class AboutScreen extends StatelessWidget {
@@ -36,7 +37,7 @@ class AboutScreen extends StatelessWidget {
                     spacing: 12,
                     children: [
                       Text(
-                        "Syncara",
+                        context.l.appName,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Text(
@@ -80,7 +81,7 @@ class AboutScreen extends StatelessWidget {
                         label: const Text("Khaled"),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             );
