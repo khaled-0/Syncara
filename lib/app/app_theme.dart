@@ -11,10 +11,7 @@ class ThemeConfig {
 
   ThemeConfig({this.dynamicColors = true, this.pitchBlack = false});
 
-  ThemeConfig copyWith({
-    bool? dynamicColors,
-    bool? pitchBlack,
-  }) {
+  ThemeConfig copyWith({bool? dynamicColors, bool? pitchBlack}) {
     return ThemeConfig(
       dynamicColors: dynamicColors ?? this.dynamicColors,
       pitchBlack: pitchBlack ?? this.pitchBlack,
@@ -37,11 +34,12 @@ class AppTheme {
   ThemeData get dark => _themeBuilder(Brightness.dark);
 
   ThemeData _themeBuilder(Brightness brightness) {
-    var theme = _scheme != null
-        ? _properDynamicColors(_scheme, brightness)
-        : ColorScheme.fromSeed(seedColor: _color, brightness: brightness);
+    var theme =
+        _scheme != null
+            ? _properDynamicColors(_scheme, brightness)
+            : ColorScheme.fromSeed(seedColor: _color, brightness: brightness);
 
-    if (configNotifier.value.pitchBlack) {
+    if (configNotifier.value.pitchBlack && brightness == Brightness.dark) {
       theme = theme.copyWith(
         surface: Colors.black,
         surfaceContainer: Colors.black,
@@ -56,9 +54,7 @@ class AppTheme {
         behavior: SnackBarBehavior.floating,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
       cardTheme: const CardThemeData(
         margin: EdgeInsets.all(8),
@@ -68,9 +64,7 @@ class AppTheme {
         thumbShape: LineThumbShape(),
         trackHeight: 8,
       ),
-      appBarTheme: AppBarTheme(
-        systemOverlayStyle: systemOverlayStyle(theme),
-      ),
+      appBarTheme: AppBarTheme(systemOverlayStyle: systemOverlayStyle(theme)),
       pageTransitionsTheme: PageTransitionsTheme(
         builders: {
           for (final platform in TargetPlatform.values)
@@ -108,10 +102,7 @@ class AppTheme {
     return Platform.isLinux || Platform.isWindows || Platform.isMacOS;
   }
 
-  ColorScheme _properDynamicColors(
-    ColorScheme scheme,
-    Brightness brightness,
-  ) {
+  ColorScheme _properDynamicColors(ColorScheme scheme, Brightness brightness) {
     final base = ColorScheme.fromSeed(
       seedColor: scheme.primary,
       brightness: brightness,
@@ -122,30 +113,29 @@ class AppTheme {
   }
 
   List<Color> _extractAdditionalColours(ColorScheme scheme) => [
-        scheme.surface,
-        scheme.surfaceDim,
-        scheme.surfaceBright,
-        scheme.surfaceContainerLowest,
-        scheme.surfaceContainerLow,
-        scheme.surfaceContainer,
-        scheme.surfaceContainerHigh,
-        scheme.surfaceContainerHighest,
-      ];
+    scheme.surface,
+    scheme.surfaceDim,
+    scheme.surfaceBright,
+    scheme.surfaceContainerLowest,
+    scheme.surfaceContainerLow,
+    scheme.surfaceContainer,
+    scheme.surfaceContainerHigh,
+    scheme.surfaceContainerHighest,
+  ];
 
   ColorScheme _insertAdditionalColours(
     ColorScheme scheme,
     List<Color> additionalColours,
-  ) =>
-      scheme.copyWith(
-        surface: additionalColours[0],
-        surfaceDim: additionalColours[1],
-        surfaceBright: additionalColours[2],
-        surfaceContainerLowest: additionalColours[3],
-        surfaceContainerLow: additionalColours[4],
-        surfaceContainer: additionalColours[5],
-        surfaceContainerHigh: additionalColours[6],
-        surfaceContainerHighest: additionalColours[7],
-      );
+  ) => scheme.copyWith(
+    surface: additionalColours[0],
+    surfaceDim: additionalColours[1],
+    surfaceBright: additionalColours[2],
+    surfaceContainerLowest: additionalColours[3],
+    surfaceContainerLow: additionalColours[4],
+    surfaceContainer: additionalColours[5],
+    surfaceContainerHigh: additionalColours[6],
+    surfaceContainerHighest: additionalColours[7],
+  );
 
   static ThemeConfig get config => AppTheme.configNotifier.value;
 
@@ -159,9 +149,7 @@ class LineThumbShape extends SliderComponentShape {
   /// The size of the thumb
   final Size thumbSize;
 
-  const LineThumbShape({
-    this.thumbSize = const Size(6, 36),
-  });
+  const LineThumbShape({this.thumbSize = const Size(6, 36)});
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
