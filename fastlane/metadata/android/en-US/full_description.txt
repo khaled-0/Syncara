@@ -1,0 +1,1 @@
+<p><i>Syncara</i> lets you sync YouTube playlists offline. It features a.o. offline downloads, background playback, and fluid gesture navigations. The app follows modern material-3 interface design guidelines, and an adaptive and responsive layout.</p>
