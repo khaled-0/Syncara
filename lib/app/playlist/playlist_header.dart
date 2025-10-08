@@ -36,13 +36,8 @@ class PlaylistHeader extends StatelessWidget {
                     child: Image(
                       height: AppTheme.isDesktop ? 240 : 120,
                       width: double.maxFinite,
-                      errorBuilder: (_, __, ___) => const SizedBox(height: 120),
-                      image: NetworkToFileImage(
-                        url: playlist(context).thumbnailMax,
-                        file: MediaClient().thumbnailFile(
-                          playlist(context).thumbnailMax.split("?")[0],
-                        ),
-                      ),
+                      errorBuilder: (_, _, _) => const SizedBox(height: 120),
+                      image: thumb(context),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -79,7 +74,7 @@ class PlaylistHeader extends StatelessWidget {
                           onPressed: () => showDescription(context),
                           icon: const Icon(Icons.menu_open_rounded),
                         ),
-                      )
+                      ),
                   },
                 ],
               ),
@@ -129,16 +124,18 @@ class PlaylistHeader extends StatelessWidget {
 
   Widget menuButton(BuildContext context) {
     return IconButton.filledTonal(
-      onPressed: () => showModalBottomSheet(
-        context: context,
-        useSafeArea: true,
-        useRootNavigator: true,
-        backgroundColor: Colors.transparent,
-        builder: (_) => ChangeNotifierProvider.value(
-          value: context.read<PlaylistProvider>(),
-          child: const PlaylistMenuSheet(),
-        ),
-      ),
+      onPressed:
+          () => showModalBottomSheet(
+            context: context,
+            useSafeArea: true,
+            useRootNavigator: true,
+            backgroundColor: Colors.transparent,
+            builder:
+                (_) => ChangeNotifierProvider.value(
+                  value: context.read<PlaylistProvider>(),
+                  child: const PlaylistMenuSheet(),
+                ),
+          ),
       icon: const Icon(Icons.more_horiz_rounded),
     );
   }
@@ -181,12 +178,12 @@ class PlaylistHeader extends StatelessWidget {
 
   Widget playlistInfo(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.titleLarge?.copyWith(
-          color: AppTheme.isDesktop ? null : Colors.white,
-        );
+      color: AppTheme.isDesktop ? null : Colors.white,
+    );
 
     final bodyStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: AppTheme.isDesktop ? null : Colors.white,
-        );
+      color: AppTheme.isDesktop ? null : Colors.white,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,21 +202,35 @@ class PlaylistHeader extends StatelessWidget {
   void showDescription(BuildContext context) {
     showDialog(
       context: context,
-      builder: (c) => AlertDialog(
-        title: Text(playlist(context).getTitle),
-        content: SingleChildScrollView(
-          child: Text(playlist(context).description!),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(c),
-            child: const Text("Dismiss"),
-          )
-        ],
-      ),
+      builder:
+          (c) => AlertDialog(
+            title: Text(playlist(context).getTitle),
+            content: SingleChildScrollView(
+              child: Text(playlist(context).description!),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(c),
+                child: const Text("Dismiss"),
+              ),
+            ],
+          ),
     );
   }
 
   Playlist playlist(BuildContext context) =>
       context.read<PlaylistProvider>().playlist;
+
+  ImageProvider thumb(BuildContext context) {
+    if (playlist(context).isLocal) {
+      return FileImage(playlist(context).localThumb);
+    }
+
+    return NetworkToFileImage(
+      url: playlist(context).thumbnailMax,
+      file: MediaClient().thumbnailFile(
+        playlist(context).thumbnailMax.split("?")[0],
+      ),
+    );
+  }
 }

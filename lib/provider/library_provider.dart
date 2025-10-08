@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:html/parser.dart';
+import 'package:syncara/extensions.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/playlist.dart';
 import 'package:syncara/provider/playlist_provider.dart';
@@ -39,8 +42,19 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   Future<void> refresh() async {
-    if (!await DownloaderService.hasInternet) return;
+    final internet = await DownloaderService.hasInternet;
     for (final (index, playlist) in entries.indexed) {
+      if (playlist.isLocal) {
+        entries[index] = entries[index].copyWith(
+          title: playlist.localDir.filename,
+          videoCount: playlist.localDir.listSync().length,
+        );
+        notifyListeners();
+        continue;
+      }
+
+      if (!internet) continue;
+
       try {
         final updatedPlaylist = await compute(
           (ytClient) async {
@@ -54,6 +68,7 @@ class LibraryProvider extends ChangeNotifier {
           videoIds: entries[index].videoIds, // Pass previously cached videoIds
           customTitle: entries[index].customTitle, // User defined title
         );
+        notifyListeners();
       } catch (_) {
         // TODO Error
       }
@@ -103,6 +118,23 @@ class LibraryProvider extends ChangeNotifier {
     }
 
     store.box<Playlist>().putMany(entries);
+    notifyListeners();
+  }
+
+  Future<void> importLocalPlaylist(Directory path) async {
+    entries.add(
+      Playlist(
+        id: path.hashCode.toString(),
+        title: path.path.split(Platform.pathSeparator).last.toCapitalCase(),
+        author: "Local",
+        thumbnailStd: "",
+        thumbnailMax: "",
+        videoCount: path.listSync().length,
+        videoIds: [],
+        localPath: path.path,
+      ),
+    );
+    store.box<Playlist>().put(entries.last);
     notifyListeners();
   }
 

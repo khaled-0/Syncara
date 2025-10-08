@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/model/media.dart';
@@ -13,9 +16,9 @@ class PlaylistProvider extends ChangeNotifier {
   final List<Media> medias = List.empty(growable: true);
 
   PlaylistProvider(this.store, this.playlist, {bool sync = true}) {
+    final box = store.box<Media>();
     for (final id in playlist.videoIds) {
-      final media =
-          store.box<Media>().query(Media_.id.equals(id)).build().findFirst();
+      final media = box.query(Media_.id.equals(id)).build().findFirst();
       if (media != null) medias.add(media);
     }
     updateDownloadStatus();
@@ -25,6 +28,23 @@ class PlaylistProvider extends ChangeNotifier {
 
   Future<void> refresh() async {
     try {
+      if (playlist.isLocal) {
+        final files = playlist.localDir.listSync();
+        final musics = files.map<Media?>((e) {
+          try {
+            final data = readMetadata(File(e.path));
+            return Media.fromAudioMetadata(data);
+          } catch (_) {
+            return null;
+          }
+        });
+
+        medias.clear();
+        medias.addAll(musics.nonNulls);
+        notifyListeners();
+        return;
+      }
+
       if (!await DownloaderService.hasInternet) {
         updateDownloadStatus();
         notifyListeners();
@@ -58,6 +78,8 @@ class PlaylistProvider extends ChangeNotifier {
   }
 
   void updateDownloadStatus({Media? media}) {
+    if (playlist.isLocal) return;
+
     if (media != null) {
       media.downloaded = MediaClient().isDownloaded(media);
       return;

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/library/library_menu_sheet.dart';
-import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/playlist.dart';
 import 'package:syncara/provider/library_provider.dart';
+
+import '../../clients/media_client.dart';
 
 class LibraryEntryBuilder extends StatelessWidget {
   final Playlist playlist;
@@ -31,13 +32,14 @@ class LibraryEntryBuilder extends StatelessWidget {
             child: Image(
               width: 80,
               height: double.maxFinite,
-              errorBuilder: (_, __, ___) => SizedBox(
-                width: 80,
-                height: double.maxFinite,
-                child: ColoredBox(
-                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                ),
-              ),
+              errorBuilder:
+                  (_, _, _) => SizedBox(
+                    width: 80,
+                    height: double.maxFinite,
+                    child: ColoredBox(
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    ),
+                  ),
               frameBuilder: (context, child, frame, synchronous) {
                 if (synchronous) return child;
                 return AnimatedOpacity(
@@ -46,12 +48,7 @@ class LibraryEntryBuilder extends StatelessWidget {
                   child: child,
                 );
               },
-              image: NetworkToFileImage(
-                url: playlist.thumbnailStd,
-                file: MediaClient().thumbnailFile(
-                  playlist.thumbnailStd,
-                ),
-              ),
+              image: thumb,
               fit: BoxFit.cover,
             ),
           ),
@@ -66,18 +63,31 @@ class LibraryEntryBuilder extends StatelessWidget {
           "${playlist.author} \u2022 ${playlist.videoCount} videos",
         ),
         trailing: IconButton(
-          onPressed: () => showModalBottomSheet(
-            context: context,
-            useSafeArea: true,
-            useRootNavigator: true,
-            backgroundColor: Colors.transparent,
-            builder: (_) => ChangeNotifierProvider.value(
-              value: context.read<LibraryProvider>(),
-              child: LibraryMenuSheet(context.read<Store>(), playlist),
-            ),
-          ),
+          onPressed:
+              () => showModalBottomSheet(
+                context: context,
+                useSafeArea: true,
+                useRootNavigator: true,
+                backgroundColor: Colors.transparent,
+                builder:
+                    (_) => ChangeNotifierProvider.value(
+                      value: context.read<LibraryProvider>(),
+                      child: LibraryMenuSheet(context.read<Store>(), playlist),
+                    ),
+              ),
           icon: const Icon(Icons.more_vert_rounded, size: 18),
         ),
+      ),
+    );
+  }
+
+  ImageProvider get thumb {
+    if (playlist.isLocal) return FileImage(playlist.localThumb);
+
+    return NetworkToFileImage(
+      url: playlist.thumbnailStd,
+      file: MediaClient().thumbnailFile(
+        playlist.thumbnailStd,
       ),
     );
   }

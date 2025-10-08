@@ -42,9 +42,10 @@ class MediaClient implements BaseMediaClient {
 
   File mediaFile(Media media) => File(path.join(downloadsDir, media.id));
 
-  File thumbnailFile(String url) => File(
-        path.join(thumbnailsDir, url.hashCode.toString()),
-      );
+  File thumbnailFile(String url) {
+    if (!url.startsWith("http")) return File(url);
+    return File(path.join(thumbnailsDir, url.hashCode.toString()));
+  }
 
   bool isDownloaded(Media media) => mediaFile(media).existsSync();
 
@@ -55,6 +56,10 @@ class MediaClient implements BaseMediaClient {
 
   @override
   Future<AudioSource> getMediaSource(Media media) async {
+    if (media.localPath != null) {
+      return AudioSource.file(media.localPath!);
+    }
+
     // Try from offline
     final downloaded = mediaFile(media);
     if (downloaded.existsSync()) return AudioSource.file(downloaded.path);

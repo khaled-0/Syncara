@@ -25,6 +25,8 @@ abstract class _$PlaylistCWProxy {
 
   Playlist customTitle(String? customTitle);
 
+  Playlist localPath(String? localPath);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Playlist(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -41,6 +43,7 @@ abstract class _$PlaylistCWProxy {
     String? description,
     List<String> videoIds,
     String? customTitle,
+    String? localPath,
   });
 }
 
@@ -80,7 +83,9 @@ class _$PlaylistCWProxyImpl implements _$PlaylistCWProxy {
   Playlist customTitle(String? customTitle) => this(customTitle: customTitle);
 
   @override
+  Playlist localPath(String? localPath) => this(localPath: localPath);
 
+  @override
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Playlist(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -97,44 +102,59 @@ class _$PlaylistCWProxyImpl implements _$PlaylistCWProxy {
     Object? description = const $CopyWithPlaceholder(),
     Object? videoIds = const $CopyWithPlaceholder(),
     Object? customTitle = const $CopyWithPlaceholder(),
+    Object? localPath = const $CopyWithPlaceholder(),
   }) {
     return Playlist(
-      id: id == const $CopyWithPlaceholder()
-          ? _value.id
-          // ignore: cast_nullable_to_non_nullable
-          : id as String,
-      title: title == const $CopyWithPlaceholder()
-          ? _value.title
-          // ignore: cast_nullable_to_non_nullable
-          : title as String,
-      author: author == const $CopyWithPlaceholder()
-          ? _value.author
-          // ignore: cast_nullable_to_non_nullable
-          : author as String,
-      thumbnailStd: thumbnailStd == const $CopyWithPlaceholder()
-          ? _value.thumbnailStd
-          // ignore: cast_nullable_to_non_nullable
-          : thumbnailStd as String,
-      thumbnailMax: thumbnailMax == const $CopyWithPlaceholder()
-          ? _value.thumbnailMax
-          // ignore: cast_nullable_to_non_nullable
-          : thumbnailMax as String,
-      videoCount: videoCount == const $CopyWithPlaceholder()
-          ? _value.videoCount
-          // ignore: cast_nullable_to_non_nullable
-          : videoCount as int,
-      description: description == const $CopyWithPlaceholder()
-          ? _value.description
-          // ignore: cast_nullable_to_non_nullable
-          : description as String?,
-      videoIds: videoIds == const $CopyWithPlaceholder()
-          ? _value.videoIds
-          // ignore: cast_nullable_to_non_nullable
-          : videoIds as List<String>,
-      customTitle: customTitle == const $CopyWithPlaceholder()
-          ? _value.customTitle
-          // ignore: cast_nullable_to_non_nullable
-          : customTitle as String?,
+      id:
+          id == const $CopyWithPlaceholder()
+              ? _value.id
+              // ignore: cast_nullable_to_non_nullable
+              : id as String,
+      title:
+          title == const $CopyWithPlaceholder()
+              ? _value.title
+              // ignore: cast_nullable_to_non_nullable
+              : title as String,
+      author:
+          author == const $CopyWithPlaceholder()
+              ? _value.author
+              // ignore: cast_nullable_to_non_nullable
+              : author as String,
+      thumbnailStd:
+          thumbnailStd == const $CopyWithPlaceholder()
+              ? _value.thumbnailStd
+              // ignore: cast_nullable_to_non_nullable
+              : thumbnailStd as String,
+      thumbnailMax:
+          thumbnailMax == const $CopyWithPlaceholder()
+              ? _value.thumbnailMax
+              // ignore: cast_nullable_to_non_nullable
+              : thumbnailMax as String,
+      videoCount:
+          videoCount == const $CopyWithPlaceholder()
+              ? _value.videoCount
+              // ignore: cast_nullable_to_non_nullable
+              : videoCount as int,
+      description:
+          description == const $CopyWithPlaceholder()
+              ? _value.description
+              // ignore: cast_nullable_to_non_nullable
+              : description as String?,
+      videoIds:
+          videoIds == const $CopyWithPlaceholder()
+              ? _value.videoIds
+              // ignore: cast_nullable_to_non_nullable
+              : videoIds as List<String>,
+      customTitle:
+          customTitle == const $CopyWithPlaceholder()
+              ? _value.customTitle
+              // ignore: cast_nullable_to_non_nullable
+              : customTitle as String?,
+      localPath:
+          localPath == const $CopyWithPlaceholder()
+              ? _value.localPath
+              // ignore: cast_nullable_to_non_nullable
+              : localPath as String?,
     );
   }
 }
@@ -153,6 +173,7 @@ extension $PlaylistCopyWith on Playlist {
   Playlist copyWithNull({
     bool description = false,
     bool customTitle = false,
+    bool localPath = false,
   }) {
     return Playlist(
       id: id,
@@ -164,6 +185,7 @@ extension $PlaylistCopyWith on Playlist {
       description: description == true ? null : this.description,
       videoIds: videoIds,
       customTitle: customTitle == true ? null : this.customTitle,
+      localPath: localPath == true ? null : this.localPath,
     );
   }
 }

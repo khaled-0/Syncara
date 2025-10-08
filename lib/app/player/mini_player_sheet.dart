@@ -124,7 +124,7 @@ class MiniPlayerSheet extends StatelessWidget {
               builder: (_, speed) => LinearProgressIndicator(
                 minHeight: adaptiveIndicatorHeight,
                 color: speed.data == 1.0 ? null : Colors.redAccent,
-                value: progress,
+                value: progress?.isInfinite==true ? null: progress,
               ),
             );
           },

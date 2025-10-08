@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
@@ -26,6 +28,12 @@ class Playlist {
 
   final List<String> videoIds;
 
+  final String? localPath;
+
+  bool get isLocal => localPath != null;
+
+  Directory get localDir => Directory(localPath!);
+
   String get externalURL {
     return "https://youtube.com/playlist?list=$id";
   }
@@ -43,6 +51,7 @@ class Playlist {
     this.description,
     required this.videoIds,
     this.customTitle,
+    this.localPath,
   });
 
   factory Playlist.fromYTPlaylist(
@@ -69,4 +78,6 @@ class Playlist {
 
   @override
   int get hashCode => id.hashCode;
+
+  File get localThumb => File("${localDir.path}/.thumb");
 }

@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/provider/library_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -34,6 +38,32 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
     }
   }
 
+  Future<void> launchMusicDirectoryPicker() async {
+    //final storages = await getExternalStorageDirectories();
+    if (!mounted) return;
+    FilesystemPicker.openDialog(
+      context: context,
+      requestPermission: () async {
+        // TODO
+        if (Platform.isLinux) return true;
+        if (await Permission.audio.isGranted) return true;
+        return (await Permission.audio.request()).isGranted;
+      },
+      fsType: FilesystemType.folder,
+      showGoUp: false,
+      rootDirectory: Directory("/"),
+      // shortcuts: [
+      //   ...storages!.map(
+      //     (e) => FilesystemPickerShortcut(name: e.uri.host, path: e.absolute),
+      //   ),
+      // ],
+    ).then((value) {
+      if (value == null || !mounted) return;
+      context.read<LibraryProvider>().importLocalPlaylist(Directory(value));
+      Navigator.pop(context);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -58,51 +88,82 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 16),
-              TextFormField(
-                controller: input,
-                autofocus: widget.url == null,
-                maxLines: 5,
-                minLines: 1,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Playlist URL",
-                  hintText: "https://youtu.be/playlist?list=...",
-                ),
+              Row(
+                spacing: 6,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: input,
+                      maxLines: 5,
+                      minLines: 1,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: "Playlist URL",
+                        hintText: "https://youtu.be/playlist?list=...",
+                        errorText: error,
+                        errorMaxLines: 4,
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: ValueListenableBuilder(
+                            valueListenable: input,
+                            builder: (context, value, spinner) {
+                              final disabled = value.text.isEmpty || loading;
+                              if (loading) return spinner!;
+                              return IconButton.filledTonal(
+                                onPressed: disabled ? null : tryImportPlaylist,
+                                icon: const Icon(Icons.check_rounded),
+                              );
+                            },
+                            child: const CircularProgressIndicator(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const Card(
-                margin: EdgeInsets.only(top: 12),
+
+              Card(
+                margin: const EdgeInsets.only(top: 12),
                 elevation: 0,
                 child: ListTile(
                   dense: true,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 6),
-                  leading: Icon(Icons.info_rounded),
-                  title: Text(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  leading: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: const Color(0xffff0033),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsetsGeometry.symmetric(
+                        horizontal: 16,
+                        vertical: 6,
+                      ),
+                      child: Icon(Icons.play_arrow_rounded),
+                    ),
+                  ),
+                  title: const Text(
                     "Playlist must be public or unlisted.\n"
                     "Youtube Mix is currently unsupported.",
                   ),
                 ),
               ),
-              if (loading)
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
-              if (error != null)
-                Card(
-                  margin: const EdgeInsets.only(top: 12),
-                  elevation: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      error!,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
+
+              const Divider(endIndent: 32, indent: 32, height: 28),
+
+              Card(
+                margin: EdgeInsets.zero,
+                child: ListTile(
+                  leading: const Icon(Icons.folder_copy_rounded),
+                  trailing: const Chip(
+                    label: Text("Pick"),
+                    avatar: Icon(Icons.open_in_new_rounded),
                   ),
+                  onTap: launchMusicDirectoryPicker,
+                  title: const Text("Local Directory"),
+                  subtitle: const Text("Bring your own music"),
                 ),
+              ),
             ],
           ),
         ),
@@ -112,11 +173,6 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text("Cancel"),
-          ),
-        if (!loading)
-          FilledButton(
-            onPressed: tryImportPlaylist,
-            child: const Text("Import"),
           ),
       ],
     );

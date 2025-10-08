@@ -48,8 +48,10 @@ class PlayerProvider extends ChangeNotifier {
   Duration? get sleepTimer => _sleepAfterDuration;
 
   // We can't use the AudioPlayer based one because nextTrack isn't called
-  late LoopMode _loopMode = LoopMode
-      .values[_store.box<Preferences>().value<int>(Preference.loopMode)];
+  late LoopMode _loopMode =
+      LoopMode.values[_store.box<Preferences>().value<int>(
+        Preference.loopMode,
+      )];
 
   LoopMode get loopMode => _loopMode;
 
@@ -76,27 +78,36 @@ class PlayerProvider extends ChangeNotifier {
     });
 
     player.bufferedPositionStream.listen(
-      (buffer) => notificationState?.add(notificationState!.value.copyWith(
-        bufferedPosition: buffer,
-      )),
+      (buffer) => notificationState?.add(
+        notificationState!.value.copyWith(
+          bufferedPosition: buffer,
+        ),
+      ),
     );
 
     player.positionStream.listen(
-      (position) => notificationState?.add(notificationState!.value.copyWith(
-        updatePosition: position,
-      )),
+      (position) => notificationState?.add(
+        notificationState!.value.copyWith(
+          updatePosition: position,
+        ),
+      ),
     );
 
     player.playerStateStream.listen(
-      (state) => notificationState?.add(notificationState!.value.copyWith(
-        playing: state.playing,
-        updatePosition: player.position,
-        processingState: _buffering
-            ? AudioProcessingState.loading
-            : AudioProcessingState.values.byName(state.processingState.name),
-        controls: mediaControls,
-        systemActions: mediaActions,
-      )),
+      (state) => notificationState?.add(
+        notificationState!.value.copyWith(
+          playing: state.playing,
+          updatePosition: player.position,
+          processingState:
+              _buffering
+                  ? AudioProcessingState.loading
+                  : AudioProcessingState.values.byName(
+                    state.processingState.name,
+                  ),
+          controls: mediaControls,
+          systemActions: mediaActions,
+        ),
+      ),
     );
 
     _sleepTimerState.stream.listen((event) {
@@ -127,6 +138,7 @@ class PlayerProvider extends ChangeNotifier {
 
   Future<void> beginPlay() async {
     final media = nowPlaying.value;
+
     try {
       // HACK: Quickly toggle _disposed flag so stop event doesn't get emitted by notificationState causing spam
       _buffering = true;
@@ -144,22 +156,26 @@ class PlayerProvider extends ChangeNotifier {
       if (thumbnail.existsSync()) artUri = thumbnail.uri;
 
       // Post service notification update
-      notificationMetadata?.add(MediaItem(
-        id: nowPlaying.value.id,
-        title: nowPlaying.value.title,
-        artist: nowPlaying.value.author,
-        duration: nowPlaying.value.duration,
-        album: nowPlayingPlaylist.getTitle,
-        artUri: artUri,
-      ));
+      notificationMetadata?.add(
+        MediaItem(
+          id: nowPlaying.value.id,
+          title: nowPlaying.value.title,
+          artist: nowPlaying.value.author,
+          duration: nowPlaying.value.duration,
+          album: nowPlayingPlaylist?.getTitle,
+          artUri: artUri,
+        ),
+      );
 
-      notificationState?.add(notificationState!.value.copyWith(
-        processingState: AudioProcessingState.loading,
-        playing: false,
-        updatePosition: Duration.zero,
-        controls: mediaControls,
-        systemActions: mediaActions,
-      ));
+      notificationState?.add(
+        notificationState!.value.copyWith(
+          processingState: AudioProcessingState.loading,
+          playing: false,
+          updatePosition: Duration.zero,
+          controls: mediaControls,
+          systemActions: mediaActions,
+        ),
+      );
 
       final source = await MediaClient().getMediaSource(media);
 
@@ -167,12 +183,11 @@ class PlayerProvider extends ChangeNotifier {
       await player.setAudioSource(source);
 
       if (_disposed) return;
-      // Don't await this. Ever.
-      // Fuck. I wasted whole day on this
       player.play();
       _buffering = false;
       if (_sleepAfterSongEnd) setSleepTimer(afterSong: _sleepAfterSongEnd);
-    } catch (err) {
+    } catch (err, stack) {
+      if (kDebugMode) debugPrintStack(stackTrace: stack, label: err.toString());
       if (_disposed) return;
       if (media != nowPlaying.value) return;
       nextTrack(ignoreLoopMode: false);
@@ -181,21 +196,23 @@ class PlayerProvider extends ChangeNotifier {
     }
   }
 
-  Playlist get nowPlayingPlaylist {
-    return _playlistInfo.firstWhere(
-      (element) => element.videoIds.contains(nowPlaying.value.id),
+  Playlist? get nowPlayingPlaylist {
+    return _playlistInfo.cast<Playlist?>().firstWhere(
+      (element) => element!.videoIds.contains(nowPlaying.value.id),
+      orElse: () => null,
     );
   }
 
   /// Store the currently playing media for resuming later
   void storeNowPlaying() {
+    if (nowPlayingPlaylist == null) return;
     _store.box<Preferences>().set<LastPlayedMedia>(
-          Preference.lastPlayed,
-          LastPlayedMedia(
-            mediaId: nowPlaying.value.id,
-            playlistId: nowPlayingPlaylist.id,
-          ),
-        );
+      Preference.lastPlayed,
+      LastPlayedMedia(
+        mediaId: nowPlaying.value.id,
+        playlistId: nowPlayingPlaylist!.id,
+      ),
+    );
   }
 
   bool get hasPrevious {
@@ -212,10 +229,12 @@ class PlayerProvider extends ChangeNotifier {
     int next = (LoopMode.values.indexOf(_loopMode) + 1);
     _loopMode = LoopMode.values[next % LoopMode.values.length];
     // Force notification update
-    notificationState?.add(notificationState!.value.copyWith(
-      controls: mediaControls,
-      systemActions: mediaActions,
-    ));
+    notificationState?.add(
+      notificationState!.value.copyWith(
+        controls: mediaControls,
+        systemActions: mediaActions,
+      ),
+    );
     _store.box<Preferences>().set<int>(Preference.loopMode, _loopMode.index);
     notifyListeners();
   }
@@ -330,9 +349,10 @@ class PlayerProvider extends ChangeNotifier {
         return;
       }
 
-      final timeLeft = _sleepAfterSongEnd
-          ? nowPlayingDuration! - player.position
-          : _sleepAfterDuration! - elapsed;
+      final timeLeft =
+          _sleepAfterSongEnd
+              ? nowPlayingDuration! - player.position
+              : _sleepAfterDuration! - elapsed;
 
       _sleepAfterDuration = timeLeft;
       _sleepTimerState.add(timeLeft);
@@ -375,87 +395,87 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   Set<MediaAction> get mediaActions => {
-        MediaAction.play,
-        MediaAction.pause,
-        if (!buffering) MediaAction.seek,
-        MediaAction.skipToPrevious,
-        MediaAction.skipToNext,
-      };
+    MediaAction.play,
+    MediaAction.pause,
+    if (!buffering) MediaAction.seek,
+    MediaAction.skipToPrevious,
+    MediaAction.skipToNext,
+  };
 
   List<MediaControl> get mediaControls => [
-        if (_store.box<Preferences>().value(Preference.notifShowShuffle))
-          const MediaControl(
-            androidIcon: "drawable/shuffle_24px",
-            label: "Shuffle",
-            action: MediaAction.custom,
-            customAction: CustomMediaAction(name: "Shuffle"),
-          ),
-        if (hasPrevious)
-          const MediaControl(
-            androidIcon: 'drawable/skip_previous_24px',
-            label: 'Previous',
-            action: MediaAction.skipToPrevious,
-          ),
-        if (!buffering) ...{
-          if (player.playing)
-            const MediaControl(
-              androidIcon: 'drawable/pause_24px',
-              label: 'Pause',
-              action: MediaAction.pause,
-            )
-          else
-            const MediaControl(
-              androidIcon: 'drawable/play_arrow_24px',
-              label: 'Play',
-              action: MediaAction.play,
-            ),
+    if (_store.box<Preferences>().value(Preference.notifShowShuffle))
+      const MediaControl(
+        androidIcon: "drawable/shuffle_24px",
+        label: "Shuffle",
+        action: MediaAction.custom,
+        customAction: CustomMediaAction(name: "Shuffle"),
+      ),
+    if (hasPrevious)
+      const MediaControl(
+        androidIcon: 'drawable/skip_previous_24px',
+        label: 'Previous',
+        action: MediaAction.skipToPrevious,
+      ),
+    if (!buffering) ...{
+      if (player.playing)
+        const MediaControl(
+          androidIcon: 'drawable/pause_24px',
+          label: 'Pause',
+          action: MediaAction.pause,
+        )
+      else
+        const MediaControl(
+          androidIcon: 'drawable/play_arrow_24px',
+          label: 'Play',
+          action: MediaAction.play,
+        ),
+    },
+    if (hasNext)
+      const MediaControl(
+        androidIcon: 'drawable/skip_next_24px',
+        label: 'Next',
+        action: MediaAction.skipToNext,
+      ),
+    if (_store.box<Preferences>().value(Preference.notifShowRepeat))
+      MediaControl(
+        androidIcon: switch (_loopMode) {
+          LoopMode.off => "drawable/repeat_off_24px",
+          LoopMode.one => "drawable/repeat_one_24px",
+          LoopMode.all => "drawable/repeat_all_24px",
         },
-        if (hasNext)
-          const MediaControl(
-            androidIcon: 'drawable/skip_next_24px',
-            label: 'Next',
-            action: MediaAction.skipToNext,
-          ),
-        if (_store.box<Preferences>().value(Preference.notifShowRepeat))
-          MediaControl(
-            androidIcon: switch (_loopMode) {
-              LoopMode.off => "drawable/repeat_off_24px",
-              LoopMode.one => "drawable/repeat_one_24px",
-              LoopMode.all => "drawable/repeat_all_24px",
-            },
-            label: "Repeat",
-            action: MediaAction.custom,
-            customAction: const CustomMediaAction(name: "Repeat"),
-          ),
-        if (_stopButtonCustom != null) _stopButtonCustom!,
-      ];
+        label: "Repeat",
+        action: MediaAction.custom,
+        customAction: const CustomMediaAction(name: "Repeat"),
+      ),
+    if (_stopButtonCustom != null) _stopButtonCustom!,
+  ];
 
   MediaControl? get _stopButtonCustom {
     final action = _store.box<Preferences>().value<int>(
-          Preference.notifCloseButtonAction,
-        );
+      Preference.notifCloseButtonAction,
+    );
 
     return switch (NotificationCloseButton.values[action]) {
       NotificationCloseButton.Close => const MediaControl(
-          androidIcon: 'drawable/close_24px',
-          label: 'Close',
-          action: MediaAction.stop,
-        ),
+        androidIcon: 'drawable/close_24px',
+        label: 'Close',
+        action: MediaAction.stop,
+      ),
       NotificationCloseButton.Shuffle => const MediaControl(
-          androidIcon: "drawable/shuffle_24px",
-          label: "Shuffle",
-          action: MediaAction.stop,
-        ),
+        androidIcon: "drawable/shuffle_24px",
+        label: "Shuffle",
+        action: MediaAction.stop,
+      ),
       NotificationCloseButton.SeekForward => const MediaControl(
-          androidIcon: "drawable/fast_forward_24px",
-          label: "Seek Forward",
-          action: MediaAction.stop,
-        ),
+        androidIcon: "drawable/fast_forward_24px",
+        label: "Seek Forward",
+        action: MediaAction.stop,
+      ),
       NotificationCloseButton.SeekBackward => const MediaControl(
-          androidIcon: "drawable/fast_rewind_24px",
-          label: "Seek Backward",
-          action: MediaAction.stop,
-        ),
+        androidIcon: "drawable/fast_rewind_24px",
+        label: "Seek Backward",
+        action: MediaAction.stop,
+      ),
       NotificationCloseButton.None => null,
     };
   }

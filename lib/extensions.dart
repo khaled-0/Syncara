@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
 import 'package:syncara/l10n/app_localizations.dart';
 import 'package:syncara/l10n/app_localizations_en.dart';
 
@@ -59,4 +61,10 @@ extension NumberExtensions on num {
 
 extension LocalizationHelper on BuildContext {
   AppLocalizations get l => AppLocalizations.of(this) ?? AppLocalizationsEn();
+}
+
+
+extension FileSystemEntityName on FileSystemEntity {
+  /// Returns the file or directory name (the last path segment).
+  String get filename => p.basename(path);
 }

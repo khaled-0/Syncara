@@ -68,6 +68,7 @@ dependencies:
   network_to_file_image: ^7.0.0
   flutter_lyric: ^2.0.4+6
   loop_page_view: ^1.2.5
+  audio_metadata_reader: ^1.4.2
 
   # Common Utils
   path: ^1.9.1
@@ -75,6 +76,7 @@ dependencies:
   url_launcher: ^6.3.2
   permission_handler: ^12.0.1
   html: ^0.15.6
+  filesystem_picker: ^4.1.0
 
   # Extras
   flutter_markdown: ^0.7.7+1 # TODO: markdown_widget!! or flutter_markdown_plus
