@@ -32,6 +32,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             const Avatar(),
             const SizedBox(width: 12),
           } else ...{
+            // FIXME: Doesn't seem to work on macos
             IconButton(
               tooltip: "Minimize",
               onPressed: WindowManager.instance.minimize,

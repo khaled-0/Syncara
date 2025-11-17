@@ -19,8 +19,8 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 0.1.8+9
 
 environment:
-  sdk: ^3.7.0
-  flutter: 3.32.2
+  sdk: ^3.10.0
+  flutter: 3.38.1
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -33,26 +33,23 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: any
+  intl: ^0.20.2
 
   # Youtube / Network Client
-  background_downloader: ^9.2.3
-  internet_connection_checker_plus: ^2.7.2
-  http: ^1.5.0
-  youtube_explode_dart:
-    git:
-      url: https://github.com/khaled-0/youtube_explode_dart.git
-      ref: merge
+  background_downloader: ^9.3.0
+  internet_connection_checker_plus: ^2.9.1
+  http: ^1.6.0
+  youtube_explode_dart: ^3.0.5
 
 
   # Data Management
-  provider: ^6.1.5
-  objectbox: ^4.3.0
-  objectbox_flutter_libs: ^4.3.0
-  copy_with_extension: ^6.0.1
+  provider: ^6.1.5+1
+  objectbox: ^5.0.2
+  objectbox_flutter_libs: ^5.0.2
+  copy_with_extension: ^10.0.1
 
   # Audio Player / Service
-  just_audio: ^0.10.4
+  just_audio: ^0.10.5
   just_audio_media_kit: ^2.1.0
   media_kit_libs_ios_audio: ^1.1.4
   media_kit_libs_linux: ^1.2.1
@@ -78,7 +75,7 @@ dependencies:
 
   # Extras
   flutter_markdown: ^0.7.7+1 # TODO: markdown_widget!! or flutter_markdown_plus
-  package_info_plus: ^8.3.1
+  package_info_plus: ^9.0.0
   webview_flutter: ^4.13.0
   listen_sharing_intent: ^1.9.2
 
@@ -87,10 +84,10 @@ dev_dependencies:
     sdk: flutter
 
   build_runner: ^2.5.4
-  objectbox_generator: ^4.3.0
+  objectbox_generator: ^5.0.2
   flutter_launcher_icons: ^0.14.4
   msix: ^3.16.12
-  copy_with_extension_gen: ^6.0.1
+  copy_with_extension_gen: ^10.0.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

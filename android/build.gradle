@@ -7,11 +7,10 @@ allprojects {
 
 rootProject.buildDir = "../build"
 
-// FIX for Flutter 3.24
 subprojects {
     afterEvaluate {
         android {
-            compileSdkVersion 34
+            compileSdkVersion flutter.compileSdkVersion
         }
     }
 }
