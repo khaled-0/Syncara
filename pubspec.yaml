@@ -76,7 +76,7 @@ dependencies:
   url_launcher: ^6.3.2
   permission_handler: ^12.0.1
   html: ^0.15.6
-  filesystem_picker: ^4.1.0
+  file_picker: ^10.3.6
 
   # Extras
   flutter_markdown: ^0.7.7+1 # TODO: markdown_widget!! or flutter_markdown_plus
