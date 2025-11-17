@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:filesystem_picker/filesystem_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/provider/library_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -39,25 +38,7 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
   }
 
   Future<void> launchMusicDirectoryPicker() async {
-    //final storages = await getExternalStorageDirectories();
-    if (!mounted) return;
-    FilesystemPicker.openDialog(
-      context: context,
-      requestPermission: () async {
-        // TODO
-        if (Platform.isLinux) return true;
-        if (await Permission.audio.isGranted) return true;
-        return (await Permission.audio.request()).isGranted;
-      },
-      fsType: FilesystemType.folder,
-      showGoUp: false,
-      rootDirectory: Directory("/"),
-      // shortcuts: [
-      //   ...storages!.map(
-      //     (e) => FilesystemPickerShortcut(name: e.uri.host, path: e.absolute),
-      //   ),
-      // ],
-    ).then((value) {
+    FilePicker.platform.getDirectoryPath().then((value) {
       if (value == null || !mounted) return;
       context.read<LibraryProvider>().importLocalPlaylist(Directory(value));
       Navigator.pop(context);
