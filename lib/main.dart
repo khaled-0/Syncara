@@ -25,6 +25,11 @@ void main() async {
   if (AppTheme.isDesktop) {
     await WindowManager.instance.ensureInitialized();
     WindowManager.instance.setMinimumSize(const Size(480, 360));
+    WindowManager.instance.setResizable(true);
+    WindowManager.instance.setTitleBarStyle(
+      TitleBarStyle.hidden,
+      windowButtonVisibility: false,
+    );
   }
 
   // DB Initialization
