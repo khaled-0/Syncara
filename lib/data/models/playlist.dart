@@ -12,7 +12,7 @@ enum PlaylistType {
     return switch (Uri.parse(url).scheme) {
       "file" => PlaylistType.local,
       "http" || "https" => PlaylistType.youtube,
-      _ => throw UnsupportedError(Uri.parse(url).scheme),
+      _ => PlaylistType.local,
     };
   }
 }

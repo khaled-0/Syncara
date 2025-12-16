@@ -7,11 +7,14 @@ mixin _LocalLibraryMixin {
 
   void notifyListeners();
 
-  int _dirItemCount(Uri uri) => Directory.fromUri(uri).listSync().length;
+  int _dirItemCount(Uri uri) {
+    final dir = Directory(uri.toFilePath());
+    return dir.existsSync() ? dir.listSync().length : 0;
+  }
 
   void refreshLocal(int index, Playlist playlist) {
     entries[index] = playlist.copyWith(
-      itemCount: _dirItemCount(Uri.file(playlist.url)),
+      itemCount: _dirItemCount(Uri.parse(playlist.url)),
     );
     notifyListeners();
   }
@@ -21,7 +24,7 @@ mixin _LocalLibraryMixin {
     entries.add(
       Playlist(
         url: url.toString(),
-        title: p.basename(url.path).toCapitalCase(),
+        title: p.basename(url.toFilePath()).toCapitalCase(),
         author: "Local",
         thumbnail: Uri.file(p.join(url.path, ".thumb")).toString(),
         itemCount: _dirItemCount(url),

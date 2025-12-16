@@ -13,7 +13,16 @@ mixin _LocalPlaylistMixin {
   void updateItems(List<PlaylistItem> items);
 
   Future<void> refreshLocalPlaylist() async {
-    final directory = Directory.fromUri(Uri.file(playlist.url));
+    final directory = Directory(Uri.parse(playlist.url).toFilePath());
+    if (!directory.existsSync()) {
+      final query = _box.query(
+        PlaylistItem_.playlist.equals(playlist.objectId),
+      );
+      await query.build().removeAsync();
+      updateItems([]);
+      return notifyListeners();
+    }
+
     final musics = directory.listSync().map<Media?>((e) {
       try {
         final data = audio.readMetadata(File(e.path));
