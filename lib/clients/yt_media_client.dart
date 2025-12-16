@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/model/common.dart';
@@ -6,6 +7,7 @@ import 'package:syncara/data/models/media.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class YTMediaClient implements BaseMediaClient {
+  final _httpClient = http.Client();
   final _ytClient = yt.YoutubeExplode().videos;
 
   @override
@@ -13,8 +15,20 @@ class YTMediaClient implements BaseMediaClient {
     final streamUri = await compute(
       (data) async {
         final ytClient = data[0] as yt.StreamClient;
-        final videoManifest = await ytClient.getManifest(data[1]);
-        return videoManifest.audio.withHighestBitrate().url;
+        final videoManifest = await ytClient.getManifest(
+          data[1],
+        );
+
+        final availableManifests = List<yt.AudioStreamInfo>.of([]);
+        await Future.wait([
+          for (final manifest in videoManifest.audio)
+            _httpClient.head(manifest.url).then((res) {
+              if (res.statusCode > 299 || res.statusCode < 200) return;
+              availableManifests.add(manifest);
+            }),
+        ]);
+
+        return availableManifests.withHighestBitrate().url;
       },
       [_ytClient.streamsClient, media.url],
     );

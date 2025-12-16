@@ -27,6 +27,11 @@ void main() async {
   if (AppTheme.isDesktop) {
     await WindowManager.instance.ensureInitialized();
     WindowManager.instance.setMinimumSize(const Size(480, 360));
+    WindowManager.instance.setResizable(true);
+    WindowManager.instance.setTitleBarStyle(
+      TitleBarStyle.hidden,
+      windowButtonVisibility: false,
+    );
   }
 
   // DB Initialization
@@ -88,12 +93,11 @@ void main() async {
           builder: (_, dynamicColor, home) {
             if (!Platform.isIOS && dynamicColor.dynamicColors) {
               return DynamicColorBuilder(
-                builder:
-                    (light, dark) => app(
-                      light: AppTheme(colorScheme: light).light,
-                      dark: AppTheme(colorScheme: dark).dark,
-                      home: home!,
-                    ),
+                builder: (light, dark) => app(
+                  light: AppTheme(colorScheme: light).light,
+                  dark: AppTheme(colorScheme: dark).dark,
+                  home: home!,
+                ),
               );
             }
 

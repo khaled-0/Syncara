@@ -34,12 +34,13 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           } else ...{
             IconButton(
               tooltip: "Minimize",
+              // FIXME: MacOS https://github.com/leanflutter/window_manager/pull/530
               onPressed: WindowManager.instance.minimize,
               icon: const Icon(Icons.horizontal_rule_rounded),
             ),
             IconButton(
               tooltip: "Close",
-              onPressed: WindowManager.instance.close,
+              onPressed: WindowManager.instance.destroy,
               icon: const Icon(Icons.close_rounded),
             ),
             const SizedBox(width: 12),

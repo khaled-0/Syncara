@@ -1,15 +1,15 @@
 import 'package:background_downloader/background_downloader.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as p;
 import 'package:syncara/app/more/downloads/active_downloads_screen.dart';
 import 'package:syncara/clients/media_client.dart';
-import 'package:syncara/data/models/media.dart';
 import 'package:syncara/main.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
+
+import '../data/models/media.dart';
 
 class DownloaderService {
   /// <-- Singleton
@@ -52,20 +52,15 @@ class DownloaderService {
     FileDownloader().trackTasks();
   }
 
-  final _ytClient = yt.YoutubeExplode().videos.streamsClient;
   bool _abortQueueing = false;
 
   void abortQueueing() => _abortQueueing = true;
 
+  // TODO The links expire
   Future<void> download(Media media) async {
     try {
       if (MediaClient().isDownloaded(media)) return;
-      final manifest = await compute(
-        (data) => (data[0] as yt.StreamClient).getManifest(data[1]),
-        [_ytClient, media.url],
-      );
-      final url = manifest.audio.withHighestBitrate().url.toString();
-
+      final url = (await MediaClient().getMediaSource(media)).url;
       final task = ParallelDownloadTask(
         url: url,
         displayName: media.title,
@@ -81,6 +76,7 @@ class DownloaderService {
     }
   }
 
+  // TODO The links expire
   // TODO Move this process to background or notify user to not close until this finishes
   // https://pub.dev/packages/workmanager or https://pub.dev/packages/flutter_background_service
   Future<void> downloadAll(List<Media> medias) async {
@@ -92,14 +88,9 @@ class DownloaderService {
         final record = await FileDownloader().database.recordForId(media.url);
         if (record != null) continue;
 
-        final manifest = await compute(
-          (data) => (data[0] as yt.StreamClient).getManifest(data[1]),
-          [_ytClient, media.url],
-        );
-        final url = manifest.audio.withHighestBitrate().url.toString();
-
         if (_abortQueueing) break;
 
+        final url = (await MediaClient().getMediaSource(media)).url;
         FileDownloader().enqueue(
           ParallelDownloadTask(
             taskId: media.url,
@@ -173,6 +164,13 @@ class DownloaderService {
       default:
         break;
     }
+  }
+}
+
+extension on AudioSource {
+  String get url {
+    if (this is! UriAudioSource) throw "Unknown $runtimeType has no uri";
+    return (this as UriAudioSource).uri.toString();
   }
 }
 
