@@ -47,6 +47,7 @@ dependencies:
 
   # Data Management
   provider: ^6.1.5
+  get_it: ^8.3.0
   objectbox: ^4.3.0
   objectbox_flutter_libs: ^4.3.0
   copy_with_extension: ^6.0.1
@@ -83,6 +84,9 @@ dependencies:
   package_info_plus: ^8.3.1
   webview_flutter: ^4.13.0
   listen_sharing_intent: ^1.9.2
+
+dependency_overrides:
+  get_it: ^9.2.0
 
 dev_dependencies:
   flutter_test:

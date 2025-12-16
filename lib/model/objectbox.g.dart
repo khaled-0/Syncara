@@ -179,7 +179,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(9, 882847733899621766),
     name: 'PlaylistItem',
-    lastPropertyId: const obx_int.IdUid(4, 7574123375628957182),
+    lastPropertyId: const obx_int.IdUid(5, 7616569716064726867),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -187,12 +187,6 @@ final _entities = <obx_int.ModelEntity>[
         name: 'objectId',
         type: 6,
         flags: 1,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(2, 5950885231422011127),
-        name: 'position',
-        type: 6,
-        flags: 0,
       ),
       obx_int.ModelProperty(
         id: const obx_int.IdUid(3, 6162112476034159306),
@@ -209,6 +203,12 @@ final _entities = <obx_int.ModelEntity>[
         flags: 520,
         indexId: const obx_int.IdUid(14, 3541742103393101256),
         relationTarget: 'Media',
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 7616569716064726867),
+        name: 'position',
+        type: 6,
+        flags: 0,
       ),
     ],
     relations: <obx_int.ModelRelation>[],
@@ -376,6 +376,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
       6349290188780030319,
       7536243353200912842,
       8572832788458319135,
+      5950885231422011127,
     ],
     retiredRelationUids: const [],
     modelVersion: 5,
@@ -402,7 +403,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
             ? null
             : fbb.writeString(object.customTitle!);
         final urlOffset = fbb.writeString(object.url);
-        final thumbnailOffset = fbb.writeString(object.thumbnail);
+        final thumbnailOffset = object.thumbnail == null
+            ? null
+            : fbb.writeString(object.thumbnail!);
         final thumbnailHiResOffset = object.thumbnailHiRes == null
             ? null
             : fbb.writeString(object.thumbnailHiRes!);
@@ -433,7 +436,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         ).vTableGet(buffer, rootOffset, 10, '');
         final thumbnailParam = const fb.StringReader(
           asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 32, '');
+        ).vTableGetNullable(buffer, rootOffset, 32);
         final thumbnailHiResParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 34);
@@ -587,11 +590,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
         object.objectId = id;
       },
       objectToFB: (PlaylistItem object, fb.Builder fbb) {
-        fbb.startTable(5);
+        fbb.startTable(6);
         fbb.addInt64(0, object.objectId);
-        fbb.addInt64(1, object.position);
         fbb.addInt64(2, object.playlist.targetId);
         fbb.addInt64(3, object.media.targetId);
+        fbb.addInt64(4, object.position);
         fbb.finish(fbb.endTable());
         return object.objectId;
       },
@@ -601,7 +604,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final positionParam = const fb.Int64Reader().vTableGet(
           buffer,
           rootOffset,
-          6,
+          12,
           0,
         );
         final object = PlaylistItem(position: positionParam)
@@ -828,18 +831,18 @@ class PlaylistItem_ {
     _entities[3].properties[0],
   );
 
-  /// See [PlaylistItem.position].
-  static final position = obx.QueryIntegerProperty<PlaylistItem>(
-    _entities[3].properties[1],
-  );
-
   /// See [PlaylistItem.playlist].
   static final playlist = obx.QueryRelationToOne<PlaylistItem, Playlist>(
-    _entities[3].properties[2],
+    _entities[3].properties[1],
   );
 
   /// See [PlaylistItem.media].
   static final media = obx.QueryRelationToOne<PlaylistItem, Media>(
+    _entities[3].properties[2],
+  );
+
+  /// See [PlaylistItem.position].
+  static final position = obx.QueryIntegerProperty<PlaylistItem>(
     _entities[3].properties[3],
   );
 }

@@ -6,8 +6,10 @@ import 'package:syncara/app/playlist/media_entry_builder.dart';
 import 'package:syncara/app/playlist/playlist_header.dart';
 import 'package:syncara/data/models/media.dart';
 import 'package:syncara/model/objectbox.g.dart';
-import 'package:syncara/provider/player_provider.dart';
-import 'package:syncara/provider/playlist_provider.dart';
+
+import '../../data/providers/player_provider.dart';
+import '../../data/providers/playlist/playlist_provider.dart';
+
 
 class PlaylistTab extends StatelessWidget {
   const PlaylistTab({super.key});

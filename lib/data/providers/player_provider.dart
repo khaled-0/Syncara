@@ -197,22 +197,24 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   Playlist? get nowPlayingPlaylist {
-    return _playlistInfo.cast<Playlist?>().firstWhere(
-      (element) => element!.videoIds.contains(nowPlaying.value.id),
-      orElse: () => null,
-    );
+    return null; // TODO
+    // return _playlistInfo.cast<Playlist?>().firstWhere(
+    //   (element) => nowPlaying.value.,
+    //   orElse: () => null,
+    // );
   }
 
   /// Store the currently playing media for resuming later
   void storeNowPlaying() {
-    if (nowPlayingPlaylist == null) return;
-    _store.box<Preferences>().set<LastPlayedMedia>(
-      Preference.lastPlayed,
-      LastPlayedMedia(
-        mediaId: nowPlaying.value.id,
-        playlistId: nowPlayingPlaylist!.id,
-      ),
-    );
+    // TODO
+    // if (nowPlayingPlaylist == null) return;
+    // _store.box<Preferences>().set<LastPlayedMedia>(
+    //   Preference.lastPlayed,
+    //   LastPlayedMedia(
+    //     mediaId: nowPlaying.value.id,
+    //     playlistId: nowPlayingPlaylist!.id,
+    //   ),
+    // );
   }
 
   bool get hasPrevious {
@@ -314,8 +316,8 @@ class PlayerProvider extends ChangeNotifier {
         break;
 
       case SortOption.Reset:
-        for (final (index, id) in _originalPlaylistOrderIds.indexed) {
-          final old = _playlist.indexWhere((element) => element.id == id);
+        for (final (index, url) in _originalPlaylistOrderIds.indexed) {
+          final old = _playlist.indexWhere((element) => element.url == url);
           reorderList(old, index, notify: false);
         }
         break;

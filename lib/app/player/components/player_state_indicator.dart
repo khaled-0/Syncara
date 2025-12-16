@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/player/player_menu_sheet.dart';
 import 'package:syncara/extensions.dart';
-import 'package:syncara/provider/player_provider.dart';
+
+import '../../../data/providers/player_provider.dart';
+
 
 class PlayerStateIndicator extends StatelessWidget {
   const PlayerStateIndicator({super.key}) : _static = false;

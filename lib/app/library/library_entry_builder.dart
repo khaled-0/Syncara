@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/library/library_menu_sheet.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/data/models/playlist.dart';
-import 'package:syncara/provider/library_provider.dart';
+
 
 import '../../clients/media_client.dart';
+import '../../data/providers/library/library_provider.dart';
 
 class LibraryEntryBuilder extends StatelessWidget {
   final Playlist playlist;
@@ -26,18 +29,22 @@ class LibraryEntryBuilder extends StatelessWidget {
         visualDensity: VisualDensity.comfortable,
         contentPadding: const EdgeInsets.only(left: 16, right: 8),
         leading: Hero(
-          tag: playlist.id,
+          tag: playlist.url,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image(
               width: 80,
               height: double.maxFinite,
               errorBuilder:
-                  (_, _, _) => SizedBox(
+                  (_, _, _) =>
+                  SizedBox(
                     width: 80,
                     height: double.maxFinite,
                     child: ColoredBox(
-                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                      color: Theme
+                          .of(context)
+                          .colorScheme
+                          .surfaceContainerHigh,
                     ),
                   ),
               frameBuilder: (context, child, frame, synchronous) {
@@ -58,19 +65,24 @@ class LibraryEntryBuilder extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        subtitleTextStyle: Theme.of(context).textTheme.bodySmall,
+        subtitleTextStyle: Theme
+            .of(context)
+            .textTheme
+            .bodySmall,
         subtitle: Text(
           "${playlist.author} \u2022 ${playlist.itemCount} videos",
         ),
         trailing: IconButton(
           onPressed:
-              () => showModalBottomSheet(
+              () =>
+              showModalBottomSheet(
                 context: context,
                 useSafeArea: true,
                 useRootNavigator: true,
                 backgroundColor: Colors.transparent,
                 builder:
-                    (_) => ChangeNotifierProvider.value(
+                    (_) =>
+                    ChangeNotifierProvider.value(
                       value: context.read<LibraryProvider>(),
                       child: LibraryMenuSheet(context.read<Store>(), playlist),
                     ),
@@ -82,12 +94,14 @@ class LibraryEntryBuilder extends StatelessWidget {
   }
 
   ImageProvider get thumb {
-    if (playlist.isLocal) return FileImage(playlist.localThumb);
+    if (playlist.type == PlaylistType.local) {
+      return FileImage(File(playlist.thumbnail ?? ""));
+    }
 
     return NetworkToFileImage(
       url: playlist.thumbnail,
       file: MediaClient().thumbnailFile(
-        playlist.thumbnail,
+        playlist.thumbnail ?? "",
       ),
     );
   }

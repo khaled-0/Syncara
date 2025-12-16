@@ -2,10 +2,11 @@ import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:path/path.dart' as p;
 import 'package:syncara/app/more/downloads/active_downloads_screen.dart';
 import 'package:syncara/clients/media_client.dart';
-import 'package:syncara/main.dart';
 import 'package:syncara/data/models/media.dart';
+import 'package:syncara/main.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
@@ -61,7 +62,7 @@ class DownloaderService {
       if (MediaClient().isDownloaded(media)) return;
       final manifest = await compute(
         (data) => (data[0] as yt.StreamClient).getManifest(data[1]),
-        [_ytClient, media.id],
+        [_ytClient, media.url],
       );
       final url = manifest.audio.withHighestBitrate().url.toString();
 
@@ -69,7 +70,7 @@ class DownloaderService {
         url: url,
         displayName: media.title,
         directory: MediaClient().downloadsDir,
-        filename: media.id,
+        filename: p.basename(media.url),
         baseDirectory: BaseDirectory.root,
         updates: Updates.statusAndProgress,
       );
@@ -88,26 +89,28 @@ class DownloaderService {
       try {
         // Ignore already enqueued/downloaded
         if (MediaClient().isDownloaded(media)) continue;
-        final record = await FileDownloader().database.recordForId(media.id);
+        final record = await FileDownloader().database.recordForId(media.url);
         if (record != null) continue;
 
         final manifest = await compute(
           (data) => (data[0] as yt.StreamClient).getManifest(data[1]),
-          [_ytClient, media.id],
+          [_ytClient, media.url],
         );
         final url = manifest.audio.withHighestBitrate().url.toString();
 
         if (_abortQueueing) break;
 
-        FileDownloader().enqueue(ParallelDownloadTask(
-          taskId: media.id,
-          url: url,
-          displayName: media.title,
-          directory: MediaClient().downloadsDir,
-          filename: media.id,
-          baseDirectory: BaseDirectory.root,
-          updates: Updates.statusAndProgress,
-        ));
+        FileDownloader().enqueue(
+          ParallelDownloadTask(
+            taskId: media.url,
+            url: url,
+            displayName: media.title,
+            directory: MediaClient().downloadsDir,
+            filename: p.basename(media.url),
+            baseDirectory: BaseDirectory.root,
+            updates: Updates.statusAndProgress,
+          ),
+        );
       } catch (_) {
         // TODO Error
       }

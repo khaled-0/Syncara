@@ -6,7 +6,9 @@ import 'package:syncara/app/player/components/queue_playlist_filter.dart';
 import 'package:syncara/app/playlist/media_entry_builder.dart';
 import 'package:syncara/model/common.dart';
 import 'package:syncara/data/models/media.dart';
-import 'package:syncara/provider/player_provider.dart';
+
+import '../../data/providers/player_provider.dart';
+
 
 class PlayerQueueSheet extends StatelessWidget {
   const PlayerQueueSheet({super.key});
@@ -37,7 +39,7 @@ class PlayerQueueSheet extends StatelessWidget {
           Expanded(
             child: Selector<PlayerProvider, List<Media>>(
               selector: (_, provider) => provider.playlist,
-              builder: (context, playlist, __) {
+              builder: (context, playlist, _) {
                 return ValueListenableBuilder(
                   valueListenable: context.read<PlayerProvider>().nowPlaying,
                   builder: (context, nowPlaying, _) {

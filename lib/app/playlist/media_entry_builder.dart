@@ -3,9 +3,10 @@ import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/playlist/media_menu_sheet.dart';
 import 'package:syncara/clients/media_client.dart';
-import 'package:syncara/extensions.dart';
 import 'package:syncara/data/models/media.dart';
-import 'package:syncara/provider/playlist_provider.dart';
+import 'package:syncara/extensions.dart';
+
+import '../../data/providers/playlist/playlist_provider.dart';
 
 class MediaEntryBuilder extends StatelessWidget {
   final Media media;
@@ -35,13 +36,14 @@ class MediaEntryBuilder extends StatelessWidget {
             child: Image(
               width: 80,
               height: double.maxFinite,
-              errorBuilder: (_, __, ___) => SizedBox(
-                width: 80,
-                height: double.maxFinite,
-                child: ColoredBox(
-                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                ),
-              ),
+              errorBuilder:
+                  (_, _, _) => SizedBox(
+                    width: 80,
+                    height: double.maxFinite,
+                    child: ColoredBox(
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    ),
+                  ),
               frameBuilder: (context, child, frame, synchronous) {
                 if (synchronous) return child;
                 return AnimatedOpacity(
@@ -51,9 +53,9 @@ class MediaEntryBuilder extends StatelessWidget {
                 );
               },
               image: NetworkToFileImage(
-                url: media.thumbnailStd,
+                url: media.thumbnail ?? "",
                 file: MediaClient().thumbnailFile(
-                  media.thumbnailStd,
+                  media.thumbnail ?? "",
                 ),
               ),
               fit: BoxFit.cover,
@@ -72,7 +74,7 @@ class MediaEntryBuilder extends StatelessWidget {
                 style: const TextStyle(color: Colors.white),
               ),
             ),
-          )
+          ),
         ],
       ),
       subtitleTextStyle: Theme.of(context).textTheme.bodySmall,
@@ -112,16 +114,18 @@ class MediaEntryBuilder extends StatelessWidget {
 
   Widget menuButton(BuildContext context) {
     return IconButton(
-      onPressed: () => showModalBottomSheet(
-        context: context,
-        useSafeArea: true,
-        useRootNavigator: true,
-        backgroundColor: Colors.transparent,
-        builder: (_) => ChangeNotifierProvider.value(
-          value: context.read<PlaylistProvider>(),
-          child: MediaMenuSheet(media),
-        ),
-      ),
+      onPressed:
+          () => showModalBottomSheet(
+            context: context,
+            useSafeArea: true,
+            useRootNavigator: true,
+            backgroundColor: Colors.transparent,
+            builder:
+                (_) => ChangeNotifierProvider.value(
+                  value: context.read<PlaylistProvider>(),
+                  child: MediaMenuSheet(media),
+                ),
+          ),
       icon: const Icon(Icons.more_vert_rounded, size: 18),
     );
   }

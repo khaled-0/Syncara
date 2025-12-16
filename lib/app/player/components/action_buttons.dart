@@ -3,7 +3,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/data/models/media.dart';
-import 'package:syncara/provider/player_provider.dart';
+
+import '../../../data/providers/player_provider.dart';
 
 class ActionButtons extends StatelessWidget {
   const ActionButtons({super.key});
@@ -46,7 +47,7 @@ class ActionButtons extends StatelessWidget {
     return Selector<PlayerProvider, List<Media>>(
       selector: (_, provider) => provider.playlist,
       child: const Icon(Icons.skip_previous_rounded),
-      builder: (_, __, icon) => IconButton(
+      builder: (_, _, icon) => IconButton(
         onPressed: hasPre ? context.read<PlayerProvider>().previousTrack : null,
         icon: icon!,
       ),
@@ -58,7 +59,7 @@ class ActionButtons extends StatelessWidget {
     return Selector<PlayerProvider, List<Media>>(
       selector: (_, provider) => provider.playlist,
       child: const Icon(Icons.skip_next_rounded),
-      builder: (_, __, icon) => IconButton(
+      builder: (_, _, icon) => IconButton(
         onPressed: hasNext ? context.read<PlayerProvider>().nextTrack : null,
         icon: icon!,
       ),

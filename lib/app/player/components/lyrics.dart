@@ -4,12 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/player/components/action_buttons.dart';
 import 'package:syncara/clients/media_client.dart';
-import 'package:syncara/model/common.dart';
 import 'package:syncara/data/models/media.dart';
+import 'package:syncara/model/common.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
-import 'package:syncara/provider/player_provider.dart';
 import 'package:window_manager/window_manager.dart';
+
+import '../../../data/providers/player_provider.dart';
 
 typedef LyricFutureResult = (List<LyricMetadata>, LyricMetadata, List<String>);
 
@@ -251,7 +252,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
         transitionDuration: Durations.short3,
         reverseTransitionDuration: Durations.short2,
         pageBuilder:
-            (_, __, ___) => MultiProvider(
+            (_, _, _) => MultiProvider(
               providers: [
                 Provider.value(value: context.read<Store>()),
                 ChangeNotifierProvider.value(value: playerProvider),
@@ -317,7 +318,7 @@ class _ExpandedLyrics extends StatelessWidget {
               child: ValueListenableBuilder(
                 valueListenable: context.read<PlayerProvider>().nowPlaying,
                 builder:
-                    (_, value, __) => Padding(
+                    (_, value, _) => Padding(
                       padding: const EdgeInsets.only(
                         top: 16,
                         left: 6,

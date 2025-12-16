@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:syncara/provider/library_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../../data/providers/library/library_provider.dart';
@@ -42,7 +40,7 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
   Future<void> launchMusicDirectoryPicker() async {
     FilePicker.platform.getDirectoryPath().then((value) {
       if (value == null || !mounted) return;
-      context.read<LibraryProvider>().importLocalPlaylist();
+      context.read<LibraryProvider>().importLocalPlaylist(Uri.file(value));
       Navigator.pop(context);
     });
   }

@@ -13,8 +13,10 @@ import 'package:syncara/app/player/player_queue_sheet.dart';
 import 'package:syncara/extensions.dart';
 import 'package:syncara/data/models/media.dart';
 import 'package:syncara/model/preferences.dart';
-import 'package:syncara/provider/player_provider.dart';
+
 import 'package:window_manager/window_manager.dart';
+
+import '../../data/providers/player_provider.dart';
 
 class LargePlayerSheet extends StatefulWidget {
   const LargePlayerSheet({super.key});
@@ -101,7 +103,7 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
     required bool current,
   }) {
     return Column(
-      key: ValueKey(media.id),
+      key: ValueKey(media.url),
       children: [
         const SizedBox(height: 16),
         SegmentedButton<int>(

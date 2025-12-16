@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/more/preferences/components/choice_dialog.dart';
 import 'package:syncara/app/more/preferences/components/drag_handle.dart';
-import 'package:syncara/provider/player_provider.dart';
+
+import '../../data/providers/player_provider.dart';
+
 
 class PlayerMenuSheet extends StatelessWidget {
   const PlayerMenuSheet({super.key});

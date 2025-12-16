@@ -5,12 +5,12 @@ import 'package:syncara/app/library/empty_library_view.dart';
 import 'package:syncara/app/library/import_playlist_dialog.dart';
 import 'package:syncara/app/library/library_entry_builder.dart';
 import 'package:syncara/app/playlist/playlist_tab.dart';
-import 'package:syncara/model/common.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
-import 'package:syncara/provider/library_provider.dart';
-import 'package:syncara/provider/playlist_provider.dart';
 import 'package:syncara/services/media_service.dart';
+
+import '../../data/providers/library/library_provider.dart';
+import '../../data/providers/playlist/playlist_provider.dart';
 
 class LibraryTab extends StatelessWidget {
   const LibraryTab({super.key});
@@ -34,30 +34,32 @@ class LibraryTab extends StatelessWidget {
                 final playlist = library.entries[index];
                 return LibraryEntryBuilder(
                   playlist,
-                  onTap: () => Navigator.of(context).push(
-                    PageRouteBuilder(
-                      transitionsBuilder: (_, animation, __, child) {
-                        return SlideTransition(
-                          position: animation.drive(
-                            Tween(
-                              begin: const Offset(0.0, 1.0),
-                              end: Offset.zero,
-                            ).chain(CurveTween(curve: Curves.ease)),
-                          ),
-                          child: child,
-                        );
-                      },
-                      pageBuilder: (context, _, __) {
-                        return ChangeNotifierProvider<PlaylistProvider>(
-                          child: const PlaylistTab(),
-                          create: (_) => PlaylistProvider(
-                            context.read<Store>(),
-                            playlist,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  onTap:
+                      () => Navigator.of(context).push(
+                        PageRouteBuilder(
+                          transitionsBuilder: (_, animation, _, child) {
+                            return SlideTransition(
+                              position: animation.drive(
+                                Tween(
+                                  begin: const Offset(0.0, 1.0),
+                                  end: Offset.zero,
+                                ).chain(CurveTween(curve: Curves.ease)),
+                              ),
+                              child: child,
+                            );
+                          },
+                          pageBuilder: (context, _, _) {
+                            return ChangeNotifierProvider<PlaylistProvider>(
+                              child: const PlaylistTab(),
+                              create:
+                                  (_) => PlaylistProvider(
+                                    context.read<Store>(),
+                                    playlist,
+                                  ),
+                            );
+                          },
+                        ),
+                      ),
                 );
               },
             ),
@@ -78,10 +80,10 @@ class LibraryTab extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 importFab(context, mini: hasResumeData),
-                if (hasResumeData) ...{
-                  const SizedBox(height: 16),
-                  resumeFab(context),
-                }
+                // if (hasResumeData) ...{
+                //   const SizedBox(height: 16),
+                // resumeFab(context), TODO
+                // }
               ],
             );
           }
@@ -99,14 +101,15 @@ class LibraryTab extends StatelessWidget {
 
   FloatingActionButton importFab(BuildContext context, {bool mini = false}) {
     void onPressed() => showDialog(
-          context: context,
-          useRootNavigator: true,
-          barrierDismissible: false,
-          builder: (_) => ChangeNotifierProvider.value(
+      context: context,
+      useRootNavigator: true,
+      barrierDismissible: false,
+      builder:
+          (_) => ChangeNotifierProvider.value(
             value: context.read<LibraryProvider>(),
             child: const ImportPlaylistDialog(),
           ),
-        );
+    );
 
     if (mini) {
       return FloatingActionButton.small(
@@ -124,43 +127,43 @@ class LibraryTab extends StatelessWidget {
     );
   }
 
-  FloatingActionButton resumeFab(BuildContext context) {
-    return FloatingActionButton.extended(
-      heroTag: "ResumeButton",
-      onPressed: () => resumePlayback(context),
-      label: const Text("Resume"),
-      icon: const Icon(Icons.play_arrow_rounded),
-    );
-  }
+  // FloatingActionButton resumeFab(BuildContext context) {
+  //   return FloatingActionButton.extended(
+  //     heroTag: "ResumeButton",
+  //     onPressed: () => resumePlayback(context),
+  //     label: const Text("Resume"),
+  //     icon: const Icon(Icons.play_arrow_rounded),
+  //   );
+  // }
 
-  void resumePlayback(BuildContext context) {
-    final prefs = context.read<Store>().box<Preferences>();
-    try {
-      final resumeData = prefs.value<LastPlayedMedia>(Preference.lastPlayed);
-
-      final library = context.read<LibraryProvider>().entries;
-      final playlist = PlaylistProvider(
-        context.read<Store>(),
-        library.firstWhere((e) => e.id == resumeData.playlistId),
-      );
-
-      final media = playlist.medias.firstWhere(
-        (e) => e.id == resumeData.mediaId,
-      );
-
-      PlaylistTab.launchPlayer(
-        context: context,
-        initialMedia: media,
-        playlist: playlist,
-      );
-    } catch (_) {
-      prefs.delete(Preference.lastPlayed);
-      MediaService().playbackState.add(
-            MediaService().playbackState.value.copyWith(),
-          );
-      ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-        const SnackBar(content: Text("Unable to resume")),
-      );
-    }
-  }
+  // void resumePlayback(BuildContext context) {
+  //   final prefs = context.read<Store>().box<Preferences>();
+  //   try {
+  //     final resumeData = prefs.value<LastPlayedMedia>(Preference.lastPlayed);
+  //
+  //     final library = context.read<LibraryProvider>().entries;
+  //     final playlist = PlaylistProvider(
+  //       context.read<Store>(),
+  //       library.firstWhere((e) => e.url == resumeData.playlistId),
+  //     );
+  //
+  //     final media = playlist.medias.firstWhere(
+  //       (e) => e.id == resumeData.mediaId,
+  //     );
+  //
+  //     PlaylistTab.launchPlayer(
+  //       context: context,
+  //       initialMedia: media,
+  //       playlist: playlist,
+  //     );
+  //   } catch (_) {
+  //     prefs.delete(Preference.lastPlayed);
+  //     MediaService().playbackState.add(
+  //           MediaService().playbackState.value.copyWith(),
+  //         );
+  //     ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+  //       const SnackBar(content: Text("Unable to resume")),
+  //     );
+  //   }
+  // }
 }

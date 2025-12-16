@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
@@ -5,7 +7,8 @@ import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/playlist/playlist_menu_sheet.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/data/models/playlist.dart';
-import 'package:syncara/provider/playlist_provider.dart';
+
+import '../../data/providers/playlist/playlist_provider.dart';
 
 class PlaylistHeader extends StatelessWidget {
   const PlaylistHeader({
@@ -28,7 +31,7 @@ class PlaylistHeader extends StatelessWidget {
           physics: adaptivePhysics,
           children: [
             Hero(
-              tag: playlist(context).id,
+              tag: playlist(context).url,
               child: Stack(
                 children: [
                   ClipRRect(
@@ -222,14 +225,14 @@ class PlaylistHeader extends StatelessWidget {
       context.read<PlaylistProvider>().playlist;
 
   ImageProvider thumb(BuildContext context) {
-    if (playlist(context).isLocal) {
-      return FileImage(playlist(context).localThumb);
+    if (playlist(context).type == PlaylistType.local) {
+      return FileImage(File(playlist(context).thumbnail ?? ""));
     }
 
     return NetworkToFileImage(
       url: playlist(context).thumbnailHiRes,
       file: MediaClient().thumbnailFile(
-        playlist(context).thumbnailHiRes.split("?")[0],
+        playlist(context).thumbnailHiRes?.split("?")[0] ?? "",
       ),
     );
   }

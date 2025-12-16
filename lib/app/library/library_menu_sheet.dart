@@ -3,10 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:syncara/app/more/preferences/components/drag_handle.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/data/models/playlist.dart';
-import 'package:syncara/provider/library_provider.dart';
-import 'package:syncara/provider/playlist_provider.dart';
+
 import 'package:syncara/services/media_service.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+import '../../data/providers/library/library_provider.dart';
+import '../../data/providers/playlist/playlist_provider.dart';
 
 class LibraryMenuSheet extends StatelessWidget {
   final Playlist playlist;
@@ -47,7 +49,7 @@ class LibraryMenuSheet extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              launchUrlString(playlist.externalURL);
+              launchUrlString(playlist.url);
               Navigator.pop(context);
             },
             leading: const Icon(Icons.open_in_new_rounded),

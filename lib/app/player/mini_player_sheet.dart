@@ -5,11 +5,12 @@ import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/player/components/player_state_indicator.dart';
 import 'package:syncara/app/player/large_player_sheet.dart';
 import 'package:syncara/clients/media_client.dart';
-import 'package:syncara/model/common.dart';
 import 'package:syncara/data/models/media.dart';
+import 'package:syncara/model/common.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
-import 'package:syncara/provider/player_provider.dart';
+
+import '../../data/providers/player_provider.dart';
 
 class MiniPlayerSheet extends StatelessWidget {
   const MiniPlayerSheet({super.key});
@@ -69,33 +70,35 @@ class MiniPlayerSheet extends StatelessWidget {
       titleTextStyle: Theme.of(context).textTheme.bodyMedium,
       title: ValueListenableBuilder(
         valueListenable: context.read<PlayerProvider>().nowPlaying,
-        builder: (context, media, child) => Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              media.title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+        builder:
+            (context, media, child) => Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  media.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  media.author,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                Selector<PlayerProvider, List<Media>>(
+                  selector: (_, provider) => provider.playlist,
+                  builder:
+                      (context, playlist, _) => Text(
+                        "${playlist.indexOf(media) + 1}/${playlist.length}"
+                        " \u2022 ${playlistInfo(context)}",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                ),
+              ],
             ),
-            Text(
-              media.author,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            Selector<PlayerProvider, List<Media>>(
-              selector: (_, provider) => provider.playlist,
-              builder: (context, playlist, _) => Text(
-                "${playlist.indexOf(media) + 1}/${playlist.length}"
-                " \u2022 ${playlistInfo(context)}",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ),
-          ],
-        ),
       ),
       //Player Actions
       trailing: actions(context),
@@ -105,31 +108,36 @@ class MiniPlayerSheet extends StatelessWidget {
   Widget progressBar(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: context.read<PlayerProvider>().nowPlaying,
-      builder: (context, value, child) => Selector<PlayerProvider, bool>(
-        selector: (_, provider) => provider.buffering,
-        builder: (_, buffering, __) => StreamBuilder<Duration>(
-          stream: context.read<PlayerProvider>().player.positionStream,
-          builder: (context, snapshot) {
-            final nowPlaying = context.read<PlayerProvider>().nowPlaying;
-            final duration = nowPlaying.value.durationMs;
+      builder:
+          (context, value, child) => Selector<PlayerProvider, bool>(
+            selector: (_, provider) => provider.buffering,
+            builder:
+                (_, buffering, _) => StreamBuilder<Duration>(
+                  stream: context.read<PlayerProvider>().player.positionStream,
+                  builder: (context, snapshot) {
+                    final nowPlaying =
+                        context.read<PlayerProvider>().nowPlaying;
+                    final duration = nowPlaying.value.durationMs;
 
-            double? progress;
-            if (!buffering && duration != null && snapshot.hasData) {
-              progress = snapshot.requireData.inMilliseconds / duration;
-            }
+                    double? progress;
+                    if (!buffering && duration != null && snapshot.hasData) {
+                      progress = snapshot.requireData.inMilliseconds / duration;
+                    }
 
-            return StreamBuilder(
-              stream: context.read<PlayerProvider>().player.speedStream,
-              initialData: context.read<PlayerProvider>().player.speed,
-              builder: (_, speed) => LinearProgressIndicator(
-                minHeight: adaptiveIndicatorHeight,
-                color: speed.data == 1.0 ? null : Colors.redAccent,
-                value: progress?.isInfinite==true ? null: progress,
-              ),
-            );
-          },
-        ),
-      ),
+                    return StreamBuilder(
+                      stream: context.read<PlayerProvider>().player.speedStream,
+                      initialData: context.read<PlayerProvider>().player.speed,
+                      builder:
+                          (_, speed) => LinearProgressIndicator(
+                            minHeight: adaptiveIndicatorHeight,
+                            color: speed.data == 1.0 ? null : Colors.redAccent,
+                            value:
+                                progress?.isInfinite == true ? null : progress,
+                          ),
+                    );
+                  },
+                ),
+          ),
     );
   }
 
@@ -166,26 +174,27 @@ class MiniPlayerSheet extends StatelessWidget {
   Widget leading(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: context.read<PlayerProvider>().nowPlaying,
-      builder: (context, media, _) => StreamBuilder(
-        stream: context.read<PlayerProvider>().sleepTimerCountdown,
-        initialData: context.read<PlayerProvider>().sleepTimer,
-        builder: (context, snapshot) => CircleAvatar(
-          radius: 24,
-          backgroundImage: NetworkToFileImage(
-            url: media.thumbnailStd,
-            file: MediaClient().thumbnailFile(media.thumbnailStd),
+      builder:
+          (context, media, _) => StreamBuilder(
+            stream: context.read<PlayerProvider>().sleepTimerCountdown,
+            initialData: context.read<PlayerProvider>().sleepTimer,
+            builder:
+                (context, snapshot) => CircleAvatar(
+                  radius: 24,
+                  backgroundImage: NetworkToFileImage(
+                    url: media.thumbnail ?? "",
+                    file: MediaClient().thumbnailFile(media.thumbnail ?? ""),
+                  ),
+                  child: const PlayerStateIndicator.static(),
+                ),
           ),
-          child: const PlayerStateIndicator.static(),
-        ),
-      ),
     );
   }
 
   Widget _secondaryAction(BuildContext context) {
-    final action = context
-        .read<Store>()
-        .box<Preferences>()
-        .value<int>(Preference.miniPlayerSecondaryAction);
+    final action = context.read<Store>().box<Preferences>().value<int>(
+      Preference.miniPlayerSecondaryAction,
+    );
 
     switch (MiniPlayerExtraAction.values[action]) {
       case MiniPlayerExtraAction.Close:
@@ -195,7 +204,8 @@ class MiniPlayerSheet extends StatelessWidget {
         );
       case MiniPlayerExtraAction.Shuffle:
         return IconButton(
-          onPressed: () => context.read<PlayerProvider>().shuffle(
+          onPressed:
+              () => context.read<PlayerProvider>().shuffle(
                 preserveCurrentIndex: false,
               ),
           icon: const Icon(Icons.shuffle_rounded),
@@ -222,15 +232,16 @@ class MiniPlayerSheet extends StatelessWidget {
       useSafeArea: true,
       useRootNavigator: true,
       barrierColor: adaptiveSheetBarrierColor,
-      builder: (_) => MultiProvider(
-        providers: [
-          Provider.value(value: context.read<Store>()),
-          ChangeNotifierProvider<PlayerProvider>.value(
-            value: context.read<PlayerProvider>(),
+      builder:
+          (_) => MultiProvider(
+            providers: [
+              Provider.value(value: context.read<Store>()),
+              ChangeNotifierProvider<PlayerProvider>.value(
+                value: context.read<PlayerProvider>(),
+              ),
+            ],
+            child: const LargePlayerSheet(),
           ),
-        ],
-        child: const LargePlayerSheet(),
-      ),
     );
   }
 

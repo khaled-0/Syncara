@@ -22,7 +22,7 @@ class PreferenceScreen extends StatelessWidget {
           if (!Platform.isIOS)
             ValueListenableBuilder(
               valueListenable: AppTheme.configNotifier,
-              builder: (_, theme, __) => SwitchListTile(
+              builder: (_, theme, _) => SwitchListTile(
                 value: theme.dynamicColors,
                 onChanged: (value) {
                   AppTheme.setConfig(
@@ -37,7 +37,7 @@ class PreferenceScreen extends StatelessWidget {
             ),
           ValueListenableBuilder(
             valueListenable: AppTheme.configNotifier,
-            builder: (_, theme, __) => SwitchListTile(
+            builder: (_, theme, _) => SwitchListTile(
               value: theme.pitchBlack,
               onChanged: (value) {
                 AppTheme.setConfig(

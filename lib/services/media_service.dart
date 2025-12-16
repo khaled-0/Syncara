@@ -4,8 +4,9 @@ import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:syncara/model/common.dart';
 import 'package:syncara/model/preferences.dart';
-import 'package:syncara/provider/player_provider.dart';
-import 'package:syncara/provider/playlist_provider.dart';
+
+import '../data/providers/player_provider.dart';
+import '../data/providers/playlist/playlist_provider.dart';
 
 class MediaService extends BaseAudioHandler {
   /// <-- Singleton

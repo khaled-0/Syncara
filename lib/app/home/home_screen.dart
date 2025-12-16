@@ -12,8 +12,8 @@ import 'package:syncara/app/more/more_tab.dart';
 import 'package:syncara/clients/in_app_update_client.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
-import 'package:syncara/provider/library_provider.dart';
 
+import '../../data/providers/library/library_provider.dart';
 import 'home_app_bar.dart';
 import 'home_navigation_bar.dart';
 

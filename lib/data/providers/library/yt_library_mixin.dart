@@ -1,14 +1,7 @@
-import 'package:flutter/foundation.dart';
-import 'package:html/parser.dart' as html;
-import 'package:objectbox/objectbox.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
+part of 'library_provider.dart';
 
-import '../../../services/downloader_service.dart';
-import '../../models/playlist.dart';
-import '../playlist/playlist_provider.dart';
-
-mixin YTLibraryMixin {
-  final _ytClient = yt.YoutubeExplode().playlists;
+mixin _YtLibraryMixin {
+  final _ytClient = GetIt.I<yt.YoutubeExplode>().playlists;
 
   List<Playlist> get entries;
 

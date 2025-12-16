@@ -4,9 +4,10 @@ import 'package:syncara/app/more/downloads/active_downloads_screen.dart';
 import 'package:syncara/app/more/preferences/components/drag_handle.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/data/models/media.dart';
-import 'package:syncara/provider/playlist_provider.dart';
 import 'package:syncara/services/downloader_service.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+import '../../data/providers/playlist/playlist_provider.dart';
 
 class MediaMenuSheet extends StatelessWidget {
   final Media media;
@@ -34,9 +35,7 @@ class MediaMenuSheet extends StatelessWidget {
             ListTile(
               onTap: () {
                 MediaClient().delete(media);
-                context.read<PlaylistProvider>()
-                  ..updateDownloadStatus(media: media)
-                  ..notifyListeners();
+                context.read<PlaylistProvider>().notifyListeners();
 
                 Navigator.pop(context);
               },
@@ -45,7 +44,7 @@ class MediaMenuSheet extends StatelessWidget {
             ),
           ListTile(
             onTap: () {
-              launchUrlString(media.externalURL);
+              launchUrlString(media.url);
               Navigator.pop(context);
             },
             leading: const Icon(Icons.open_in_new_rounded),

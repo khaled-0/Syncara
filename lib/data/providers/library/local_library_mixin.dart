@@ -1,12 +1,6 @@
-import 'dart:io';
+part of 'library_provider.dart';
 
-import 'package:objectbox/objectbox.dart';
-import 'package:path/path.dart' as p;
-import 'package:syncara/extensions.dart';
-
-import '../../models/playlist.dart';
-
-mixin LocalLibraryMixin {
+mixin _LocalLibraryMixin {
   List<Playlist> get entries;
 
   Store get store;

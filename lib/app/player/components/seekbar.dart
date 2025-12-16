@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/extensions.dart';
-import 'package:syncara/provider/player_provider.dart';
+
+import '../../../data/providers/player_provider.dart';
+
 
 class SeekBar extends StatefulWidget {
   const SeekBar({super.key});

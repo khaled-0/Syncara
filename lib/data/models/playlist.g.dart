@@ -13,7 +13,7 @@ abstract class _$PlaylistCWProxy {
 
   Playlist author(String author);
 
-  Playlist thumbnail(String thumbnail);
+  Playlist thumbnail(String? thumbnail);
 
   Playlist thumbnailHiRes(String? thumbnailHiRes);
 
@@ -33,7 +33,7 @@ abstract class _$PlaylistCWProxy {
     String url,
     String title,
     String author,
-    String thumbnail,
+    String? thumbnail,
     String? thumbnailHiRes,
     int itemCount,
     String? description,
@@ -57,7 +57,7 @@ class _$PlaylistCWProxyImpl implements _$PlaylistCWProxy {
   Playlist author(String author) => this(author: author);
 
   @override
-  Playlist thumbnail(String thumbnail) => this(thumbnail: thumbnail);
+  Playlist thumbnail(String? thumbnail) => this(thumbnail: thumbnail);
 
   @override
   Playlist thumbnailHiRes(String? thumbnailHiRes) =>
@@ -109,7 +109,7 @@ class _$PlaylistCWProxyImpl implements _$PlaylistCWProxy {
           thumbnail == const $CopyWithPlaceholder()
               ? _value.thumbnail
               // ignore: cast_nullable_to_non_nullable
-              : thumbnail as String,
+              : thumbnail as String?,
       thumbnailHiRes:
           thumbnailHiRes == const $CopyWithPlaceholder()
               ? _value.thumbnailHiRes
@@ -146,6 +146,7 @@ extension $PlaylistCopyWith on Playlist {
   /// Playlist(...).copyWithNull(firstField: true, secondField: true)
   /// ````
   Playlist copyWithNull({
+    bool thumbnail = false,
     bool thumbnailHiRes = false,
     bool description = false,
     bool customTitle = false,
@@ -154,7 +155,7 @@ extension $PlaylistCopyWith on Playlist {
       url: url,
       title: title,
       author: author,
-      thumbnail: thumbnail,
+      thumbnail: thumbnail == true ? null : this.thumbnail,
       thumbnailHiRes: thumbnailHiRes == true ? null : this.thumbnailHiRes,
       itemCount: itemCount,
       description: description == true ? null : this.description,

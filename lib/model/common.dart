@@ -26,7 +26,7 @@ class LyricMetadata {
     yt.ClosedCaptionTrackInfo cc,
   ) {
     return LyricMetadata(
-      media.id,
+      media.url,
       cc.language.name.split("-").first.trim(),
       cc.language.code,
       ytCCObj: cc,

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/clients/media_client.dart';
-import 'package:syncara/extensions.dart';
 import 'package:syncara/data/models/media.dart';
-import 'package:syncara/provider/player_provider.dart';
+import 'package:syncara/extensions.dart';
+
+import '../../../data/providers/player_provider.dart';
 
 class Artwork extends StatefulWidget {
   final Media? placeholderMedia;
@@ -23,8 +24,9 @@ class _ArtworkState extends State<Artwork> {
     super.initState();
 
     final playing = context.read<PlayerProvider>().nowPlaying.value;
-    if (playing.thumbnailLocal != null) {
-      image = MemoryImage(playing.thumbnailLocal!.bytes);
+    final imageData = playing.fileMetadata()?.pictures.firstOrNull;
+    if (imageData != null) {
+      image = MemoryImage(imageData.bytes);
     }
   }
 
@@ -78,13 +80,13 @@ class _ArtworkState extends State<Artwork> {
       foregroundImage: NetworkToFileImage(
         url: media.thumbnailHiRes,
         file: MediaClient().thumbnailFile(
-          media.thumbnailHiRes,
+          media.thumbnailHiRes ?? "",
         ),
       ),
       backgroundImage: NetworkToFileImage(
-        url: media.thumbnailStd,
+        url: media.thumbnail ?? "",
         file: MediaClient().thumbnailFile(
-          media.thumbnailStd,
+          media.thumbnail ?? "",
         ),
       ),
     );

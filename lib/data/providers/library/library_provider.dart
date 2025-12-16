@@ -1,11 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
+import 'package:html/parser.dart' as html;
+import 'package:path/path.dart' as p;
 import 'package:syncara/data/models/playlist.dart';
-import 'package:syncara/data/providers/library/local_library_mixin.dart';
-import 'package:syncara/data/providers/library/yt_library_mixin.dart';
+import 'package:syncara/extensions.dart';
 import 'package:syncara/model/objectbox.g.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
+
+import '../../../services/downloader_service.dart';
+import '../playlist/playlist_provider.dart';
+
+part 'local_library_mixin.dart';
+part 'yt_library_mixin.dart';
 
 class LibraryProvider extends ChangeNotifier
-    with YTLibraryMixin, LocalLibraryMixin {
+    with _YtLibraryMixin, _LocalLibraryMixin {
   @override
   final Store store;
   @override

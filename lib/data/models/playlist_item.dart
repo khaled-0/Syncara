@@ -14,4 +14,15 @@ class PlaylistItem {
   final ToOne<Media> media = ToOne<Media>();
 
   PlaylistItem({required this.position});
+
+  factory PlaylistItem.create({
+    required final int position,
+    required final Media media,
+    required final Playlist playlist,
+  }) {
+    final item = PlaylistItem(position: position);
+    item.playlist.target = playlist;
+    item.media.target = media;
+    return item;
+  }
 }
