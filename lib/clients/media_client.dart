@@ -5,7 +5,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:syncara/clients/yt_media_client.dart';
 import 'package:syncara/model/common.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:syncara/services/downloader_service.dart';
 
 abstract class BaseMediaClient {
@@ -40,7 +40,7 @@ class MediaClient implements BaseMediaClient {
 
   String get thumbnailsDir => path.join(_storageDir, "thumbnails");
 
-  File mediaFile(Media media) => File(path.join(downloadsDir, media.id));
+  File mediaFile(Media media) => File(media.localPath!);
 
   File thumbnailFile(String url) {
     if (!url.startsWith("http")) return File(url);

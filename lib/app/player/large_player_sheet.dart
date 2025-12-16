@@ -11,7 +11,7 @@ import 'package:syncara/app/player/components/seekbar.dart';
 import 'package:syncara/app/player/player_menu_sheet.dart';
 import 'package:syncara/app/player/player_queue_sheet.dart';
 import 'package:syncara/extensions.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:syncara/model/preferences.dart';
 import 'package:syncara/provider/player_provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -227,10 +227,10 @@ class _LargePlayerSheetState extends State<LargePlayerSheet>
   String playlistInfo(BuildContext context) {
     final playlist = context.read<PlayerProvider>().playlistInfo;
     if (playlist.length == 1) {
-      return "${playlist[0].getTitle} by ${playlist[0].author}";
+      return "${playlist[0].displayTitle} by ${playlist[0].author}";
     }
 
-    return "${playlist[0].getTitle} and ${playlist.length - 1} more";
+    return "${playlist[0].displayTitle} and ${playlist.length - 1} more";
   }
 
   AppBar get appBar {

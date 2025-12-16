@@ -5,7 +5,7 @@ import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/player/components/action_buttons.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/model/common.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
 import 'package:syncara/provider/player_provider.dart';

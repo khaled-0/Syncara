@@ -5,7 +5,7 @@ import 'package:syncara/app/more/preferences/components/choice_dialog.dart';
 import 'package:syncara/app/player/components/queue_playlist_filter.dart';
 import 'package:syncara/app/playlist/media_entry_builder.dart';
 import 'package:syncara/model/common.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:syncara/provider/player_provider.dart';
 
 class PlayerQueueSheet extends StatelessWidget {

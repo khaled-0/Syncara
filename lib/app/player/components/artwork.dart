@@ -3,7 +3,7 @@ import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/extensions.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:syncara/provider/player_provider.dart';
 
 class Artwork extends StatefulWidget {
@@ -76,9 +76,9 @@ class _ArtworkState extends State<Artwork> {
 
     return CircleAvatar(
       foregroundImage: NetworkToFileImage(
-        url: media.thumbnailMax,
+        url: media.thumbnailHiRes,
         file: MediaClient().thumbnailFile(
-          media.thumbnailMax,
+          media.thumbnailHiRes,
         ),
       ),
       backgroundImage: NetworkToFileImage(

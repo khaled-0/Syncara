@@ -6,7 +6,7 @@ import 'package:syncara/app/player/components/player_state_indicator.dart';
 import 'package:syncara/app/player/large_player_sheet.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/model/common.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
 import 'package:syncara/provider/player_provider.dart';
@@ -242,9 +242,9 @@ class MiniPlayerSheet extends StatelessWidget {
   String playlistInfo(BuildContext context) {
     final playlist = context.read<PlayerProvider>().playlistInfo;
     if (playlist.length == 1) {
-      return "${playlist[0].getTitle} by ${playlist[0].author}";
+      return "${playlist[0].displayTitle} by ${playlist[0].author}";
     }
 
-    return "${playlist[0].getTitle} and ${playlist.length - 1} more";
+    return "${playlist[0].displayTitle} and ${playlist.length - 1} more";
   }
 }

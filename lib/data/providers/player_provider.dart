@@ -6,13 +6,13 @@ import 'package:just_audio/just_audio.dart';
 // ignore: depend_on_referenced_packages Just for Types. Doesn't matter
 import 'package:rxdart/rxdart.dart' show BehaviorSubject;
 import 'package:syncara/clients/media_client.dart';
+import 'package:syncara/data/models/media.dart';
+import 'package:syncara/data/models/playlist.dart';
+import 'package:syncara/data/providers/playlist/playlist_provider.dart';
 import 'package:syncara/extensions.dart';
 import 'package:syncara/model/common.dart';
-import 'package:syncara/model/media.dart';
 import 'package:syncara/model/objectbox.g.dart';
-import 'package:syncara/model/playlist.dart';
 import 'package:syncara/model/preferences.dart';
-import 'package:syncara/provider/playlist_provider.dart';
 import 'package:syncara/services/media_service.dart';
 
 class PlayerProvider extends ChangeNotifier {
@@ -65,7 +65,7 @@ class PlayerProvider extends ChangeNotifier {
   }) {
     _playlistInfo.add(provider.playlist);
     _playlist.addAll(provider.medias);
-    _originalPlaylistOrderIds.addAll(_playlist.map((e) => e.id));
+    _originalPlaylistOrderIds.addAll(_playlist.map((e) => e.url));
     prepare?.call(this);
     nowPlaying = ValueNotifier(start ?? _playlist.first);
     nowPlaying.addListener(beginPlay);
@@ -132,7 +132,7 @@ class PlayerProvider extends ChangeNotifier {
       (media) => !_playlist.contains(media),
     );
     _playlist.addAll(uniqueMedias);
-    _originalPlaylistOrderIds.addAll(uniqueMedias.map((e) => e.id));
+    _originalPlaylistOrderIds.addAll(uniqueMedias.map((e) => e.url));
     notifyListeners();
   }
 
@@ -149,20 +149,20 @@ class PlayerProvider extends ChangeNotifier {
       if (_sleepAfterSongEnd) setSleepTimer(afterSong: _sleepAfterSongEnd);
 
       final thumbnail = MediaClient().thumbnailFile(
-        nowPlaying.value.thumbnailStd,
+        nowPlaying.value.thumbnail ?? "",
       );
 
-      var artUri = Uri.parse(nowPlaying.value.thumbnailStd);
+      var artUri = Uri.parse(nowPlaying.value.thumbnail ?? "");
       if (thumbnail.existsSync()) artUri = thumbnail.uri;
 
       // Post service notification update
       notificationMetadata?.add(
         MediaItem(
-          id: nowPlaying.value.id,
+          id: nowPlaying.value.url,
           title: nowPlaying.value.title,
           artist: nowPlaying.value.author,
           duration: nowPlaying.value.duration,
-          album: nowPlayingPlaylist?.getTitle,
+          album: nowPlayingPlaylist?.displayTitle,
           artUri: artUri,
         ),
       );

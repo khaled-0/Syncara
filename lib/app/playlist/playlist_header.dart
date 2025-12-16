@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/playlist/playlist_menu_sheet.dart';
 import 'package:syncara/clients/media_client.dart';
-import 'package:syncara/model/playlist.dart';
+import 'package:syncara/data/models/playlist.dart';
 import 'package:syncara/provider/playlist_provider.dart';
 
 class PlaylistHeader extends StatelessWidget {
@@ -189,9 +189,9 @@ class PlaylistHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(playlist(context).getTitle, style: titleStyle, maxLines: 1),
+        Text(playlist(context).displayTitle, style: titleStyle, maxLines: 1),
         Text(
-          "${playlist(context).videoCount} videos \u2022 by ${playlist(context).author}",
+          "${playlist(context).itemCount} videos \u2022 by ${playlist(context).author}",
           style: bodyStyle,
           maxLines: 1,
         ),
@@ -204,7 +204,7 @@ class PlaylistHeader extends StatelessWidget {
       context: context,
       builder:
           (c) => AlertDialog(
-            title: Text(playlist(context).getTitle),
+            title: Text(playlist(context).displayTitle),
             content: SingleChildScrollView(
               child: Text(playlist(context).description!),
             ),
@@ -227,9 +227,9 @@ class PlaylistHeader extends StatelessWidget {
     }
 
     return NetworkToFileImage(
-      url: playlist(context).thumbnailMax,
+      url: playlist(context).thumbnailHiRes,
       file: MediaClient().thumbnailFile(
-        playlist(context).thumbnailMax.split("?")[0],
+        playlist(context).thumbnailHiRes.split("?")[0],
       ),
     );
   }

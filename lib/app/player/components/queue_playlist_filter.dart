@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:syncara/model/playlist.dart';
+import 'package:syncara/data/models/playlist.dart';
 import 'package:syncara/provider/player_provider.dart';
 
 class QueuePlaylistFilter extends StatelessWidget {
@@ -25,7 +25,7 @@ class QueuePlaylistFilter extends StatelessWidget {
                   selected: true,
                   showCheckmark: false,
                   visualDensity: VisualDensity.compact,
-                  label: Text(playlists[index].getTitle),
+                  label: Text(playlists[index].displayTitle),
                   onSelected: (value) {
                     // TODO Filter
                   },

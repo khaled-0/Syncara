@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/model/common.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class YTMediaClient implements BaseMediaClient {
@@ -16,7 +16,7 @@ class YTMediaClient implements BaseMediaClient {
         final videoManifest = await ytClient.getManifest(data[1]);
         return videoManifest.audio.withHighestBitrate().url;
       },
-      [_ytClient.streamsClient, media.id],
+      [_ytClient.streamsClient, media.url],
     );
 
     return AudioSource.uri(streamUri);
@@ -36,7 +36,7 @@ class YTMediaClient implements BaseMediaClient {
             .map((e) => LyricMetadata.fromYTCaption(media, e))
             .toList();
       },
-      [_ytClient.closedCaptions, media.id],
+      [_ytClient.closedCaptions, media.url],
     );
   }
 

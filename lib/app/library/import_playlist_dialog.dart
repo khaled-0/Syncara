@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:syncara/provider/library_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
+import '../../data/providers/library/library_provider.dart';
+
 class ImportPlaylistDialog extends StatefulWidget {
   const ImportPlaylistDialog({super.key, this.url});
 
@@ -40,7 +42,7 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
   Future<void> launchMusicDirectoryPicker() async {
     FilePicker.platform.getDirectoryPath().then((value) {
       if (value == null || !mounted) return;
-      context.read<LibraryProvider>().importLocalPlaylist(Directory(value));
+      context.read<LibraryProvider>().importLocalPlaylist();
       Navigator.pop(context);
     });
   }

@@ -3,7 +3,7 @@ import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/library/library_menu_sheet.dart';
 import 'package:syncara/model/objectbox.g.dart';
-import 'package:syncara/model/playlist.dart';
+import 'package:syncara/data/models/playlist.dart';
 import 'package:syncara/provider/library_provider.dart';
 
 import '../../clients/media_client.dart';
@@ -54,13 +54,13 @@ class LibraryEntryBuilder extends StatelessWidget {
           ),
         ),
         title: Text(
-          playlist.getTitle,
+          playlist.displayTitle,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
         subtitleTextStyle: Theme.of(context).textTheme.bodySmall,
         subtitle: Text(
-          "${playlist.author} \u2022 ${playlist.videoCount} videos",
+          "${playlist.author} \u2022 ${playlist.itemCount} videos",
         ),
         trailing: IconButton(
           onPressed:
@@ -85,9 +85,9 @@ class LibraryEntryBuilder extends StatelessWidget {
     if (playlist.isLocal) return FileImage(playlist.localThumb);
 
     return NetworkToFileImage(
-      url: playlist.thumbnailStd,
+      url: playlist.thumbnail,
       file: MediaClient().thumbnailFile(
-        playlist.thumbnailStd,
+        playlist.thumbnail,
       ),
     );
   }

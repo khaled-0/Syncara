@@ -1,0 +1,3 @@
+mixin LocalPlaylistMixin {
+
+}

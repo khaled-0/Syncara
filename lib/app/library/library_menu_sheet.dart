@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/more/preferences/components/drag_handle.dart';
 import 'package:syncara/model/objectbox.g.dart';
-import 'package:syncara/model/playlist.dart';
+import 'package:syncara/data/models/playlist.dart';
 import 'package:syncara/provider/library_provider.dart';
 import 'package:syncara/provider/playlist_provider.dart';
 import 'package:syncara/services/media_service.dart';

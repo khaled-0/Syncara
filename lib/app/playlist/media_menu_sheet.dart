@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:syncara/app/more/downloads/active_downloads_screen.dart';
 import 'package:syncara/app/more/preferences/components/drag_handle.dart';
 import 'package:syncara/clients/media_client.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:syncara/provider/playlist_provider.dart';
 import 'package:syncara/services/downloader_service.dart';
 import 'package:url_launcher/url_launcher_string.dart';

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:syncara/app/playlist/media_menu_sheet.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/extensions.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:syncara/provider/playlist_provider.dart';
 
 class MediaEntryBuilder extends StatelessWidget {

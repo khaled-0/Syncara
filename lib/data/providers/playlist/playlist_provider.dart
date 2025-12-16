@@ -2,26 +2,34 @@ import 'dart:io';
 
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 import 'package:flutter/foundation.dart';
-import 'package:syncara/clients/media_client.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
+import 'package:syncara/data/models/playlist.dart';
 import 'package:syncara/model/objectbox.g.dart';
-import 'package:syncara/model/playlist.dart';
 import 'package:syncara/services/downloader_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
+
+import '../../models/playlist_item.dart';
 
 class PlaylistProvider extends ChangeNotifier {
   final Store store;
   final _ytClient = yt.YoutubeExplode().playlists;
   final Playlist playlist;
+  final List<PlaylistItem> items = List.of([]);
   final List<Media> medias = List.empty(growable: true);
 
   PlaylistProvider(this.store, this.playlist, {bool sync = true}) {
+    final playlistItemBox = store.box<PlaylistItem>();
+
+    final items = playlistItemBox.query(PlaylistItem_.playlist.equals(playlist.objectId))
+            .order(PlaylistItem_.position)
+            .build()
+            .find();
+
     final box = store.box<Media>();
     for (final id in playlist.videoIds) {
       final media = box.query(Media_.id.equals(id)).build().findFirst();
       if (media != null) medias.add(media);
     }
-    updateDownloadStatus();
     notifyListeners();
     if (sync) refresh();
   }
@@ -45,11 +53,7 @@ class PlaylistProvider extends ChangeNotifier {
         return;
       }
 
-      if (!await DownloaderService.hasInternet) {
-        updateDownloadStatus();
-        notifyListeners();
-        return;
-      }
+      if (!await DownloaderService.hasInternet) return;
 
       final vids = await compute(
         (data) async {
@@ -70,23 +74,9 @@ class PlaylistProvider extends ChangeNotifier {
       // Save to DB
       store.box<Playlist>().put(playlist);
       store.box<Media>().putMany(medias);
-      updateDownloadStatus();
       notifyListeners();
     } catch (_) {
       //TODO Error
-    }
-  }
-
-  void updateDownloadStatus({Media? media}) {
-    if (playlist.isLocal) return;
-
-    if (media != null) {
-      media.downloaded = MediaClient().isDownloaded(media);
-      return;
-    }
-
-    for (final media in medias) {
-      media.downloaded = MediaClient().isDownloaded(media);
     }
   }
 

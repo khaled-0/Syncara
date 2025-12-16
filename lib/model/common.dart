@@ -1,5 +1,5 @@
 import 'package:objectbox/objectbox.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 @Entity()

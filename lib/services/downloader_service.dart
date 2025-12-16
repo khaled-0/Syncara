@@ -5,7 +5,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:syncara/app/more/downloads/active_downloads_screen.dart';
 import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/main.dart';
-import 'package:syncara/model/media.dart';
+import 'package:syncara/data/models/media.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
