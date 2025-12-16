@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +14,6 @@ import 'package:syncara/model/preferences.dart';
 import 'package:syncara/services/downloader_service.dart';
 import 'package:syncara/services/media_service.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 import 'l10n/app_localizations.dart';
 
@@ -48,8 +46,6 @@ void main() async {
   await DownloaderService.init(objectDB);
   await MediaService.init(objectDB);
   await MediaClient.init();
-
-  GetIt.I.registerLazySingleton<yt.YoutubeExplode>(yt.YoutubeExplode.new);
 
   MaterialApp app({
     required ThemeData light,

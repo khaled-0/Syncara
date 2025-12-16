@@ -1,7 +1,7 @@
 part of 'library_provider.dart';
 
 mixin _YtLibraryMixin {
-  final _ytClient = GetIt.I<yt.YoutubeExplode>().playlists;
+  final _ytClient = yt.YoutubeExplode().playlists;
 
   List<Playlist> get entries;
 
@@ -45,7 +45,7 @@ mixin _YtLibraryMixin {
     }
   }
 
-  Future<void> importYTPlaylist(String url) async {
+  Future<void> importYtPlaylist(String url) async {
     final playlist = await _ytClient.get(url);
     if (playlist.videoCount == 0) throw "Playlist is empty!";
 
@@ -58,9 +58,11 @@ mixin _YtLibraryMixin {
     );
 
     entries.add(playlistWithThumb);
+    store.box<Playlist>().put(entries.last);
+
     // Preload the playlist for faster initial load time
     await PlaylistProvider(store, entries.last, sync: false).refresh();
 
-    store.box<Playlist>().put(entries.last);
+    notifyListeners();
   }
 }

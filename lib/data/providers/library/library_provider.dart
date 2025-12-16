@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:get_it/get_it.dart';
 import 'package:html/parser.dart' as html;
 import 'package:path/path.dart' as p;
 import 'package:syncara/data/models/playlist.dart';
@@ -10,6 +9,7 @@ import 'package:syncara/model/objectbox.g.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 import '../../../services/downloader_service.dart';
+import '../../models/playlist_item.dart';
 import '../playlist/playlist_provider.dart';
 
 part 'local_library_mixin.dart';
@@ -31,7 +31,7 @@ class LibraryProvider extends ChangeNotifier
   Future<void> importPlaylist(String url) async {
     return switch (PlaylistType.fromUrl(url)) {
       PlaylistType.local => importLocalPlaylist(Uri.parse(url)),
-      PlaylistType.youtube => importYTPlaylist(url),
+      PlaylistType.youtube => importYtPlaylist(url),
     };
   }
 
@@ -57,6 +57,11 @@ class LibraryProvider extends ChangeNotifier
       Playlist_.url.equals(playlist.url),
     );
     query.build().removeAsync();
+
+    final children = store.box<PlaylistItem>().query(
+      PlaylistItem_.playlist.equals(playlist.objectId),
+    );
+    children.build().removeAsync();
     notifyListeners();
   }
 

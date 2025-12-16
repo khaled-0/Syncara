@@ -12,7 +12,7 @@ mixin _YtPlaylistMixin {
   @visibleForOverriding
   void updateItems(List<PlaylistItem> items);
 
-  final _ytClient = GetIt.I<yt.YoutubeExplode>().playlists;
+  final _ytClient = yt.YoutubeExplode().playlists;
 
   Future<void> refreshYoutubePlaylist() async {
     if (!await DownloaderService.hasInternet) return;
