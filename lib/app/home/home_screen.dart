@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:provider/provider.dart';
 import 'package:listen_sharing_intent/listen_sharing_intent.dart';
+import 'package:provider/provider.dart';
 import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/library/import_playlist_dialog.dart';
 import 'package:syncara/app/library/library_tab.dart';
@@ -76,7 +76,10 @@ class HomeTab extends StatefulWidget {
   State<HomeTab> createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab> {
+class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   final homeNavigator = GlobalKey<NavigatorState>();
   StreamSubscription? shareHandler;
   late final prefs = context.read<Store>().box<Preferences>();
@@ -84,11 +87,11 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void initState() {
     super.initState();
-    // TODO: Add IOS Support
+    // TODO: Add IOS Support (https://pub.dev/packages/receive_sharing_intent)
     if (Platform.isAndroid) {
-      shareHandler = ReceiveSharingIntent.instance
-          .getMediaStream()
-          .listen(handleSharedData);
+      shareHandler = ReceiveSharingIntent.instance.getMediaStream().listen(
+        handleSharedData,
+      );
 
       ReceiveSharingIntent.instance
           .getInitialMedia()
