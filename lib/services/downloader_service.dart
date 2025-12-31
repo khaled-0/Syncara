@@ -19,9 +19,13 @@ class DownloaderService {
 
   factory DownloaderService() => _instance;
 
+  late final Store _store;
+
   /// Singleton -->
+
   /// Must call before runApp
   static Future<void> init(Store store) async {
+    DownloaderService._instance._store = store;
     final max = store.box<Preferences>().value(Preference.maxParallelDownload);
 
     await FileDownloader().configure(
@@ -70,6 +74,13 @@ class DownloaderService {
         updates: Updates.statusAndProgress,
       );
 
+      // TODO perform this after download finishes
+      // https://github.com/781flyingdutchman/background_downloader/issues/615
+      _store.box<Media>().putAsync(
+        media.copyWith(localPath: await task.filePath()),
+        mode: PutMode.update,
+      );
+
       await FileDownloader().enqueue(task);
     } catch (_) {
       //TODO Error
@@ -91,16 +102,23 @@ class DownloaderService {
         if (_abortQueueing) break;
 
         final url = (await MediaClient().getMediaSource(media)).url;
-        FileDownloader().enqueue(
-          ParallelDownloadTask(
-            taskId: media.url,
-            url: url,
-            displayName: media.title,
-            directory: MediaClient().downloadsDir,
-            filename: p.basename(media.url),
-            baseDirectory: BaseDirectory.root,
-            updates: Updates.statusAndProgress,
-          ),
+        final task = ParallelDownloadTask(
+          taskId: media.url,
+          url: url,
+          displayName: media.title,
+          directory: MediaClient().downloadsDir,
+          filename: p.basename(media.url),
+          baseDirectory: BaseDirectory.root,
+          updates: Updates.statusAndProgress,
+        );
+
+        FileDownloader().enqueue(task);
+
+        // TODO perform this after download finishes
+        // https://github.com/781flyingdutchman/background_downloader/issues/615
+        _store.box<Media>().putAsync(
+          media.copyWith(localPath: await task.filePath()),
+          mode: PutMode.update,
         );
       } catch (_) {
         // TODO Error

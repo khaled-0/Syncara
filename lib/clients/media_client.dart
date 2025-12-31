@@ -42,7 +42,9 @@ class MediaClient implements BaseMediaClient {
 
   File mediaFile(Media media) {
     return File(
-      media.localPath ?? path.join(downloadsDir, path.basename(media.url)),
+      media.localPath ??
+          // Legacy
+          path.join(downloadsDir, path.basename(media.url).split("=").last),
     );
   }
 
