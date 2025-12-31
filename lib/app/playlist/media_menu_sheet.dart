@@ -14,6 +14,10 @@ class MediaMenuSheet extends StatelessWidget {
 
   const MediaMenuSheet(this.media, {super.key});
 
+  bool get downloaded {
+    return media.downloaded || MediaClient().isDownloaded(media);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -21,7 +25,7 @@ class MediaMenuSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const DragHandle(),
-          if (media.downloaded != true)
+          if (!downloaded)
             ListTile(
               onTap: () {
                 DownloaderService().download(media);
@@ -31,7 +35,7 @@ class MediaMenuSheet extends StatelessWidget {
               leading: const Icon(Icons.download_rounded),
               title: const Text("Download"),
             ),
-          if (media.downloaded == true)
+          if (downloaded)
             ListTile(
               onTap: () {
                 MediaClient().delete(media);

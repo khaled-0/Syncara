@@ -22,6 +22,10 @@ class MediaEntryBuilder extends StatelessWidget {
     this.selected = false,
   });
 
+  bool get downloaded {
+    return media.downloaded || MediaClient().isDownloaded(media);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -36,14 +40,13 @@ class MediaEntryBuilder extends StatelessWidget {
             child: Image(
               width: 80,
               height: double.maxFinite,
-              errorBuilder:
-                  (_, _, _) => SizedBox(
-                    width: 80,
-                    height: double.maxFinite,
-                    child: ColoredBox(
-                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                    ),
-                  ),
+              errorBuilder: (_, _, _) => SizedBox(
+                width: 80,
+                height: double.maxFinite,
+                child: ColoredBox(
+                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                ),
+              ),
               frameBuilder: (context, child, frame, synchronous) {
                 if (synchronous) return child;
                 return AnimatedOpacity(
@@ -93,7 +96,7 @@ class MediaEntryBuilder extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             TextSpan(
               children: [
-                if (media.downloaded == true)
+                if (downloaded)
                   const WidgetSpan(
                     child: Padding(
                       padding: EdgeInsets.only(right: 2),
@@ -114,18 +117,16 @@ class MediaEntryBuilder extends StatelessWidget {
 
   Widget menuButton(BuildContext context) {
     return IconButton(
-      onPressed:
-          () => showModalBottomSheet(
-            context: context,
-            useSafeArea: true,
-            useRootNavigator: true,
-            backgroundColor: Colors.transparent,
-            builder:
-                (_) => ChangeNotifierProvider.value(
-                  value: context.read<PlaylistProvider>(),
-                  child: MediaMenuSheet(media),
-                ),
-          ),
+      onPressed: () => showModalBottomSheet(
+        context: context,
+        useSafeArea: true,
+        useRootNavigator: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) => ChangeNotifierProvider.value(
+          value: context.read<PlaylistProvider>(),
+          child: MediaMenuSheet(media),
+        ),
+      ),
       icon: const Icon(Icons.more_vert_rounded, size: 18),
     );
   }
