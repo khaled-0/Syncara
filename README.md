@@ -1,6 +1,6 @@
 <img src="./docs/banner.png" width="100%" alt="Banner">
 
-# [Syncara](https://syncara.app/)
+# [Syncara](https://syncara.khaled0.me/)
 
 Sync YouTube playlists offline. Because YT Music \<insert reason here\>
 
@@ -108,9 +108,9 @@ Alternatively, you can try the nightly (unstable) build:
 
 ## Special Thanks
 
-- [@ilyassesalama](https://github.com/ilyassesalama) - For providing https://syncara.app
+- [@ilyassesalama](https://github.com/ilyassesalama) - For the logo & designs
 - [@PranavPurwar](https://github.com/PranavPurwar) - For building the homepage
-  at https://syncara.app
+  at https://syncara.khaled0.me
 - To all the open source devs for their wonderful libraries.
 - And to the peoples involved with this project in various ways
 
