@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/more/preferences/components/choice_dialog.dart';
 import 'package:syncara/model/common.dart';
 import 'package:syncara/model/preferences.dart';
+
+import '../../../data/models/playlist.dart';
 
 class PreferenceScreen extends StatelessWidget {
   const PreferenceScreen({super.key});
@@ -93,25 +96,26 @@ class PreferenceScreen extends StatelessWidget {
                 leading: const Icon(Icons.close_rounded),
                 title: const Text("Override close button"),
                 subtitle: Text(selected.name),
-                onTap: () => showDialog<NotificationCloseButton?>(
-                  context: context,
-                  builder: (_) => ChoiceDialog<NotificationCloseButton>(
-                    title: "Override close buttonn",
-                    icon: const Icon(Icons.close_rounded),
-                    selected: selected,
-                    options: {
-                      for (final i in NotificationCloseButton.values) ...{
-                        i.name: i
-                      }
-                    },
-                  ),
-                ).then((v) {
-                  if (!context.mounted || v == null) return;
-                  preferences(context).set(
-                    Preference.notifCloseButtonAction,
-                    v.index,
-                  );
-                }),
+                onTap: () =>
+                    showDialog<NotificationCloseButton?>(
+                      context: context,
+                      builder: (_) => ChoiceDialog<NotificationCloseButton>(
+                        title: "Override close buttonn",
+                        icon: const Icon(Icons.close_rounded),
+                        selected: selected,
+                        options: {
+                          for (final i in NotificationCloseButton.values) ...{
+                            i.name: i,
+                          },
+                        },
+                      ),
+                    ).then((v) {
+                      if (!context.mounted || v == null) return;
+                      preferences(context).set(
+                        Preference.notifCloseButtonAction,
+                        v.index,
+                      );
+                    }),
               );
             },
           ),
@@ -143,25 +147,26 @@ class PreferenceScreen extends StatelessWidget {
                 leading: const Icon(Icons.smart_button_rounded),
                 title: const Text("Mini player secondary action"),
                 subtitle: Text(selected.name),
-                onTap: () => showDialog<MiniPlayerExtraAction?>(
-                  context: context,
-                  builder: (_) => ChoiceDialog<MiniPlayerExtraAction>(
-                    title: "Mini player secondary action",
-                    icon: const Icon(Icons.smart_button_rounded),
-                    selected: selected,
-                    options: {
-                      for (final i in MiniPlayerExtraAction.values) ...{
-                        i.name: i
-                      }
-                    },
-                  ),
-                ).then((v) {
-                  if (!context.mounted || v == null) return;
-                  preferences(context).set(
-                    Preference.miniPlayerSecondaryAction,
-                    v.index,
-                  );
-                }),
+                onTap: () =>
+                    showDialog<MiniPlayerExtraAction?>(
+                      context: context,
+                      builder: (_) => ChoiceDialog<MiniPlayerExtraAction>(
+                        title: "Mini player secondary action",
+                        icon: const Icon(Icons.smart_button_rounded),
+                        selected: selected,
+                        options: {
+                          for (final i in MiniPlayerExtraAction.values) ...{
+                            i.name: i,
+                          },
+                        },
+                      ),
+                    ).then((v) {
+                      if (!context.mounted || v == null) return;
+                      preferences(context).set(
+                        Preference.miniPlayerSecondaryAction,
+                        v.index,
+                      );
+                    }),
               );
             },
           ),
@@ -173,27 +178,32 @@ class PreferenceScreen extends StatelessWidget {
             builder: (context, value) => ListTile(
               leading: const Icon(Icons.multiple_stop_rounded),
               title: const Text("Maximum parallel downloads"),
-              subtitle: Text("${value.data?.value(
-                Preference.maxParallelDownload,
-              )} at a time"),
-              onTap: () => showDialog<int?>(
-                context: context,
-                builder: (_) => ChoiceDialog<int>(
-                  title: "Maximum parallel downloads",
-                  subtitle: "Restart app to take effect",
-                  icon: const Icon(Icons.multiple_stop_rounded, size: 38),
-                  selected: value.data?.value(Preference.maxParallelDownload),
-                  options: {
-                    for (final i in [1, 2, 3, 4, 5, 6, 7, 8]) ...{"$i": i}
-                  },
-                ),
-              ).then((v) {
-                if (!context.mounted || v == null) return;
-                preferences(context).set(
+              subtitle: Text(
+                "${value.data?.value(
                   Preference.maxParallelDownload,
-                  v,
-                );
-              }),
+                )} at a time",
+              ),
+              onTap: () =>
+                  showDialog<int?>(
+                    context: context,
+                    builder: (_) => ChoiceDialog<int>(
+                      title: "Maximum parallel downloads",
+                      subtitle: "Restart app to take effect",
+                      icon: const Icon(Icons.multiple_stop_rounded, size: 38),
+                      selected: value.data?.value(
+                        Preference.maxParallelDownload,
+                      ),
+                      options: {
+                        for (final i in [1, 2, 3, 4, 5, 6, 7, 8]) ...{"$i": i},
+                      },
+                    ),
+                  ).then((v) {
+                    if (!context.mounted || v == null) return;
+                    preferences(context).set(
+                      Preference.maxParallelDownload,
+                      v,
+                    );
+                  }),
             ),
           ),
           _title(context, "Others"),
@@ -212,6 +222,45 @@ class PreferenceScreen extends StatelessWidget {
               subtitle: const Text("Notify when new version is available"),
             ),
           ),
+
+          _title(context, "Miscellaneous"),
+          ListTile(
+            onTap: () => showDialog(
+              context: context,
+              builder: (c) => SimpleDialog(
+                title: const Text("Reset library database?"),
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                      vertical: 12,
+                    ),
+                    child: Text(
+                      "Your downloaded files will be preserved, but you will have to import them again",
+                    ),
+                  ),
+
+                  SimpleDialogOption(
+                    onPressed: Navigator.of(c).pop,
+                    child: const Text("No"),
+                  ),
+                  SimpleDialogOption(
+                    onPressed: () {
+                      context.read<Store>().box<Playlist>().removeAll();
+                      SystemNavigator.pop();
+                    },
+                    child: const Text(
+                      "Yes, Reset Library",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            leading: const Icon(Icons.restore_page_rounded),
+            title: const Text("Reset Library"),
+            subtitle: const Text("Do this if you have duplicate entries"),
+          ),
         ],
       ),
     );
@@ -227,8 +276,8 @@ class PreferenceScreen extends StatelessWidget {
         text,
         maxLines: 1,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
     );
   }
