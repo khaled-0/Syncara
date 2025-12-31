@@ -8,6 +8,8 @@ PODS:
     - FlutterMacOS
   - dynamic_color (0.0.2):
     - FlutterMacOS
+  - file_picker (0.0.1):
+    - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - just_audio (0.0.1):
     - Flutter
@@ -16,10 +18,10 @@ PODS:
     - FlutterMacOS
   - media_kit_native_event_loop (1.0.0):
     - FlutterMacOS
-  - ObjectBox (5.0.0)
+  - ObjectBox (5.1.1)
   - objectbox_flutter_libs (0.0.1):
     - FlutterMacOS
-    - ObjectBox (= 5.0.0)
+    - ObjectBox (= 5.1.1)
   - package_info_plus (0.0.1):
     - FlutterMacOS
   - path_provider_foundation (0.0.1):
@@ -43,6 +45,7 @@ DEPENDENCIES:
   - audio_session (from `Flutter/ephemeral/.symlinks/plugins/audio_session/macos`)
   - connectivity_plus (from `Flutter/ephemeral/.symlinks/plugins/connectivity_plus/macos`)
   - dynamic_color (from `Flutter/ephemeral/.symlinks/plugins/dynamic_color/macos`)
+  - file_picker (from `Flutter/ephemeral/.symlinks/plugins/file_picker/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - just_audio (from `Flutter/ephemeral/.symlinks/plugins/just_audio/darwin`)
   - media_kit_libs_macos_audio (from `Flutter/ephemeral/.symlinks/plugins/media_kit_libs_macos_audio/macos`)
@@ -69,6 +72,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/connectivity_plus/macos
   dynamic_color:
     :path: Flutter/ephemeral/.symlinks/plugins/dynamic_color/macos
+  file_picker:
+    :path: Flutter/ephemeral/.symlinks/plugins/file_picker/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   just_audio:
@@ -99,12 +104,13 @@ SPEC CHECKSUMS:
   audio_session: 728ae3823d914f809c485d390274861a24b0904e
   connectivity_plus: 0a976dfd033b59192912fa3c6c7b54aab5093802
   dynamic_color: 5fdff3953fb3457311091863f72914fc76ea3209
+  file_picker: e716a70a9fe5fd9e09ebc922d7541464289443af
   FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
   just_audio: a42c63806f16995daf5b219ae1d679deb76e6a79
   media_kit_libs_macos_audio: 3871782a4f3f84c77f04d7666c87800a781c24da
   media_kit_native_event_loop: 7321675377cb9ae8596a29bddf3a3d2b5e8792c5
-  ObjectBox: a60820ec1c903702350585d8cc99c1268c99e688
-  objectbox_flutter_libs: fdba3af52a244037417fe170952a3dd819fee1af
+  ObjectBox: 26871f7cce80a8bd2e610bf944aeaded730f6925
+  objectbox_flutter_libs: 440aef6e9b0bca0a27bea53f61142f974b26eb97
   package_info_plus: 12f1c5c2cfe8727ca46cbd0b26677728972d9a5b
   path_provider_foundation: 0b743cbb62d8e47eab856f09262bb8c1ddcfe6ba
   screen_retriever_macos: 776e0fa5d42c6163d2bf772d22478df4b302b161
@@ -113,6 +119,6 @@ SPEC CHECKSUMS:
   webview_flutter_wkwebview: 29eb20d43355b48fe7d07113835b9128f84e3af4
   window_manager: e25faf20d88283a0d46e7b1a759d07261ca27575
 
-PODFILE CHECKSUM: 9ebaf0ce3d369aaa26a9ea0e159195ed94724cf3
+PODFILE CHECKSUM: c2e95c8c0fe03c5c57e438583cae4cc732296009
 
 COCOAPODS: 1.16.2

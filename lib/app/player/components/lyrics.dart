@@ -77,34 +77,31 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       child: ValueListenableBuilder(
         valueListenable: context.read<PlayerProvider>().nowPlaying,
-        builder:
-            (context, nowPlaying, _) => FutureBuilder(
-              future: fetchLyrics(nowPlaying),
-              key: ValueKey(nowPlaying.hashCode.toString() + preferredLanguage),
-              builder:
-                  (context, result) => PopScope(
-                    canPop: !widget.fullscreen,
-                    onPopInvokedWithResult: (didPop, _) {
-                      if (!didPop) toggleFullScreen(result.data);
-                    },
-                    child: Stack(
-                      children: [
-                        Positioned.fill(child: _lyricsView(result)),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: AnimatedOpacity(
-                            duration: Durations.medium2,
-                            opacity:
-                                (!widget.fullscreen && result.hasError) ? 0 : 1,
-                            child: _lyricSelector(result),
-                          ),
-                        ),
-                      ],
-                    ),
+        builder: (context, nowPlaying, _) => FutureBuilder(
+          future: fetchLyrics(nowPlaying),
+          key: ValueKey(nowPlaying.hashCode.toString() + preferredLanguage),
+          builder: (context, result) => PopScope(
+            canPop: !widget.fullscreen,
+            onPopInvokedWithResult: (didPop, _) {
+              if (!didPop) toggleFullScreen(result.data);
+            },
+            child: Stack(
+              children: [
+                Positioned.fill(child: _lyricsView(result)),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: AnimatedOpacity(
+                    duration: Durations.medium2,
+                    opacity: (!widget.fullscreen && result.hasError) ? 0 : 1,
+                    child: _lyricSelector(result),
                   ),
+                ),
+              ],
             ),
+          ),
+        ),
       ),
     );
   }
@@ -115,10 +112,9 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
     }
     if (result.hasError) return _errorView(result.error);
 
-    final lyricModel =
-        LyricsModelBuilder.create()
-            .bindLyricToMain(result.requireData.$3.join("\n"))
-            .getModel();
+    final lyricModel = LyricsModelBuilder.create()
+        .bindLyricToMain(result.requireData.$3.join("\n"))
+        .getModel();
 
     return ShaderMask(
       shaderCallback: (Rect bounds) {
@@ -140,15 +136,14 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
       child: StreamBuilder(
         stream: context.read<PlayerProvider>().player.positionStream,
         initialData: Duration.zero,
-        builder:
-            (context, snapshot) => LyricsReader(
-              padding: const EdgeInsets.all(12),
-              model: lyricModel,
-              position: snapshot.requireData.inMilliseconds,
-              playing: playerProvider.player.playing,
-              emptyBuilder: () => const Center(child: Text("............")),
-              lyricUi: _LyricsUI(context),
-            ),
+        builder: (context, snapshot) => LyricsReader(
+          padding: const EdgeInsets.all(12),
+          model: lyricModel,
+          position: snapshot.requireData.inMilliseconds,
+          playing: playerProvider.player.playing,
+          emptyBuilder: () => const Center(child: Text("............")),
+          lyricUi: _LyricsUI(context),
+        ),
       ),
     );
   }
@@ -164,11 +159,10 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
       elevation: 0,
       child: ListTile(
         dense: !widget.fullscreen,
-        onTap:
-            () => changePreferedLanguageDialog(
-              result.requireData.$1,
-              result.requireData.$2,
-            ),
+        onTap: () => changePreferedLanguageDialog(
+          result.requireData.$1,
+          result.requireData.$2,
+        ),
         leading: const Icon(Icons.language_rounded),
         title: Text(current),
         contentPadding: const EdgeInsets.only(left: 16, right: 8),
@@ -178,20 +172,18 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
           children: [
             if (availableLyrics > 1)
               IconButton(
-                onPressed:
-                    () => changePreferedLanguageDialog(
-                      result.requireData.$1,
-                      result.requireData.$2,
-                    ),
+                onPressed: () => changePreferedLanguageDialog(
+                  result.requireData.$1,
+                  result.requireData.$2,
+                ),
                 icon: const Icon(Icons.change_circle_rounded),
               ),
             const VerticalDivider(),
             IconButton(
               onPressed: () => toggleFullScreen(result.data),
-              icon:
-                  widget.fullscreen
-                      ? const Icon(Icons.fullscreen_exit_rounded)
-                      : const Icon(Icons.fullscreen_rounded),
+              icon: widget.fullscreen
+                  ? const Icon(Icons.fullscreen_exit_rounded)
+                  : const Icon(Icons.fullscreen_rounded),
             ),
           ],
         ),
@@ -210,19 +202,17 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
         return ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           itemCount: selections.length,
-          itemBuilder:
-              (context, index) => ListTile(
-                dense: true,
-                selected: selections[index] == current,
-                title: Text(
-                  "${selections[index].lang} (${selections[index].langCode})",
-                ),
-                trailing:
-                    selections[index] == current
-                        ? const Icon(Icons.check_rounded)
-                        : null,
-                onTap: () => Navigator.pop(context, selections[index]),
-              ),
+          itemBuilder: (context, index) => ListTile(
+            dense: true,
+            selected: selections[index] == current,
+            title: Text(
+              "${selections[index].lang} (${selections[index].langCode})",
+            ),
+            trailing: selections[index] == current
+                ? const Icon(Icons.check_rounded)
+                : null,
+            onTap: () => Navigator.pop(context, selections[index]),
+          ),
         );
       },
     );
@@ -251,17 +241,16 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
         },
         transitionDuration: Durations.short3,
         reverseTransitionDuration: Durations.short2,
-        pageBuilder:
-            (_, _, _) => MultiProvider(
-              providers: [
-                Provider.value(value: context.read<Store>()),
-                ChangeNotifierProvider.value(value: playerProvider),
-              ],
-              child: ChangeNotifierProvider.value(
-                value: playerProvider,
-                child: _ExpandedLyrics(result),
-              ),
-            ),
+        pageBuilder: (_, _, _) => MultiProvider(
+          providers: [
+            Provider.value(value: context.read<Store>()),
+            ChangeNotifierProvider.value(value: playerProvider),
+          ],
+          child: ChangeNotifierProvider.value(
+            value: playerProvider,
+            child: _ExpandedLyrics(result),
+          ),
+        ),
       ),
     );
     setState(() => paused = false);
@@ -317,19 +306,18 @@ class _ExpandedLyrics extends StatelessWidget {
             DragToMoveArea(
               child: ValueListenableBuilder(
                 valueListenable: context.read<PlayerProvider>().nowPlaying,
-                builder:
-                    (_, value, _) => Padding(
-                      padding: const EdgeInsets.only(
-                        top: 16,
-                        left: 6,
-                        right: 6,
-                      ),
-                      child: Text(
-                        value.title,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
+                builder: (_, value, _) => Padding(
+                  padding: const EdgeInsets.only(
+                    top: 16,
+                    left: 6,
+                    right: 6,
+                  ),
+                  child: Text(
+                    value.title,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
               ),
             ),
             Expanded(

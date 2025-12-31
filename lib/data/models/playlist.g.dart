@@ -23,12 +23,13 @@ abstract class _$PlaylistCWProxy {
 
   Playlist customTitle(String? customTitle);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Playlist(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `Playlist(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// Playlist(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   Playlist call({
     String url,
     String title,
@@ -41,44 +42,46 @@ abstract class _$PlaylistCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfPlaylist.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfPlaylist.copyWith.fieldName(...)`
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfPlaylist.copyWith(...)` or call `instanceOfPlaylist.copyWith.fieldName(value)` for a single field.
 class _$PlaylistCWProxyImpl implements _$PlaylistCWProxy {
   const _$PlaylistCWProxyImpl(this._value);
 
   final Playlist _value;
 
   @override
-  Playlist url(String url) => this(url: url);
+  Playlist url(String url) => call(url: url);
 
   @override
-  Playlist title(String title) => this(title: title);
+  Playlist title(String title) => call(title: title);
 
   @override
-  Playlist author(String author) => this(author: author);
+  Playlist author(String author) => call(author: author);
 
   @override
-  Playlist thumbnail(String? thumbnail) => this(thumbnail: thumbnail);
+  Playlist thumbnail(String? thumbnail) => call(thumbnail: thumbnail);
 
   @override
   Playlist thumbnailHiRes(String? thumbnailHiRes) =>
-      this(thumbnailHiRes: thumbnailHiRes);
+      call(thumbnailHiRes: thumbnailHiRes);
 
   @override
-  Playlist itemCount(int itemCount) => this(itemCount: itemCount);
+  Playlist itemCount(int itemCount) => call(itemCount: itemCount);
 
   @override
-  Playlist description(String? description) => this(description: description);
+  Playlist description(String? description) => call(description: description);
 
   @override
-  Playlist customTitle(String? customTitle) => this(customTitle: customTitle);
+  Playlist customTitle(String? customTitle) => call(customTitle: customTitle);
 
   @override
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Playlist(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `Playlist(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// Playlist(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   Playlist call({
     Object? url = const $CopyWithPlaceholder(),
     Object? title = const $CopyWithPlaceholder(),
@@ -90,61 +93,55 @@ class _$PlaylistCWProxyImpl implements _$PlaylistCWProxy {
     Object? customTitle = const $CopyWithPlaceholder(),
   }) {
     return Playlist(
-      url:
-          url == const $CopyWithPlaceholder()
-              ? _value.url
-              // ignore: cast_nullable_to_non_nullable
-              : url as String,
-      title:
-          title == const $CopyWithPlaceholder()
-              ? _value.title
-              // ignore: cast_nullable_to_non_nullable
-              : title as String,
-      author:
-          author == const $CopyWithPlaceholder()
-              ? _value.author
-              // ignore: cast_nullable_to_non_nullable
-              : author as String,
-      thumbnail:
-          thumbnail == const $CopyWithPlaceholder()
-              ? _value.thumbnail
-              // ignore: cast_nullable_to_non_nullable
-              : thumbnail as String?,
-      thumbnailHiRes:
-          thumbnailHiRes == const $CopyWithPlaceholder()
-              ? _value.thumbnailHiRes
-              // ignore: cast_nullable_to_non_nullable
-              : thumbnailHiRes as String?,
-      itemCount:
-          itemCount == const $CopyWithPlaceholder()
-              ? _value.itemCount
-              // ignore: cast_nullable_to_non_nullable
-              : itemCount as int,
-      description:
-          description == const $CopyWithPlaceholder()
-              ? _value.description
-              // ignore: cast_nullable_to_non_nullable
-              : description as String?,
-      customTitle:
-          customTitle == const $CopyWithPlaceholder()
-              ? _value.customTitle
-              // ignore: cast_nullable_to_non_nullable
-              : customTitle as String?,
+      url: url == const $CopyWithPlaceholder() || url == null
+          ? _value.url
+          // ignore: cast_nullable_to_non_nullable
+          : url as String,
+      title: title == const $CopyWithPlaceholder() || title == null
+          ? _value.title
+          // ignore: cast_nullable_to_non_nullable
+          : title as String,
+      author: author == const $CopyWithPlaceholder() || author == null
+          ? _value.author
+          // ignore: cast_nullable_to_non_nullable
+          : author as String,
+      thumbnail: thumbnail == const $CopyWithPlaceholder()
+          ? _value.thumbnail
+          // ignore: cast_nullable_to_non_nullable
+          : thumbnail as String?,
+      thumbnailHiRes: thumbnailHiRes == const $CopyWithPlaceholder()
+          ? _value.thumbnailHiRes
+          // ignore: cast_nullable_to_non_nullable
+          : thumbnailHiRes as String?,
+      itemCount: itemCount == const $CopyWithPlaceholder() || itemCount == null
+          ? _value.itemCount
+          // ignore: cast_nullable_to_non_nullable
+          : itemCount as int,
+      description: description == const $CopyWithPlaceholder()
+          ? _value.description
+          // ignore: cast_nullable_to_non_nullable
+          : description as String?,
+      customTitle: customTitle == const $CopyWithPlaceholder()
+          ? _value.customTitle
+          // ignore: cast_nullable_to_non_nullable
+          : customTitle as String?,
     );
   }
 }
 
 extension $PlaylistCopyWith on Playlist {
-  /// Returns a callable class that can be used as follows: `instanceOfPlaylist.copyWith(...)` or like so:`instanceOfPlaylist.copyWith.fieldName(...)`.
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfPlaylist.copyWith(...)` or `instanceOfPlaylist.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
   _$PlaylistCWProxy get copyWith => _$PlaylistCWProxyImpl(this);
 
-  /// Copies the object with the specific fields set to `null`. If you pass `false` as a parameter, nothing will be done and it will be ignored. Don't do it. Prefer `copyWith(field: null)` or `Playlist(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Returns a copy of the object with the selected fields set to `null`.
+  /// A flag set to `false` leaves the field unchanged. Prefer `copyWith(field: null)` or `copyWith.fieldName(null)` for single-field updates.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// Playlist(...).copyWithNull(firstField: true, secondField: true)
-  /// ````
+  /// ```
   Playlist copyWithNull({
     bool thumbnail = false,
     bool thumbnailHiRes = false,
