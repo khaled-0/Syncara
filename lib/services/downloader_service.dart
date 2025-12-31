@@ -65,7 +65,7 @@ class DownloaderService {
         url: url,
         displayName: media.title,
         directory: MediaClient().downloadsDir,
-        filename: p.basename(media.url),
+        filename: p.basename(media.url).split("=").last,
         baseDirectory: BaseDirectory.root,
         updates: Updates.statusAndProgress,
       );
