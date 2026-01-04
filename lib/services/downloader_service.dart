@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as p;
 import 'package:syncara/app/more/downloads/active_downloads_screen.dart';
 import 'package:syncara/clients/media_client.dart';
+import 'package:syncara/clients/yt_media_client.dart';
 import 'package:syncara/main.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:syncara/model/preferences.dart';
@@ -65,7 +66,7 @@ class DownloaderService {
   // https://pub.dev/packages/workmanager or https://pub.dev/packages/flutter_background_service
   Future<void> downloadAll(List<Media> medias) async {
     _abortQueueing = false;
-    for (final media in medias) {
+    for (final (index, media) in medias.indexed) {
       try {
         // Ignore already enqueued/downloaded
         if (MediaClient().isDownloaded(media)) continue;
@@ -74,15 +75,17 @@ class DownloaderService {
 
         if (_abortQueueing) break;
 
-        final url = (await MediaClient().getMediaSource(media)).url;
-        final task = ParallelDownloadTask(
+        final task = DownloadTask(
           taskId: media.url,
-          url: url,
+          url: media.url,
           displayName: media.title,
           directory: MediaClient().downloadsDir,
           filename: p.basename(media.url),
           baseDirectory: BaseDirectory.root,
           updates: Updates.statusAndProgress,
+          options: TaskOptions(
+            onTaskStart: _fetchYTDownloadUrl,
+          ),
         );
 
         FileDownloader().enqueue(task);
@@ -96,23 +99,31 @@ class DownloaderService {
         // TODO Error
         debugPrintStack(stackTrace: s, label: e.toString());
       }
+
+      /// Slow down to prevent Ui hang
+      if (index % 5 == 0) await Future.delayed(Durations.short2);
     }
   }
 
-  Future<void> cancelAll() async {
-    FileDownloader().taskQueues.forEach(FileDownloader().removeTaskQueue);
-    DownloaderService().abortQueueing();
-    Iterable<TaskRecord> records = await FileDownloader().database.allRecords();
-
-    await FileDownloader().cancelTasksWithIds(
-      records.map((e) => e.taskId).toList(),
-    );
-    await FileDownloader().database.deleteAllRecords();
-  }
+  // Future<void> cancelAll() async {
+  //   FileDownloader().taskQueues.forEach(FileDownloader().removeTaskQueue);
+  //   DownloaderService().abortQueueing();
+  //   Iterable<TaskRecord> records = await FileDownloader().database.allRecords();
+  //
+  //   await FileDownloader().cancelTasksWithIds(
+  //     records.map((e) => e.taskId).toList(),
+  //   );
+  //   await FileDownloader().database.deleteAllRecords();
+  // }
 
   // ------ Proxy Methods -------- //
 
   Database get db => FileDownloader().database;
+
+  Future<void> cancel(TaskRecord task) async {
+    FileDownloader().cancelTaskWithId(task.taskId);
+    FileDownloader().database.deleteRecordWithId(task.taskId);
+  }
 
   void registerCallbacks({
     TaskStatusCallback? taskStatusCallback,
@@ -165,7 +176,18 @@ extension on AudioSource {
   }
 }
 
-Fi
+@pragma("vm:entry-point")
+Future<Task?> _fetchYTDownloadUrl(Task task) async {
+  try {
+    final url = (await YTMediaClient().getMediaSource(
+      Media(url: task.url, title: "", author: ""),
+    )).url;
+    return task.copyWith(url: url);
+  } catch (e, s) {
+    debugPrintStack(stackTrace: s, label: e.toString());
+  }
+  return null;
+}
 
 typedef DownloadRecord = TaskRecord;
 typedef DownloadProgressUpdate = TaskProgressUpdate;
