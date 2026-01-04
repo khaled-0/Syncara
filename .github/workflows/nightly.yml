@@ -77,7 +77,7 @@ jobs:
       - name: Get dependencies and generate code
         run: |
           flutter pub get
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Decode Release Key
         run: |
@@ -122,7 +122,7 @@ jobs:
       - name: Get dependencies and generate code
         run: |
           flutter pub get
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Build Linux Release
         run: flutter build linux --release
@@ -156,7 +156,7 @@ jobs:
 
       - name: Generate code and build
         run: |
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
           flutter build ios --release --no-codesign
 
       - name: Create IPA
@@ -190,7 +190,7 @@ jobs:
       - name: Get dependencies and build
         run: |
           flutter pub get
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
           flutter build macos --release
 
       - name: Create bundle
@@ -225,7 +225,7 @@ jobs:
       - name: Get dependencies and build
         run: |
           flutter pub get
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
           flutter build windows --release
           dart run msix:create
 

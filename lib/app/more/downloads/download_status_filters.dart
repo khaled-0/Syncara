@@ -16,10 +16,10 @@ class DownloadStatusFilters extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsetsGeometry.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsetsGeometry.symmetric(horizontal: 12, vertical: 6),
       child: Row(
         spacing: 8,
-        children: DownloadStatus.values.map((e) {
+        children: filterableStatusList.map((e) {
           return FilterChip(
             label: Text(e.name.normalizeCamelCase().toCapitalCase()),
             selected: e == activeFilter,
@@ -28,5 +28,9 @@ class DownloadStatusFilters extends StatelessWidget {
         }).toList(),
       ),
     );
+  }
+
+  List<DownloadStatus> get filterableStatusList {
+    return [DownloadStatus.enqueued, DownloadStatus.running];
   }
 }

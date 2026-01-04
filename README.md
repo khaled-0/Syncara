@@ -64,6 +64,9 @@ download.**
   <a href="https://github.com/khaled-0/Syncara/releases/latest/download/syncara_macos.zip">
     <img height="64" src="./docs/badges/mac-square.png" alt="MacOS"/>
   </a> 
+  <a href="https://github.com/khaled-0/Syncara/releases/latest/download/syncara_windows.zip">
+    <img height="64" src="./docs/badges/windows-square.png" alt="Windows"/>
+  </a> 
 </p>
 
 ## Also available on your favourite app stores
@@ -89,6 +92,15 @@ download.**
     <img height="60" src="./docs/badges/flathub.png" alt="Flathub"/>
   </a>
 </p>
+
+### Windows
+
+Unsigned msix / zipped executable is available.
+To install msix you need to run the following command in powershell as administrator.
+
+```powershell
+ Add-AppPackage -Path ".\syncara.msix" -AllowUnsigned
+```
 
 ### iOS and MacOS
 

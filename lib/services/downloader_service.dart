@@ -186,7 +186,7 @@ Future<Task?> _fetchYTDownloadUrl(Task task) async {
   } catch (e, s) {
     debugPrintStack(stackTrace: s, label: e.toString());
   }
-  return null;
+  return task.copyWith(url: "");
 }
 
 typedef DownloadRecord = TaskRecord;

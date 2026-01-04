@@ -31,8 +31,7 @@ jobs:
       - name: Get dependencies and perform prerequisites
         run: |
           flutter pub get
-          flutter pub run flutter_launcher_icons -f flutter_launcher_icons.yaml
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Decode Release Key
         run: |
@@ -77,8 +76,7 @@ jobs:
       - name: Get dependencies and perform prerequisites
         run: |
           flutter pub get
-          flutter pub run flutter_launcher_icons -f flutter_launcher_icons.yaml
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Build Linux Release
         run: flutter build linux --release
@@ -116,8 +114,7 @@ jobs:
       - name: Get dependencies and perform prerequisites
         run: |
           flutter pub get
-          flutter pub run flutter_launcher_icons -f flutter_launcher_icons.yaml
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Build iOS Release
         run: flutter build ios --release --no-codesign
@@ -154,8 +151,7 @@ jobs:
       - name: Get dependencies and perform prerequisites
         run: |
           flutter pub get
-          flutter pub run flutter_launcher_icons -f flutter_launcher_icons.yaml
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Build MacOS Release
         run: flutter build macos --release
@@ -191,8 +187,7 @@ jobs:
       - name: Get dependencies and perform prerequisites
         run: |
           flutter pub get
-          flutter pub run flutter_launcher_icons -f flutter_launcher_icons.yaml
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Build Windows Release
         run: |
