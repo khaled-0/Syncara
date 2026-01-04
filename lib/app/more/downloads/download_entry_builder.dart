@@ -1,6 +1,7 @@
 import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/material.dart';
 import 'package:syncara/extensions.dart';
+import 'package:syncara/services/downloader_service.dart';
 
 class DownloadEntryBuilder extends StatelessWidget {
   const DownloadEntryBuilder({
@@ -29,7 +30,7 @@ class DownloadEntryBuilder extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () => cancel(entry),
+            onPressed: () => DownloaderService().cancel(entry),
             icon: const Icon(Icons.clear_rounded),
           ),
         ],
@@ -48,14 +49,9 @@ class DownloadEntryBuilder extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          LinearProgressIndicator(value: entry.progress)
+          LinearProgressIndicator(value: entry.progress),
         ],
       ),
     );
-  }
-
-  Future<void> cancel(TaskRecord task) async {
-    FileDownloader().cancelTaskWithId(task.taskId);
-    FileDownloader().database.deleteRecordWithId(task.taskId);
   }
 }

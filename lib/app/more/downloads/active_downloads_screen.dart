@@ -1,5 +1,7 @@
+import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/material.dart';
 import 'package:syncara/app/more/downloads/download_entry_builder.dart';
+import 'package:syncara/app/more/downloads/download_status_filters.dart';
 import 'package:syncara/main.dart';
 import 'package:syncara/services/downloader_service.dart';
 
@@ -26,6 +28,13 @@ class ActiveDownloadsScreen extends StatefulWidget {
 }
 
 class _ActiveDownloadsScreenState extends State<ActiveDownloadsScreen> {
+  DownloadStatus? filter;
+
+  Future<List<TaskRecord>> get records {
+    if (filter == null) return DownloaderService().db.allRecords();
+    return DownloaderService().db.allRecordsWithStatus(filter!);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -45,9 +54,21 @@ class _ActiveDownloadsScreenState extends State<ActiveDownloadsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Active Downloads")),
+      appBar: AppBar(
+        toolbarHeight: kToolbarHeight + 30,
+        title: const Text("Active Downloads"),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(30),
+          child: DownloadStatusFilters(
+            filter,
+            onChange: (value) => setState(() {
+              filter = value;
+            }),
+          ),
+        ),
+      ),
       floatingActionButton: FutureBuilder(
-        future: DownloaderService().db.allRecords(),
+        future: records,
         initialData: [],
         builder: (context, snapshot) {
           if (snapshot.hasError) return const SizedBox();
@@ -55,14 +76,14 @@ class _ActiveDownloadsScreenState extends State<ActiveDownloadsScreen> {
           return FloatingActionButton.extended(
             icon: const Icon(Icons.clear_all_rounded),
             label: const Text("Cancel All"),
-            onPressed: () => DownloaderService().cancelAll().whenComplete(() {
-              setState(() {});
-            }),
+            onPressed: () => records
+                .then((value) => value.forEach(DownloaderService().cancel))
+                .whenComplete(() => setState(() {})),
           );
         },
       ),
       body: FutureBuilder<List<DownloadRecord>>(
-        future: DownloaderService().db.allRecords(),
+        future: records,
         initialData: [],
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -79,7 +100,9 @@ class _ActiveDownloadsScreenState extends State<ActiveDownloadsScreen> {
 
           return ListView.builder(
             itemCount: snapshot.data?.length ?? 0,
-            padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight * 2),
+            padding: const EdgeInsets.only(
+              bottom: kBottomNavigationBarHeight * 2,
+            ),
             itemBuilder: (context, index) {
               final entry = snapshot.requireData[index];
               return DownloadEntryBuilder(
@@ -102,8 +125,7 @@ class _ActiveDownloadsScreenState extends State<ActiveDownloadsScreen> {
       case DownloadStatus.failed:
       case DownloadStatus.notFound:
       case DownloadStatus.canceled:
-        DownloaderService()
-            .db
+        DownloaderService().db
             .deleteRecordWithId(update.task.taskId)
             .whenComplete(() => setState(() {}));
         break;
