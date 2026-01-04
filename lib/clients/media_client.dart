@@ -40,12 +40,16 @@ class MediaClient implements BaseMediaClient {
 
   String get thumbnailsDir => path.join(_storageDir, "thumbnails");
 
+  @Deprecated("Migrate to using Media.localPath")
   File mediaFile(Media media) {
-    return File(
-      media.localPath ??
-          // Legacy
-          path.join(downloadsDir, path.basename(media.url).split("=").last),
-    );
+    if (media.localPath == null) {
+      return File(
+        // Legacy
+        path.join(downloadsDir, path.basename(media.url).split("=").last),
+      );
+    }
+
+    return File(media.localPath ?? "");
   }
 
   File thumbnailFile(String url) {

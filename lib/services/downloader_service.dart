@@ -61,33 +61,6 @@ class DownloaderService {
   void abortQueueing() => _abortQueueing = true;
 
   // TODO The links expire
-  Future<void> download(Media media) async {
-    try {
-      if (MediaClient().isDownloaded(media)) return;
-      final url = (await MediaClient().getMediaSource(media)).url;
-      final task = ParallelDownloadTask(
-        url: url,
-        displayName: media.title,
-        directory: MediaClient().downloadsDir,
-        filename: p.basename(media.url),
-        baseDirectory: BaseDirectory.root,
-        updates: Updates.statusAndProgress,
-      );
-
-      // TODO perform this after download finishes
-      // https://github.com/781flyingdutchman/background_downloader/issues/615
-      _store.box<Media>().putAsync(
-        media.copyWith(localPath: await task.filePath()),
-        mode: PutMode.update,
-      );
-
-      await FileDownloader().enqueue(task);
-    } catch (_) {
-      //TODO Error
-    }
-  }
-
-  // TODO The links expire
   // TODO Move this process to background or notify user to not close until this finishes
   // https://pub.dev/packages/workmanager or https://pub.dev/packages/flutter_background_service
   Future<void> downloadAll(List<Media> medias) async {
@@ -116,12 +89,12 @@ class DownloaderService {
 
         // TODO perform this after download finishes
         // https://github.com/781flyingdutchman/background_downloader/issues/615
-        _store.box<Media>().putAsync(
-          media.copyWith(localPath: await task.filePath()),
-          mode: PutMode.update,
-        );
-      } catch (_) {
+        final updatedMedia = media.copyWith.localPath(await task.filePath());
+        updatedMedia.objectId = media.objectId;
+        _store.box<Media>().putQueued(updatedMedia, mode: PutMode.update);
+      } catch (e, s) {
         // TODO Error
+        debugPrintStack(stackTrace: s, label: e.toString());
       }
     }
   }
@@ -191,6 +164,8 @@ extension on AudioSource {
     return (this as UriAudioSource).uri.toString();
   }
 }
+
+Fi
 
 typedef DownloadRecord = TaskRecord;
 typedef DownloadProgressUpdate = TaskProgressUpdate;

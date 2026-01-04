@@ -179,7 +179,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(9, 882847733899621766),
     name: 'PlaylistItem',
-    lastPropertyId: const obx_int.IdUid(5, 7616569716064726867),
+    lastPropertyId: const obx_int.IdUid(6, 5680112862836352151),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -211,6 +211,13 @@ final _entities = <obx_int.ModelEntity>[
         name: 'position',
         type: 6,
         flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 5680112862836352151),
+        name: 'uid',
+        type: 9,
+        flags: 34848,
+        indexId: const obx_int.IdUid(16, 1401030207798477177),
       ),
     ],
     relations: <obx_int.ModelRelation>[],
@@ -321,7 +328,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
     lastEntityId: const obx_int.IdUid(10, 71020629254117670),
-    lastIndexId: const obx_int.IdUid(15, 6329407002244334835),
+    lastIndexId: const obx_int.IdUid(16, 1401030207798477177),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
     retiredEntityUids: const [
@@ -597,11 +604,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
         object.objectId = id;
       },
       objectToFB: (PlaylistItem object, fb.Builder fbb) {
-        fbb.startTable(6);
+        final uidOffset = fbb.writeString(object.uid);
+        fbb.startTable(7);
         fbb.addInt64(0, object.objectId);
         fbb.addInt64(2, object.playlist.targetId);
         fbb.addInt64(3, object.media.targetId);
         fbb.addInt64(4, object.position);
+        fbb.addOffset(5, uidOffset);
         fbb.finish(fbb.endTable());
         return object.objectId;
       },
@@ -620,7 +629,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
             rootOffset,
             4,
             0,
-          );
+          )
+          ..uid = const fb.StringReader(
+            asciiOptimization: true,
+          ).vTableGet(buffer, rootOffset, 14, '');
         object.playlist.targetId = const fb.Int64Reader().vTableGet(
           buffer,
           rootOffset,
@@ -851,6 +863,11 @@ class PlaylistItem_ {
   /// See [PlaylistItem.position].
   static final position = obx.QueryIntegerProperty<PlaylistItem>(
     _entities[3].properties[3],
+  );
+
+  /// See [PlaylistItem.uid].
+  static final uid = obx.QueryStringProperty<PlaylistItem>(
+    _entities[3].properties[4],
   );
 }
 

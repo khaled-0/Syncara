@@ -28,7 +28,7 @@ class MediaMenuSheet extends StatelessWidget {
           if (!downloaded)
             ListTile(
               onTap: () {
-                DownloaderService().download(media);
+                DownloaderService().downloadAll([media]);
                 Navigator.pop(context);
                 ActiveDownloadsScreen.showEnqueuedSnackbar(context);
               },

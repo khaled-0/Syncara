@@ -13,6 +13,10 @@ class PlaylistItem {
   final ToOne<Playlist> playlist = ToOne<Playlist>();
   final ToOne<Media> media = ToOne<Media>();
 
+  @Unique(onConflict: ConflictStrategy.replace)
+  @Index()
+  late String uid;
+
   PlaylistItem({required this.position});
 
   factory PlaylistItem.create({
@@ -23,6 +27,7 @@ class PlaylistItem {
     final item = PlaylistItem(position: position);
     item.playlist.target = playlist;
     item.media.target = media;
+    item.uid = "${playlist.objectId}_${media.objectId}";
     return item;
   }
 }

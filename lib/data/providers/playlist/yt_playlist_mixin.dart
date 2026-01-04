@@ -27,7 +27,8 @@ mixin _YtPlaylistMixin {
     );
 
     final items = List<PlaylistItem>.of([]);
-    for (final (i, media) in medias.indexed) {
+    final withExistingMediaIds = _withExistingMediaData(medias);
+    for (final (i, media) in withExistingMediaIds.indexed) {
       items.add(
         PlaylistItem.create(position: i, media: media, playlist: playlist),
       );
@@ -35,5 +36,34 @@ mixin _YtPlaylistMixin {
 
     updateItems(await _box.putAndGetManyAsync(items));
     notifyListeners();
+  }
+
+  List<Media> _withExistingMediaData(Iterable<Media> medias) {
+    final urls = medias.map((e) => e.url).toList(growable: false);
+    final query = store.box<Media>().query(Media_.url.oneOf(urls));
+
+    // Map Url to Item
+    final results = query.build().find().fold<Map<String, Media>>(
+      {},
+      (result, item) {
+        result[item.url] = item;
+        return result;
+      },
+    );
+
+    final updatedItems = List<Media>.of([]);
+    for (Media item in medias) {
+      final existing = results[item.url];
+
+      // Preserve necessary fields
+      if (existing != null) {
+        item = item.copyWith(localPath: existing.localPath);
+        item.objectId = existing.objectId;
+      }
+
+      updatedItems.add(item);
+    }
+
+    return updatedItems;
   }
 }
