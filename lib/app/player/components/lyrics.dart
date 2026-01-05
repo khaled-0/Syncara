@@ -45,7 +45,7 @@ class _LyricsState extends State<Lyrics> with AutomaticKeepAliveClientMixin {
       .value<String>(Preference.subsLang);
 
   Future<LyricFutureResult> fetchLyrics(Media media) async {
-    if (media.localPath != null) throw "Unsupported";
+    // if (media.localPath != null) throw "Unsupported";
 
     if (paused) throw "Fullscreen mode active";
     if (cachedResult != null) {

@@ -24,10 +24,12 @@ class _ArtworkState extends State<Artwork> {
     super.initState();
 
     final playing = context.read<PlayerProvider>().nowPlaying.value;
-    final imageData = playing.fileMetadata()?.pictures.firstOrNull;
-    if (imageData != null) {
-      image = MemoryImage(imageData.bytes);
-    }
+    try {
+      final imageData = playing.fileMetadata()?.pictures.firstOrNull;
+      if (imageData != null) {
+        image = MemoryImage(imageData.bytes);
+      }
+    } catch (_) {}
   }
 
   @override
@@ -43,32 +45,30 @@ class _ArtworkState extends State<Artwork> {
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       child: ValueListenableBuilder(
         valueListenable: context.read<PlayerProvider>().nowPlaying,
-        builder:
-            (context, now, child) => StreamBuilder(
-              stream: context.read<PlayerProvider>().player.positionStream,
-              initialData: context.read<PlayerProvider>().player.position,
-              builder: (context, position) {
-                // Modulo by 360 degree / 6.28 rad so the angle doesn't get too large
-                final angle =
-                    (position.requireData.inMilliseconds / 42000) % 6.28;
-                return Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Positioned.fill(
-                      child: Transform.rotate(
-                        angle: angle.toPrecision(5),
-                        child: _avatar(now),
-                      ),
-                    ),
-                    Icon(
-                      Icons.circle,
-                      size: 48,
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
-                  ],
-                );
-              },
-            ),
+        builder: (context, now, child) => StreamBuilder(
+          stream: context.read<PlayerProvider>().player.positionStream,
+          initialData: context.read<PlayerProvider>().player.position,
+          builder: (context, position) {
+            // Modulo by 360 degree / 6.28 rad so the angle doesn't get too large
+            final angle = (position.requireData.inMilliseconds / 42000) % 6.28;
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                Positioned.fill(
+                  child: Transform.rotate(
+                    angle: angle.toPrecision(5),
+                    child: _avatar(now),
+                  ),
+                ),
+                Icon(
+                  Icons.circle,
+                  size: 48,
+                  color: Theme.of(context).colorScheme.surface,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
