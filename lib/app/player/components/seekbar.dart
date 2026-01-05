@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:syncara/extensions.dart';
 
 import '../../../data/providers/player_provider.dart';
-
 
 class SeekBar extends StatefulWidget {
   const SeekBar({super.key});
@@ -17,47 +17,53 @@ class SeekBar extends StatefulWidget {
 class SeekBarState extends State<SeekBar> {
   double? _dragValue;
 
+  AudioPlayer get player => context.read<PlayerProvider>().player;
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: context.read<PlayerProvider>().nowPlaying,
-      builder: (context, media, _) => StreamBuilder<Duration>(
-        stream: context.read<PlayerProvider>().player.positionStream,
-        builder: (context, currentPosition) => Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 8,
-          ),
-          child: Row(
-            children: [
-              SizedBox(
-                width: currentPosition.data?.inHours == 0 ? 48 : 72,
-                child: Text(currentPosition.data.formatHHMM()),
-              ),
-              Expanded(
-                child: Selector<PlayerProvider, bool>(
-                  selector: (_, provider) => provider.buffering,
-                  builder: (context, buffering, child) {
-                    if (media.duration == null) return const SizedBox();
-                    final player = context.read<PlayerProvider>().player;
-                    return _sliderBuilder(
-                      buffering: buffering,
-                      duration: media.duration!,
-                      position: currentPosition.data ?? Duration.zero,
-                      bufferedPosition: player.bufferedPosition,
-                      onChangeEnd: (v) => player.seek(v),
-                    );
-                  },
+      builder: (context, media, _) {
+        final duration = media.duration ?? player.duration;
+
+        return StreamBuilder<Duration>(
+          stream: context.read<PlayerProvider>().player.positionStream,
+          builder: (context, currentPosition) => Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 8,
+            ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: currentPosition.data?.inHours == 0 ? 48 : 72,
+                  child: Text(currentPosition.data.formatHHMM()),
                 ),
-              ),
-              SizedBox(
-                width: media.duration?.inHours == 0 ? 48 : 72,
-                child: Text(media.duration.formatHHMM()),
-              ),
-            ],
+                Expanded(
+                  child: Selector<PlayerProvider, bool>(
+                    selector: (_, provider) => provider.buffering,
+                    builder: (context, buffering, child) {
+                      if (duration == null) return const SizedBox();
+
+                      return _sliderBuilder(
+                        buffering: buffering,
+                        duration: duration,
+                        position: currentPosition.data ?? Duration.zero,
+                        bufferedPosition: player.bufferedPosition,
+                        onChangeEnd: (v) => player.seek(v),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: duration?.inHours == 0 ? 48 : 72,
+                  child: Text(duration.formatHHMM()),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

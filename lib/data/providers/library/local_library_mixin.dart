@@ -21,6 +21,10 @@ mixin _LocalLibraryMixin {
 
   Future<void> importLocalPlaylist(Uri url) async {
     if (url.scheme != "file") throw UnsupportedError("Scheme: ${url.scheme}");
+    if (entries.any((element) => element.url == url.toString())) {
+      throw "Playlist already exists!";
+    }
+
     entries.add(
       Playlist(
         url: url.toString(),

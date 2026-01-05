@@ -75,6 +75,9 @@ class _ArtworkState extends State<Artwork> {
 
   Widget _avatar(Media media) {
     if (image != null) return CircleAvatar(foregroundImage: image);
+    if ((media.thumbnail ?? media.thumbnailHiRes ?? "").isEmpty) {
+      return const CircleAvatar();
+    }
 
     return CircleAvatar(
       foregroundImage: NetworkToFileImage(

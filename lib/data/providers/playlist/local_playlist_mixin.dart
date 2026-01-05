@@ -28,7 +28,12 @@ mixin _LocalPlaylistMixin {
         final data = audio.readMetadata(File(e.path));
         return Media.fromAudioMetadata(data);
       } catch (_) {
-        return null;
+        return Media(
+          localPath: e.path,
+          url: e.path,
+          title: e.path,
+          author: "Unknown Artist",
+        );
       }
     });
 

@@ -1,6 +1,7 @@
-
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -38,6 +39,8 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
   }
 
   Future<void> launchMusicDirectoryPicker() async {
+    if (!await _ensurePermissions()) return;
+
     FilePicker.platform.getDirectoryPath().then((value) {
       if (value == null || !mounted) return;
       context.read<LibraryProvider>().importLocalPlaylist(Uri.file(value));
@@ -157,5 +160,31 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
           ),
       ],
     );
+  }
+
+  Future<bool> _ensurePermissions() async {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      final permissions = [Permission.audio, Permission.videos];
+      for (final perm in permissions) {
+        if (await perm.isDenied) await perm.request();
+      }
+
+      for (final perm in permissions) {
+        if (await perm.isDenied) return false;
+      }
+    }
+
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      // final permissions = [Permission.mediaLibrary];
+      // for (final perm in permissions) {
+      //   if (await perm.isDenied) await perm.request();
+      // }
+      //
+      // for (final perm in permissions) {
+      //   if (await perm.isDenied) return false;
+      // }
+    }
+
+    return true;
   }
 }
