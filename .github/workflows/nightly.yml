@@ -142,6 +142,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version-file: pubspec.yaml
           cache: true
 
       - name: Update version in pubspec.yaml
@@ -180,6 +181,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version-file: pubspec.yaml
           cache: true
 
       - name: Update version in pubspec.yaml
@@ -234,4 +236,55 @@ jobs:
         with:
           name: syncara_windows_nightly_${{ needs.prepare-version.outputs.commit-hash }}
           path: build/windows/x64/runner/Release
+          compression-level: 9
+
+  build-android-legacy:
+    runs-on: ubuntu-latest
+    needs: [ prepare-version, run-tests ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Downgrade to flutter 3.32.8
+        run: git apply .github/android-23.patch
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Update version in pubspec.yaml
+        run: |
+          sed -i "s/^version: .*/version: ${{ needs.prepare-version.outputs.version }}/" pubspec.yaml
+          echo "Updated version to: $(grep '^version:' pubspec.yaml)"
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+          cache: gradle
+
+      - name: Get dependencies and generate code
+        run: |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs
+
+      - name: Decode Release Key
+        run: |
+          echo "$TUBESYNC_JKS" > syncara.b64
+          base64 --decode syncara.b64 > syncara.jks
+        env:
+          TUBESYNC_JKS: ${{ secrets.TUBESYNC_JKS }}
+
+      - name: Build Android Profile APK
+        run: flutter build apk --profile
+        env:
+          TUBESYNC_KEY_PASSWORD: ${{ secrets.TUBESYNC_KEY_PASSWORD }}
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: syncara_android_min23_nightly_${{ needs.prepare-version.outputs.commit-hash }}
+          path: build/app/outputs/flutter-apk/app-profile.apk
           compression-level: 9
