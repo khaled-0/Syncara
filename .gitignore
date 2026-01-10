@@ -48,3 +48,6 @@ app.*.map.json
 
 .flatpak-builder/
 *.flatpak
+
+# FVM Version Cache
+.fvm/

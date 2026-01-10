@@ -10,7 +10,7 @@ rootProject.buildDir = "../build"
 subprojects {
     afterEvaluate {
         android {
-            compileSdkVersion flutter.compileSdkVersion
+            compileSdkVersion project.android.compileSdkVersion
         }
     }
 }
