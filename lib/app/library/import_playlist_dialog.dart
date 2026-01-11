@@ -162,13 +162,18 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
 
   Future<bool> _ensurePermissions() async {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      final permissions = [Permission.audio, Permission.videos];
+      final permissions = [
+        Permission.manageExternalStorage,
+        Permission.audio,
+        Permission.videos,
+      ];
+
       for (final perm in permissions) {
         if (await perm.isDenied) await perm.request();
       }
 
       for (final perm in permissions) {
-        if (await perm.isDenied) return false;
+        if (await perm.isGranted) return true;
       }
     }
 
