@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:objectbox/objectbox.dart';
@@ -285,6 +286,6 @@ class PreferenceScreen extends StatelessWidget {
     File(path.join(store.directoryPath, "data.mdb")).delete();
     File(path.join(store.directoryPath, "lock.mdb")).delete();
 
-    SystemNavigator.pop();
+    if (!kDebugMode) SystemNavigator.pop();
   }
 }

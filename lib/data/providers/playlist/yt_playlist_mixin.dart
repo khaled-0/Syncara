@@ -44,15 +44,19 @@ mixin _YtPlaylistMixin {
       );
     }
 
-    final existingPlaylistItem = _box.query(
-      PlaylistItem_.uid.oneOf(items.map((e) => e.uid).toList()),
-    );
+    final existingPlaylistItem = _box
+        .query(PlaylistItem_.uid.oneOf(items.map((e) => e.uid).toList()))
+        .build()
+        .find();
 
-    for (final existing in existingPlaylistItem.build().find()) {
+    for (final existing in existingPlaylistItem) {
       final index = items.indexWhere((e) => e.uid == existing.uid);
       if (index == -1) continue;
       items[index].objectId = existing.objectId;
     }
+
+    final remove = _box.query(PlaylistItem_.playlist.equals(playlist.objectId));
+    _box.removeMany(remove.build().findIds());
 
     updateItems(await _box.putAndGetManyAsync(items));
     notifyListeners();
