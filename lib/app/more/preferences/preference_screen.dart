@@ -1,15 +1,15 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:objectbox/objectbox.dart';
+import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 import 'package:syncara/app/app_theme.dart';
 import 'package:syncara/app/more/preferences/components/choice_dialog.dart';
 import 'package:syncara/model/common.dart';
 import 'package:syncara/model/preferences.dart';
-
-import '../../../data/models/playlist.dart';
 
 class PreferenceScreen extends StatelessWidget {
   const PreferenceScreen({super.key});
@@ -228,7 +228,7 @@ class PreferenceScreen extends StatelessWidget {
             onTap: () => showDialog(
               context: context,
               builder: (c) => SimpleDialog(
-                title: const Text("Reset library database?"),
+                title: const Text("Reset application database?"),
                 children: [
                   const Padding(
                     padding: EdgeInsets.symmetric(
@@ -245,12 +245,9 @@ class PreferenceScreen extends StatelessWidget {
                     child: const Text("No"),
                   ),
                   SimpleDialogOption(
-                    onPressed: () {
-                      context.read<Store>().box<Playlist>().removeAll();
-                      SystemNavigator.pop();
-                    },
+                    onPressed: () => resetDatabase(context),
                     child: const Text(
-                      "Yes, Reset Library",
+                      "Yes, Reset Database",
                       style: TextStyle(color: Colors.red),
                     ),
                   ),
@@ -280,5 +277,15 @@ class PreferenceScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> resetDatabase(BuildContext context) async {
+    final store = context.read<Store>();
+    store.close();
+
+    File(path.join(store.directoryPath, "data.mdb")).delete();
+    File(path.join(store.directoryPath, "lock.mdb")).delete();
+
+    if (!kDebugMode) SystemNavigator.pop();
   }
 }

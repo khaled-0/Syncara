@@ -127,6 +127,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return HeroControllerScope(
       controller: MaterialApp.createMaterialHeroController(),
       child: NavigatorPopHandler(

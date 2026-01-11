@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../../data/providers/library/library_provider.dart';
 
@@ -17,7 +16,6 @@ class ImportPlaylistDialog extends StatefulWidget {
 }
 
 class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
-  final ytClient = YoutubeExplode().playlists;
   final TextEditingController input = TextEditingController();
   bool loading = false;
   String? error;
@@ -164,25 +162,19 @@ class _ImportPlaylistDialogState extends State<ImportPlaylistDialog> {
 
   Future<bool> _ensurePermissions() async {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      final permissions = [Permission.audio, Permission.videos];
+      final permissions = [
+        Permission.manageExternalStorage,
+        Permission.audio,
+        Permission.videos,
+      ];
+
       for (final perm in permissions) {
         if (await perm.isDenied) await perm.request();
       }
 
       for (final perm in permissions) {
-        if (await perm.isDenied) return false;
+        if (await perm.isGranted) return true;
       }
-    }
-
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      // final permissions = [Permission.mediaLibrary];
-      // for (final perm in permissions) {
-      //   if (await perm.isDenied) await perm.request();
-      // }
-      //
-      // for (final perm in permissions) {
-      //   if (await perm.isDenied) return false;
-      // }
     }
 
     return true;

@@ -47,6 +47,11 @@ android {
 
 
     buildTypes {
+
+        debug {
+            applicationIdSuffix = ".debug"
+        }
+
         profile {
             signingConfig = signingConfigs.release
         }

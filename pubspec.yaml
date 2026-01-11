@@ -20,7 +20,7 @@ version: 0.1.9+10
 
 environment:
   sdk: ^3.8.1
-  flutter: 3.38.5
+  flutter: 3.38.6
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -40,6 +40,9 @@ dependencies:
   internet_connection_checker_plus: ^2.9.1+2
   http: ^1.6.0
   youtube_explode_dart: ^3.0.5
+  webview_flutter: ^4.13.1 # webview_cef is not an option.
+  webview_cookie_manager_plus: ^2.0.17
+
 
   # Data Management
   provider: ^6.1.5+1
@@ -75,9 +78,8 @@ dependencies:
   file_picker: ^10.3.8
 
   # Extras
-  flutter_markdown: ^0.7.7+1 # TODO: markdown_widget!! or flutter_markdown_plus
+  flutter_markdown_plus: ^1.0.7
   package_info_plus: ^9.0.0
-  webview_flutter: ^4.13.0
   listen_sharing_intent: ^1.9.2
 
 dev_dependencies:
@@ -95,6 +97,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  test: ^1.26.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

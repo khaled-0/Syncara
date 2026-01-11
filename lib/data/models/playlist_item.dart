@@ -5,7 +5,7 @@ import 'playlist.dart';
 
 @Entity()
 class PlaylistItem {
-  @Id()
+  @Id(assignable: true)
   int objectId = 0;
 
   final int position;
@@ -29,5 +29,20 @@ class PlaylistItem {
     item.media.target = media;
     item.uid = "${playlist.objectId}_${media.objectId}";
     return item;
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PlaylistItem &&
+          runtimeType == other.runtimeType &&
+          uid == other.uid;
+
+  @override
+  int get hashCode => uid.hashCode;
+
+  @override
+  String toString() {
+    return 'PlaylistItem{objectId: $objectId, position: $position, playlist: $playlist, media: $media, uid: $uid}';
   }
 }

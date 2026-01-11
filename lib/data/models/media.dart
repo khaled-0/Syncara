@@ -72,4 +72,9 @@ class Media {
 
   @override
   int get hashCode => url.hashCode;
+
+  @override
+  String toString() {
+    return 'Media{objectId: $objectId, url: $url, title: $title, author: $author, durationMs: $durationMs, thumbnail: $thumbnail, thumbnailHiRes: $thumbnailHiRes, localPath: $localPath}';
+  }
 }

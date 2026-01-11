@@ -6,7 +6,8 @@ part 'playlist.g.dart';
 
 enum PlaylistType {
   local,
-  youtube;
+  youtube
+  ;
 
   static PlaylistType fromUrl(String url) {
     return switch (Uri.parse(url).scheme) {
@@ -20,7 +21,7 @@ enum PlaylistType {
 @Entity()
 @CopyWith(copyWithNull: true)
 class Playlist {
-  @Id()
+  @Id(assignable: true)
   int objectId = 0;
 
   @Index()

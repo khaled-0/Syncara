@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:syncara/app/auth/auth_dialog.dart';
 
 class Avatar extends StatelessWidget {
   final double radius;
-  final VoidCallback? onTap;
 
-  const Avatar({super.key, this.radius = 16, this.onTap});
+  const Avatar({super.key, this.radius = 16});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: () => AuthDialog.show(context),
       borderRadius: BorderRadius.circular(radius),
       child: CircleAvatar(
         radius: radius,

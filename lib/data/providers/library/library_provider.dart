@@ -8,6 +8,7 @@ import 'package:syncara/extensions.dart';
 import 'package:syncara/model/objectbox.g.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
+import '../../../clients/yt_media_client.dart';
 import '../../../services/downloader_service.dart';
 import '../../models/playlist_item.dart';
 import '../playlist/playlist_provider.dart';
