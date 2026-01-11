@@ -1,8 +1,6 @@
 part of 'library_provider.dart';
 
 mixin _YtLibraryMixin {
-  final _ytClient = yt.YoutubeExplode().playlists;
-
   List<Playlist> get entries;
 
   Store get store;
@@ -14,11 +12,15 @@ mixin _YtLibraryMixin {
 
     try {
       final updatedPlaylist = await compute(
-        (ytClient) async {
+        (data) async {
+          final ytClient = yt.YoutubeExplode(
+            httpClient: YTCookieClient(cookies: data),
+          ).playlists;
+
           final pl = await ytClient.get(playlist.url);
           return await _ytPlaylistWithThumbnail(Playlist.fromYTPlaylist(pl));
         },
-        _ytClient,
+        await YTCookieClient.values,
       );
 
       entries[index] = updatedPlaylist.copyWith(
@@ -46,7 +48,17 @@ mixin _YtLibraryMixin {
   }
 
   Future<void> importYtPlaylist(String url) async {
-    final playlist = await _ytClient.get(url);
+    final playlist = await compute(
+      (data) {
+        final ytClient = yt.YoutubeExplode(
+          httpClient: YTCookieClient(cookies: data),
+        ).playlists;
+
+        return ytClient.get(url);
+      },
+      await YTCookieClient.values,
+    );
+
     if (playlist.videoCount == 0) throw "Playlist is empty!";
 
     if (entries.contains(Playlist.fromYTPlaylist(playlist))) {
@@ -59,9 +71,6 @@ mixin _YtLibraryMixin {
 
     entries.add(playlistWithThumb);
     store.box<Playlist>().put(entries.last);
-
-    // Preload the playlist for faster initial load time
-    await PlaylistProvider(store, entries.last, sync: false).refresh();
 
     notifyListeners();
   }

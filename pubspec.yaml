@@ -41,6 +41,7 @@ dependencies:
   http: ^1.6.0
   youtube_explode_dart: ^3.0.5
   webview_flutter: ^4.13.1 # webview_cef is not an option.
+  webview_cookie_manager_plus: ^2.0.17
 
 
   # Data Management

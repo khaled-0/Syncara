@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
@@ -5,11 +7,12 @@ import 'package:syncara/clients/media_client.dart';
 import 'package:syncara/clients/yt_transcript_fetcher.dart';
 import 'package:syncara/data/models/media.dart';
 import 'package:syncara/model/common.dart';
+import 'package:webview_cookie_manager_plus/webview_cookie_manager_plus.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 class YTMediaClient implements BaseMediaClient {
   final _httpClient = http.Client();
-  final _ytClient = yt.YoutubeExplode().videos;
+  final _ytClient = yt.YoutubeExplode(httpClient: YTCookieClient()).videos;
   late final _transcriptFetcher = YouTubeTranscriptFetcher(
     httpClient: _httpClient,
   );
@@ -84,5 +87,27 @@ class YTMediaClient implements BaseMediaClient {
     final remainingSeconds = seconds % 60;
     return '${minutes.toString().padLeft(2, '0')}:'
         '${remainingSeconds.toStringAsFixed(2).padLeft(5, '0')}';
+  }
+}
+
+class YTCookieClient extends yt.YoutubeHttpClient {
+  /// Must be passed to isolate
+  static Future<List<Cookie>> get values {
+    return WebviewCookieManager().getCookies("https://youtube.com");
+  }
+
+  List<Cookie> cookies = List.of([]);
+
+  YTCookieClient({List<Cookie> cookies = const []}) {
+    this.cookies.addAll(cookies);
+    this.cookies.add(Cookie("CONSENT", "YES+cb"));
+  }
+
+  @override
+  Map<String, String> get headers {
+    return {
+      ...super.headers,
+      "cookie": cookies.map((e) => e.toString()).join(";"),
+    };
   }
 }

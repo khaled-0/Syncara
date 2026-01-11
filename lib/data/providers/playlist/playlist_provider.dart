@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:audio_metadata_reader/audio_metadata_reader.dart' as audio;
 import 'package:flutter/foundation.dart';
+import 'package:syncara/clients/yt_media_client.dart';
 import 'package:syncara/data/models/media.dart';
 import 'package:syncara/data/models/playlist.dart';
 import 'package:syncara/model/objectbox.g.dart';
