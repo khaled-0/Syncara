@@ -5,25 +5,19 @@ mixin _LocalPlaylistMixin {
 
   Playlist get playlist;
 
-  late final _box = store.box<PlaylistItem>();
-
   void notifyListeners();
 
   @visibleForOverriding
-  void updateItems(List<PlaylistItem> items);
+  Future<void> updateMediaEntries(List<Media> medias);
 
   Future<void> refreshLocalPlaylist() async {
     final directory = Directory(Uri.parse(playlist.url).toFilePath());
     if (!directory.existsSync()) {
-      final query = _box.query(
-        PlaylistItem_.playlist.equals(playlist.objectId),
-      );
-      await query.build().removeAsync();
-      updateItems([]);
+      updateMediaEntries([]);
       return notifyListeners();
     }
 
-    final musics = directory.listSync().map<Media?>((e) {
+    final medias = directory.listSync().map<Media?>((e) {
       try {
         final data = audio.readMetadata(File(e.path));
         return Media.fromAudioMetadata(data);
@@ -31,20 +25,13 @@ mixin _LocalPlaylistMixin {
         return Media(
           localPath: e.path,
           url: e.path,
-          title: e.path,
+          title: p.basename(e.path),
           author: "Unknown Artist",
         );
       }
     });
 
-    final items = List<PlaylistItem>.of([]);
-    for (final (i, media) in musics.nonNulls.indexed) {
-      items.add(
-        PlaylistItem.create(position: i, media: media, playlist: playlist),
-      );
-    }
-
-    updateItems(await _box.putAndGetManyAsync(items));
+    await updateMediaEntries(medias.nonNulls.toList());
     notifyListeners();
   }
 }
