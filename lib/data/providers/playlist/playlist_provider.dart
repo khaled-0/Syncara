@@ -67,6 +67,7 @@ class PlaylistProvider extends ChangeNotifier
     for (final existing in existingMedias.build().find()) {
       final index = medias.indexWhere((e) => e.url == existing.url);
       if (index == -1) continue;
+      medias[index] = medias[index].copyWith(localPath: existing.localPath);
       medias[index].objectId = existing.objectId;
     }
 

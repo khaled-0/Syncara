@@ -23,17 +23,24 @@ index c52d428..5ea29fe 100644
  
          versionCode = flutter.versionCode
 diff --git a/pubspec.yaml b/pubspec.yaml
-index 6f3aea8..0d31044 100644
+index 7809823..83ca5d4 100644
 --- a/pubspec.yaml
 +++ b/pubspec.yaml
-@@ -19,8 +19,8 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
- version: 0.1.9+10
- 
+@@ -20,7 +20,7 @@ version: 0.1.9+10
+
  environment:
--  sdk: ^3.10.4
--  flutter: 3.38.5
-+  sdk: ^3.8.1
+   sdk: ^3.8.1
+-  flutter: 3.38.6
 +  flutter: 3.32.8
- 
+
  # Dependencies specify other packages that your package needs in order to work.
  # To automatically upgrade your package dependencies to the latest versions
+@@ -97,7 +97,7 @@ dev_dependencies:
+   # package. See that file for information about deactivating specific lint
+   # rules and activating additional ones.
+   flutter_lints: ^6.0.0
+-  test: ^1.26.3
++
+
+ # For information on the generic Dart part of this file, see the
+ # following page: https://dart.dev/tools/pub/pubspec
