@@ -1,5 +1,4 @@
 diff --git a/android/app/build.gradle b/android/app/build.gradle
-index c52d428..5ea29fe 100644
 --- a/android/app/build.gradle
 +++ b/android/app/build.gradle
 @@ -6,8 +6,8 @@ plugins {
@@ -26,11 +25,11 @@ diff --git a/pubspec.yaml b/pubspec.yaml
 index 7809823..83ca5d4 100644
 --- a/pubspec.yaml
 +++ b/pubspec.yaml
-@@ -20,7 +20,7 @@ version: 0.1.9+10
+@@ -20,7 +20,7 @@ version: 0.1.10+11
 
  environment:
    sdk: ^3.8.1
--  flutter: 3.38.6
+-  flutter: 3.38.7
 +  flutter: 3.32.8
 
  # Dependencies specify other packages that your package needs in order to work.
